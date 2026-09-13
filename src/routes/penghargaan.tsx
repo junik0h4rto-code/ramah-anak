@@ -14,10 +14,6 @@ export const Route = createFileRoute("/penghargaan")({
   component: PenghargaanPage,
 });
 
-function PenghargaanFooter() {
-  return null;
-}
-
 function PenghargaanPage() {
   const { bintang, lencana, modulSelesai, kuisSelesai, mood, reset } = useSekolah();
 
@@ -63,7 +59,6 @@ function PenghargaanPage() {
       >
         Mulai dari awal lagi
       </button>
-      <PenghargaanFooter />
     </main>
   );
 }
