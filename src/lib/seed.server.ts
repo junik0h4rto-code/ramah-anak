@@ -110,7 +110,7 @@ async function pastikanPengaturan() {
     nama_sekolah: "SMPN 26 BANDUNG",
     tagline: "Belajar Seru, Kumpulkan Poin",
     alamat: "Jl. Sarimanah 23, Sarijadi, Bandung",
-    telepon: "0895338573512",
+    telepon: "",
     email: "info@smpn26bdg.sch.id",
   });
   return true;
