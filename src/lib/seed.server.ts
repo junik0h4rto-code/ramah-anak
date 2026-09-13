@@ -109,7 +109,7 @@ async function pastikanPengaturan() {
     id: 1,
     nama_sekolah: "SMPN 26 BANDUNG",
     tagline: "Belajar Seru, Kumpulkan Poin",
-    alamat: "Jl. Sarimanah 23, Sarijadi, Bandung",
+    alamat: "Jl. Sarimanah 23, Sarijadi, Bandung - ",
     telepon: "",
     email: "info@smpn26bdg.sch.id",
   });
