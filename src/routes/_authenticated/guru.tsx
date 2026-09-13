@@ -39,6 +39,7 @@ import {
 } from "@/lib/pengaturan.functions";
 import { listModul, createModul, updateModul, deleteModul } from "@/lib/modul.functions";
 import { listAkun, updateAkun, deleteAkun } from "@/lib/akun.functions";
+import { TabAkun } from "@/components/tab-akun";
 import {
   listBeritaEducator,
   createBerita,
