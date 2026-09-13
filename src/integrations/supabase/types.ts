@@ -510,11 +510,13 @@ export type Database = {
           catatan: string
           created_at: string
           diberikan_oleh: string
+          foto_url: string | null
           id: string
           jenis: string
           katalog_id: string | null
           kategori: string
           poin: number
+          sumber: string
           user_id: string
         }
         Insert: {
@@ -522,11 +524,13 @@ export type Database = {
           catatan?: string
           created_at?: string
           diberikan_oleh: string
+          foto_url?: string | null
           id?: string
           jenis: string
           katalog_id?: string | null
           kategori: string
           poin?: number
+          sumber?: string
           user_id: string
         }
         Update: {
@@ -534,11 +538,13 @@ export type Database = {
           catatan?: string
           created_at?: string
           diberikan_oleh?: string
+          foto_url?: string | null
           id?: string
           jenis?: string
           katalog_id?: string | null
           kategori?: string
           poin?: number
+          sumber?: string
           user_id?: string
         }
         Relationships: [
@@ -696,6 +702,24 @@ export type Database = {
         Returns: boolean
       }
       is_educator: { Args: { _user_id: string }; Returns: boolean }
+      kirim_perilaku_mandiri: {
+        Args: {
+          _catatan: string
+          _foto: string
+          _katalog_id: string
+          _user_id: string
+        }
+        Returns: {
+          air: number
+          berhasil: boolean
+          musim: number
+          pesan: string
+          poin: number
+          saldo_koin: number
+          sisa_kiriman: number
+          total_air: number
+        }[]
+      }
       klaim_checkin_harian: {
         Args: { _user_id: string }
         Returns: {
