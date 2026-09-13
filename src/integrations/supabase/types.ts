@@ -727,6 +727,7 @@ export type Database = {
           total_air: number
         }[]
       }
+      hapus_perilaku: { Args: { _id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -866,6 +867,13 @@ export type Database = {
           pesan: string
           saldo_koin: number
           tipe: string
+        }[]
+      }
+      ubah_perilaku: {
+        Args: { _catatan?: string; _id: string; _katalog_id: string }
+        Returns: {
+          air: number
+          poin: number
         }[]
       }
     }
