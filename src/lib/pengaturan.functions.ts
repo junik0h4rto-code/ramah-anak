@@ -117,7 +117,8 @@ export const simpanPengaturanSekolah = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase
       .from("pengaturan_sekolah")
-      .upsert({ id: 1, ...data, updated_by: context.userId });
+      .update({ ...data, updated_by: context.userId })
+      .eq("id", 1);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
