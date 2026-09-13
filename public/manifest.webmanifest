@@ -1,0 +1,16 @@
+{
+  "name": "SMPN 26 BANDUNG - Ruang Belajar",
+  "short_name": "SMPN 26",
+  "description": "Ruang Belajar gamifikasi SMPN 26 BANDUNG: modul, kuis, Poin Siswa, dan Pohon Kebaikan.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

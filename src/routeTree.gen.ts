@@ -10,73 +10,234 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as BelajarRouteImport } from './routes/belajar'
-import { Route as KuisRouteImport } from './routes/kuis'
-import { Route as MoodRouteImport } from './routes/mood'
-import { Route as PenghargaanRouteImport } from './routes/penghargaan'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BeritaRouteImport } from './routes/berita'
+import { Route as DaftarRouteImport } from './routes/daftar'
+import { Route as KalenderRouteImport } from './routes/kalender'
+import { Route as PengumumanRouteImport } from './routes/pengumuman'
+import { Route as AuthenticatedBelajarRouteImport } from './routes/_authenticated/belajar'
+import { Route as AuthenticatedGuruRouteImport } from './routes/_authenticated/guru'
+import { Route as AuthenticatedProfilRouteImport } from './routes/_authenticated/profil'
+import { Route as AuthenticatedTokoRouteImport } from './routes/_authenticated/toko'
+import { Route as AuthenticatedBelajarIndexRouteImport } from './routes/_authenticated/belajar.index'
+import { Route as AuthenticatedBelajarModulIdRouteImport } from './routes/_authenticated/belajar.$modulId'
+import { Route as AuthenticatedBelajarGameRouteImport } from './routes/_authenticated/belajar.game'
+import { Route as AuthenticatedBelajarKuisRouteImport } from './routes/_authenticated/belajar.kuis'
+import { Route as AuthenticatedBelajarPohonRouteImport } from './routes/_authenticated/belajar.pohon'
+import { Route as ApiPublicSetupAdminRouteImport } from './routes/api/public/setup-admin'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BelajarRoute = BelajarRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeritaRoute = BeritaRouteImport.update({
+  id: '/berita',
+  path: '/berita',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DaftarRoute = DaftarRouteImport.update({
+  id: '/daftar',
+  path: '/daftar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KalenderRoute = KalenderRouteImport.update({
+  id: '/kalender',
+  path: '/kalender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PengumumanRoute = PengumumanRouteImport.update({
+  id: '/pengumuman',
+  path: '/pengumuman',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedBelajarRoute = AuthenticatedBelajarRouteImport.update({
   id: '/belajar',
   path: '/belajar',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const KuisRoute = KuisRouteImport.update({
-  id: '/kuis',
-  path: '/kuis',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedGuruRoute = AuthenticatedGuruRouteImport.update({
+  id: '/guru',
+  path: '/guru',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const MoodRoute = MoodRouteImport.update({
-  id: '/mood',
-  path: '/mood',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedProfilRoute = AuthenticatedProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const PenghargaanRoute = PenghargaanRouteImport.update({
-  id: '/penghargaan',
-  path: '/penghargaan',
+const AuthenticatedTokoRoute = AuthenticatedTokoRouteImport.update({
+  id: '/toko',
+  path: '/toko',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedBelajarIndexRoute =
+  AuthenticatedBelajarIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedBelajarRoute,
+  } as any)
+const AuthenticatedBelajarModulIdRoute =
+  AuthenticatedBelajarModulIdRouteImport.update({
+    id: '/$modulId',
+    path: '/$modulId',
+    getParentRoute: () => AuthenticatedBelajarRoute,
+  } as any)
+const AuthenticatedBelajarGameRoute =
+  AuthenticatedBelajarGameRouteImport.update({
+    id: '/game',
+    path: '/game',
+    getParentRoute: () => AuthenticatedBelajarRoute,
+  } as any)
+const AuthenticatedBelajarKuisRoute =
+  AuthenticatedBelajarKuisRouteImport.update({
+    id: '/kuis',
+    path: '/kuis',
+    getParentRoute: () => AuthenticatedBelajarRoute,
+  } as any)
+const AuthenticatedBelajarPohonRoute =
+  AuthenticatedBelajarPohonRouteImport.update({
+    id: '/pohon',
+    path: '/pohon',
+    getParentRoute: () => AuthenticatedBelajarRoute,
+  } as any)
+const ApiPublicSetupAdminRoute = ApiPublicSetupAdminRouteImport.update({
+  id: '/api/public/setup-admin',
+  path: '/api/public/setup-admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/belajar': typeof BelajarRoute
-  '/kuis': typeof KuisRoute
-  '/mood': typeof MoodRoute
-  '/penghargaan': typeof PenghargaanRoute
+  '/auth': typeof AuthRoute
+  '/berita': typeof BeritaRoute
+  '/daftar': typeof DaftarRoute
+  '/kalender': typeof KalenderRoute
+  '/pengumuman': typeof PengumumanRoute
+  '/belajar': typeof AuthenticatedBelajarRouteWithChildren
+  '/guru': typeof AuthenticatedGuruRoute
+  '/profil': typeof AuthenticatedProfilRoute
+  '/toko': typeof AuthenticatedTokoRoute
+  '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
+  '/belajar/game': typeof AuthenticatedBelajarGameRoute
+  '/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
+  '/belajar/pohon': typeof AuthenticatedBelajarPohonRoute
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
+  '/belajar/': typeof AuthenticatedBelajarIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/belajar': typeof BelajarRoute
-  '/kuis': typeof KuisRoute
-  '/mood': typeof MoodRoute
-  '/penghargaan': typeof PenghargaanRoute
+  '/auth': typeof AuthRoute
+  '/berita': typeof BeritaRoute
+  '/daftar': typeof DaftarRoute
+  '/kalender': typeof KalenderRoute
+  '/pengumuman': typeof PengumumanRoute
+  '/guru': typeof AuthenticatedGuruRoute
+  '/profil': typeof AuthenticatedProfilRoute
+  '/toko': typeof AuthenticatedTokoRoute
+  '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
+  '/belajar/game': typeof AuthenticatedBelajarGameRoute
+  '/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
+  '/belajar/pohon': typeof AuthenticatedBelajarPohonRoute
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
+  '/belajar': typeof AuthenticatedBelajarIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/belajar': typeof BelajarRoute
-  '/kuis': typeof KuisRoute
-  '/mood': typeof MoodRoute
-  '/penghargaan': typeof PenghargaanRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/berita': typeof BeritaRoute
+  '/daftar': typeof DaftarRoute
+  '/kalender': typeof KalenderRoute
+  '/pengumuman': typeof PengumumanRoute
+  '/_authenticated/belajar': typeof AuthenticatedBelajarRouteWithChildren
+  '/_authenticated/guru': typeof AuthenticatedGuruRoute
+  '/_authenticated/profil': typeof AuthenticatedProfilRoute
+  '/_authenticated/toko': typeof AuthenticatedTokoRoute
+  '/_authenticated/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
+  '/_authenticated/belajar/game': typeof AuthenticatedBelajarGameRoute
+  '/_authenticated/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
+  '/_authenticated/belajar/pohon': typeof AuthenticatedBelajarPohonRoute
+  '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
+  '/_authenticated/belajar/': typeof AuthenticatedBelajarIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/belajar' | '/kuis' | '/mood' | '/penghargaan'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/berita'
+    | '/daftar'
+    | '/kalender'
+    | '/pengumuman'
+    | '/belajar'
+    | '/guru'
+    | '/profil'
+    | '/toko'
+    | '/belajar/$modulId'
+    | '/belajar/game'
+    | '/belajar/kuis'
+    | '/belajar/pohon'
+    | '/api/public/setup-admin'
+    | '/belajar/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/belajar' | '/kuis' | '/mood' | '/penghargaan'
-  id: '__root__' | '/' | '/belajar' | '/kuis' | '/mood' | '/penghargaan'
+  to:
+    | '/'
+    | '/auth'
+    | '/berita'
+    | '/daftar'
+    | '/kalender'
+    | '/pengumuman'
+    | '/guru'
+    | '/profil'
+    | '/toko'
+    | '/belajar/$modulId'
+    | '/belajar/game'
+    | '/belajar/kuis'
+    | '/belajar/pohon'
+    | '/api/public/setup-admin'
+    | '/belajar'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/berita'
+    | '/daftar'
+    | '/kalender'
+    | '/pengumuman'
+    | '/_authenticated/belajar'
+    | '/_authenticated/guru'
+    | '/_authenticated/profil'
+    | '/_authenticated/toko'
+    | '/_authenticated/belajar/$modulId'
+    | '/_authenticated/belajar/game'
+    | '/_authenticated/belajar/kuis'
+    | '/_authenticated/belajar/pohon'
+    | '/api/public/setup-admin'
+    | '/_authenticated/belajar/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BelajarRoute: typeof BelajarRoute
-  KuisRoute: typeof KuisRoute
-  MoodRoute: typeof MoodRoute
-  PenghargaanRoute: typeof PenghargaanRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  BeritaRoute: typeof BeritaRoute
+  DaftarRoute: typeof DaftarRoute
+  KalenderRoute: typeof KalenderRoute
+  PengumumanRoute: typeof PengumumanRoute
+  ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -88,43 +249,166 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/belajar': {
-      id: '/belajar'
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/berita': {
+      id: '/berita'
+      path: '/berita'
+      fullPath: '/berita'
+      preLoaderRoute: typeof BeritaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daftar': {
+      id: '/daftar'
+      path: '/daftar'
+      fullPath: '/daftar'
+      preLoaderRoute: typeof DaftarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kalender': {
+      id: '/kalender'
+      path: '/kalender'
+      fullPath: '/kalender'
+      preLoaderRoute: typeof KalenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pengumuman': {
+      id: '/pengumuman'
+      path: '/pengumuman'
+      fullPath: '/pengumuman'
+      preLoaderRoute: typeof PengumumanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/belajar': {
+      id: '/_authenticated/belajar'
       path: '/belajar'
       fullPath: '/belajar'
-      preLoaderRoute: typeof BelajarRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedBelajarRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/kuis': {
-      id: '/kuis'
+    '/_authenticated/guru': {
+      id: '/_authenticated/guru'
+      path: '/guru'
+      fullPath: '/guru'
+      preLoaderRoute: typeof AuthenticatedGuruRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profil': {
+      id: '/_authenticated/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof AuthenticatedProfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/toko': {
+      id: '/_authenticated/toko'
+      path: '/toko'
+      fullPath: '/toko'
+      preLoaderRoute: typeof AuthenticatedTokoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/belajar/': {
+      id: '/_authenticated/belajar/'
+      path: '/'
+      fullPath: '/belajar/'
+      preLoaderRoute: typeof AuthenticatedBelajarIndexRouteImport
+      parentRoute: typeof AuthenticatedBelajarRoute
+    }
+    '/_authenticated/belajar/$modulId': {
+      id: '/_authenticated/belajar/$modulId'
+      path: '/$modulId'
+      fullPath: '/belajar/$modulId'
+      preLoaderRoute: typeof AuthenticatedBelajarModulIdRouteImport
+      parentRoute: typeof AuthenticatedBelajarRoute
+    }
+    '/_authenticated/belajar/game': {
+      id: '/_authenticated/belajar/game'
+      path: '/game'
+      fullPath: '/belajar/game'
+      preLoaderRoute: typeof AuthenticatedBelajarGameRouteImport
+      parentRoute: typeof AuthenticatedBelajarRoute
+    }
+    '/_authenticated/belajar/kuis': {
+      id: '/_authenticated/belajar/kuis'
       path: '/kuis'
-      fullPath: '/kuis'
-      preLoaderRoute: typeof KuisRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/belajar/kuis'
+      preLoaderRoute: typeof AuthenticatedBelajarKuisRouteImport
+      parentRoute: typeof AuthenticatedBelajarRoute
     }
-    '/mood': {
-      id: '/mood'
-      path: '/mood'
-      fullPath: '/mood'
-      preLoaderRoute: typeof MoodRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/belajar/pohon': {
+      id: '/_authenticated/belajar/pohon'
+      path: '/pohon'
+      fullPath: '/belajar/pohon'
+      preLoaderRoute: typeof AuthenticatedBelajarPohonRouteImport
+      parentRoute: typeof AuthenticatedBelajarRoute
     }
-    '/penghargaan': {
-      id: '/penghargaan'
-      path: '/penghargaan'
-      fullPath: '/penghargaan'
-      preLoaderRoute: typeof PenghargaanRouteImport
+    '/api/public/setup-admin': {
+      id: '/api/public/setup-admin'
+      path: '/api/public/setup-admin'
+      fullPath: '/api/public/setup-admin'
+      preLoaderRoute: typeof ApiPublicSetupAdminRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
+interface AuthenticatedBelajarRouteChildren {
+  AuthenticatedBelajarModulIdRoute: typeof AuthenticatedBelajarModulIdRoute
+  AuthenticatedBelajarGameRoute: typeof AuthenticatedBelajarGameRoute
+  AuthenticatedBelajarKuisRoute: typeof AuthenticatedBelajarKuisRoute
+  AuthenticatedBelajarPohonRoute: typeof AuthenticatedBelajarPohonRoute
+  AuthenticatedBelajarIndexRoute: typeof AuthenticatedBelajarIndexRoute
+}
+
+const AuthenticatedBelajarRouteChildren: AuthenticatedBelajarRouteChildren = {
+  AuthenticatedBelajarModulIdRoute: AuthenticatedBelajarModulIdRoute,
+  AuthenticatedBelajarGameRoute: AuthenticatedBelajarGameRoute,
+  AuthenticatedBelajarKuisRoute: AuthenticatedBelajarKuisRoute,
+  AuthenticatedBelajarPohonRoute: AuthenticatedBelajarPohonRoute,
+  AuthenticatedBelajarIndexRoute: AuthenticatedBelajarIndexRoute,
+}
+
+const AuthenticatedBelajarRouteWithChildren =
+  AuthenticatedBelajarRoute._addFileChildren(AuthenticatedBelajarRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBelajarRoute: typeof AuthenticatedBelajarRouteWithChildren
+  AuthenticatedGuruRoute: typeof AuthenticatedGuruRoute
+  AuthenticatedProfilRoute: typeof AuthenticatedProfilRoute
+  AuthenticatedTokoRoute: typeof AuthenticatedTokoRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedBelajarRoute: AuthenticatedBelajarRouteWithChildren,
+  AuthenticatedGuruRoute: AuthenticatedGuruRoute,
+  AuthenticatedProfilRoute: AuthenticatedProfilRoute,
+  AuthenticatedTokoRoute: AuthenticatedTokoRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BelajarRoute: BelajarRoute,
-  KuisRoute: KuisRoute,
-  MoodRoute: MoodRoute,
-  PenghargaanRoute: PenghargaanRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  BeritaRoute: BeritaRoute,
+  DaftarRoute: DaftarRoute,
+  KalenderRoute: KalenderRoute,
+  PengumumanRoute: PengumumanRoute,
+  ApiPublicSetupAdminRoute: ApiPublicSetupAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
