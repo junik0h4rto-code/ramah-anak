@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BelajarRouteImport } from './routes/belajar'
+import { Route as KuisRouteImport } from './routes/kuis'
+import { Route as MoodRouteImport } from './routes/mood'
+import { Route as PenghargaanRouteImport } from './routes/penghargaan'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BelajarRoute = BelajarRouteImport.update({
+  id: '/belajar',
+  path: '/belajar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuisRoute = KuisRouteImport.update({
+  id: '/kuis',
+  path: '/kuis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoodRoute = MoodRouteImport.update({
+  id: '/mood',
+  path: '/mood',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PenghargaanRoute = PenghargaanRouteImport.update({
+  id: '/penghargaan',
+  path: '/penghargaan',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/belajar': typeof BelajarRoute
+  '/kuis': typeof KuisRoute
+  '/mood': typeof MoodRoute
+  '/penghargaan': typeof PenghargaanRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/belajar': typeof BelajarRoute
+  '/kuis': typeof KuisRoute
+  '/mood': typeof MoodRoute
+  '/penghargaan': typeof PenghargaanRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/belajar': typeof BelajarRoute
+  '/kuis': typeof KuisRoute
+  '/mood': typeof MoodRoute
+  '/penghargaan': typeof PenghargaanRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/belajar' | '/kuis' | '/mood' | '/penghargaan'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/belajar' | '/kuis' | '/mood' | '/penghargaan'
+  id: '__root__' | '/' | '/belajar' | '/kuis' | '/mood' | '/penghargaan'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BelajarRoute: typeof BelajarRoute
+  KuisRoute: typeof KuisRoute
+  MoodRoute: typeof MoodRoute
+  PenghargaanRoute: typeof PenghargaanRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +88,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/belajar': {
+      id: '/belajar'
+      path: '/belajar'
+      fullPath: '/belajar'
+      preLoaderRoute: typeof BelajarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kuis': {
+      id: '/kuis'
+      path: '/kuis'
+      fullPath: '/kuis'
+      preLoaderRoute: typeof KuisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mood': {
+      id: '/mood'
+      path: '/mood'
+      fullPath: '/mood'
+      preLoaderRoute: typeof MoodRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/penghargaan': {
+      id: '/penghargaan'
+      path: '/penghargaan'
+      fullPath: '/penghargaan'
+      preLoaderRoute: typeof PenghargaanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BelajarRoute: BelajarRoute,
+  KuisRoute: KuisRoute,
+  MoodRoute: MoodRoute,
+  PenghargaanRoute: PenghargaanRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
