@@ -1,0 +1,20 @@
+GRANT EXECUTE ON FUNCTION public.pastikan_profil_untuk(uuid, text, text) TO service_role;
+GRANT EXECUTE ON FUNCTION public.leaderboard_siswa(integer) TO service_role;
+GRANT EXECUTE ON FUNCTION public.tambah_koin_kuis(uuid, integer) TO service_role;
+GRANT EXECUTE ON FUNCTION public.beri_koin_bonus(uuid, integer, text, uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.selesaikan_modul(uuid, uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.tukar_hadiah(uuid, uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.rekomendasi_modul(integer) TO service_role;
+GRANT EXECUTE ON FUNCTION public.riwayat_checkin_7hari(uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.klaim_checkin_harian(uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.status_roda(uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.putar_roda(uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.simpan_pengaturan_poin(text, integer) TO service_role;
+GRANT EXECUTE ON FUNCTION public.catat_perilaku(uuid, uuid, uuid, text) TO service_role;
+GRANT EXECUTE ON FUNCTION public.status_pohon(uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.panen_pohon(uuid) TO service_role;
+GRANT EXECUTE ON FUNCTION public.leaderboard_pohon(integer) TO service_role;
+GRANT EXECUTE ON FUNCTION public.kirim_perilaku_mandiri(uuid, uuid, text, text) TO service_role;
+
+GRANT EXECUTE ON FUNCTION public.has_role(uuid, public.app_role) TO authenticated;
+GRANT EXECUTE ON FUNCTION public.is_educator(uuid) TO authenticated;
