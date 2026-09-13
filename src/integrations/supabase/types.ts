@@ -179,6 +179,39 @@ export type Database = {
         }
         Relationships: []
       }
+      kelas_rombel: {
+        Row: {
+          aktif: boolean
+          created_at: string
+          id: string
+          nama: string
+          rombel: string
+          tingkat: string
+          updated_at: string
+          wali_kelas: string
+        }
+        Insert: {
+          aktif?: boolean
+          created_at?: string
+          id?: string
+          nama: string
+          rombel: string
+          tingkat: string
+          updated_at?: string
+          wali_kelas?: string
+        }
+        Update: {
+          aktif?: boolean
+          created_at?: string
+          id?: string
+          nama?: string
+          rombel?: string
+          tingkat?: string
+          updated_at?: string
+          wali_kelas?: string
+        }
+        Relationships: []
+      }
       koin_bonus: {
         Row: {
           diberikan_oleh: string
