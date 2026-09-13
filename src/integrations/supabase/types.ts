@@ -22,7 +22,6 @@ export type Database = {
           isi: string
           judul: string
           kategori: string | null
-          kelas_target: string | null
           penulis_id: string | null
           published: boolean
           tanggal_kegiatan: string | null
@@ -35,7 +34,6 @@ export type Database = {
           isi: string
           judul: string
           kategori?: string | null
-          kelas_target?: string | null
           penulis_id?: string | null
           published?: boolean
           tanggal_kegiatan?: string | null
@@ -48,7 +46,6 @@ export type Database = {
           isi?: string
           judul?: string
           kategori?: string | null
-          kelas_target?: string | null
           penulis_id?: string | null
           published?: boolean
           tanggal_kegiatan?: string | null
@@ -68,7 +65,7 @@ export type Database = {
           created_at?: string
           id?: string
           koin?: number
-          tanggal?: string
+          tanggal: string
           user_id: string
         }
         Update: {
@@ -122,36 +119,6 @@ export type Database = {
         }
         Relationships: []
       }
-      katalog_perilaku: {
-        Row: {
-          aktif: boolean
-          created_at: string
-          id: string
-          jenis: string
-          kategori: string
-          poin: number
-          updated_at: string
-        }
-        Insert: {
-          aktif?: boolean
-          created_at?: string
-          id?: string
-          jenis: string
-          kategori: string
-          poin?: number
-          updated_at?: string
-        }
-        Update: {
-          aktif?: boolean
-          created_at?: string
-          id?: string
-          jenis?: string
-          kategori?: string
-          poin?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
       kegiatan_sekolah: {
         Row: {
           created_at: string
@@ -168,7 +135,7 @@ export type Database = {
           id?: string
           koin_bonus?: number
           nama_kegiatan: string
-          tanggal?: string
+          tanggal: string
           updated_at?: string
         }
         Update: {
@@ -179,39 +146,6 @@ export type Database = {
           nama_kegiatan?: string
           tanggal?: string
           updated_at?: string
-        }
-        Relationships: []
-      }
-      kelas_rombel: {
-        Row: {
-          aktif: boolean
-          created_at: string
-          id: string
-          nama: string
-          rombel: string
-          tingkat: string
-          updated_at: string
-          wali_kelas: string
-        }
-        Insert: {
-          aktif?: boolean
-          created_at?: string
-          id?: string
-          nama: string
-          rombel: string
-          tingkat: string
-          updated_at?: string
-          wali_kelas?: string
-        }
-        Update: {
-          aktif?: boolean
-          created_at?: string
-          id?: string
-          nama?: string
-          rombel?: string
-          tingkat?: string
-          updated_at?: string
-          wali_kelas?: string
         }
         Relationships: []
       }
@@ -397,33 +331,6 @@ export type Database = {
         }
         Relationships: []
       }
-      pengaturan_poin: {
-        Row: {
-          deskripsi: string
-          kunci: string
-          label: string
-          nilai: number
-          updated_at: string
-          urutan: number
-        }
-        Insert: {
-          deskripsi?: string
-          kunci: string
-          label: string
-          nilai?: number
-          updated_at?: string
-          urutan?: number
-        }
-        Update: {
-          deskripsi?: string
-          kunci?: string
-          label?: string
-          nilai?: number
-          updated_at?: string
-          urutan?: number
-        }
-        Relationships: []
-      }
       pengaturan_sekolah: {
         Row: {
           akreditasi: string
@@ -445,6 +352,7 @@ export type Database = {
           tiktok: string
           updated_at: string
           updated_by: string | null
+          website: string
           whatsapp: string
           youtube: string
         }
@@ -468,6 +376,7 @@ export type Database = {
           tiktok?: string
           updated_at?: string
           updated_by?: string | null
+          website?: string
           whatsapp?: string
           youtube?: string
         }
@@ -491,6 +400,7 @@ export type Database = {
           tiktok?: string
           updated_at?: string
           updated_by?: string | null
+          website?: string
           whatsapp?: string
           youtube?: string
         }
@@ -536,89 +446,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      perilaku_siswa: {
-        Row: {
-          air: number
-          catatan: string
-          created_at: string
-          diberikan_oleh: string
-          foto_url: string | null
-          id: string
-          jenis: string
-          katalog_id: string | null
-          kategori: string
-          poin: number
-          sumber: string
-          user_id: string
-        }
-        Insert: {
-          air?: number
-          catatan?: string
-          created_at?: string
-          diberikan_oleh: string
-          foto_url?: string | null
-          id?: string
-          jenis: string
-          katalog_id?: string | null
-          kategori: string
-          poin?: number
-          sumber?: string
-          user_id: string
-        }
-        Update: {
-          air?: number
-          catatan?: string
-          created_at?: string
-          diberikan_oleh?: string
-          foto_url?: string | null
-          id?: string
-          jenis?: string
-          katalog_id?: string | null
-          kategori?: string
-          poin?: number
-          sumber?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "perilaku_siswa_katalog_id_fkey"
-            columns: ["katalog_id"]
-            isOneToOne: false
-            referencedRelation: "katalog_perilaku"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pohon_siswa: {
-        Row: {
-          air: number
-          created_at: string
-          musim: number
-          total_air: number
-          total_panen: number
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          air?: number
-          created_at?: string
-          musim?: number
-          total_air?: number
-          total_panen?: number
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          air?: number
-          created_at?: string
-          musim?: number
-          total_air?: number
-          total_panen?: number
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
       }
       profiles: {
         Row: {
@@ -667,7 +494,7 @@ export type Database = {
           hadiah_index: number
           hadiah_label: string
           id?: string
-          koin_bersih?: number
+          koin_bersih: number
           user_id: string
         }
         Update: {
@@ -712,22 +539,6 @@ export type Database = {
         }
         Returns: number
       }
-      catat_perilaku: {
-        Args: {
-          _catatan?: string
-          _katalog_id: string
-          _oleh: string
-          _user_id: string
-        }
-        Returns: {
-          air: number
-          musim: number
-          poin: number
-          saldo_koin: number
-          total_air: number
-        }[]
-      }
-      hapus_perilaku: { Args: { _id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -736,42 +547,6 @@ export type Database = {
         Returns: boolean
       }
       is_educator: { Args: { _user_id: string }; Returns: boolean }
-      kirim_perilaku_mandiri: {
-        Args: {
-          _catatan: string
-          _foto: string
-          _katalog_id: string
-          _user_id: string
-        }
-        Returns: {
-          air: number
-          berhasil: boolean
-          musim: number
-          pesan: string
-          poin: number
-          saldo_koin: number
-          sisa_kiriman: number
-          total_air: number
-        }[]
-      }
-      klaim_checkin_harian: {
-        Args: { _user_id: string }
-        Returns: {
-          berhasil: boolean
-          koin_didapat: number
-          pesan: string
-          saldo_koin: number
-        }[]
-      }
-      leaderboard_pohon: {
-        Args: { _batas?: number }
-        Returns: {
-          kelas: string
-          nama: string
-          total_air: number
-          total_panen: number
-        }[]
-      }
       leaderboard_siswa: {
         Args: { _batas?: number }
         Returns: {
@@ -780,35 +555,12 @@ export type Database = {
           nama: string
         }[]
       }
-      nilai_poin: { Args: { _bawaan: number; _kunci: string }; Returns: number }
-      panen_pohon: {
-        Args: { _user_id: string }
-        Returns: {
-          air: number
-          berhasil: boolean
-          musim: number
-          pesan: string
-          poin_didapat: number
-          saldo_koin: number
-        }[]
-      }
       pastikan_profil_untuk: {
         Args: { _nama: string; _peran?: string; _uid: string }
         Returns: undefined
       }
-      putar_roda: {
-        Args: { _user_id: string }
-        Returns: {
-          hadiah_index: number
-          hadiah_label: string
-          koin_hadiah: number
-          lencana: boolean
-          saldo_koin: number
-          sisa_putaran: number
-        }[]
-      }
       rekomendasi_modul: {
-        Args: { _batas: number }
+        Args: { _batas?: number }
         Returns: {
           cover_url: string
           id: string
@@ -833,28 +585,6 @@ export type Database = {
           saldo_koin: number
         }[]
       }
-      simpan_pengaturan_poin: {
-        Args: { _kunci: string; _nilai: number }
-        Returns: number
-      }
-      status_pohon: {
-        Args: { _user_id: string }
-        Returns: {
-          air: number
-          musim: number
-          poin_panen: number
-          saldo_koin: number
-          total_air: number
-          total_panen: number
-        }[]
-      }
-      status_roda: {
-        Args: { _user_id: string }
-        Returns: {
-          saldo_koin: number
-          sisa_putaran: number
-        }[]
-      }
       tambah_koin_kuis: {
         Args: { _jumlah: number; _user_id: string }
         Returns: number
@@ -867,13 +597,6 @@ export type Database = {
           pesan: string
           saldo_koin: number
           tipe: string
-        }[]
-      }
-      ubah_perilaku: {
-        Args: { _catatan?: string; _id: string; _katalog_id: string }
-        Returns: {
-          air: number
-          poin: number
         }[]
       }
     }
