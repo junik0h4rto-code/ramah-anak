@@ -22,6 +22,7 @@ export type Database = {
           isi: string
           judul: string
           kategori: string | null
+          kelas_target: string | null
           penulis_id: string | null
           published: boolean
           tanggal_kegiatan: string | null
@@ -34,6 +35,7 @@ export type Database = {
           isi: string
           judul: string
           kategori?: string | null
+          kelas_target?: string | null
           penulis_id?: string | null
           published?: boolean
           tanggal_kegiatan?: string | null
@@ -46,6 +48,7 @@ export type Database = {
           isi?: string
           judul?: string
           kategori?: string | null
+          kelas_target?: string | null
           penulis_id?: string | null
           published?: boolean
           tanggal_kegiatan?: string | null
