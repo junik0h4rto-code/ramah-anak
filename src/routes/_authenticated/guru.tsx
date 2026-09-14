@@ -2021,7 +2021,7 @@ function TabPoin() {
           {pengaturan.map((p) => (
             <div
               key={p.kunci}
-              className="grid items-center gap-3 rounded-2xl bg-muted/50 p-4 md:grid-cols-[1fr_160px]"
+              className="grid items-center gap-3 rounded-2xl bg-muted/50 p-4 md:grid-cols-[1fr_160px_auto]"
             >
               <div>
                 <p className="text-sm font-extrabold">{p.label}</p>
@@ -2036,6 +2036,13 @@ function TabPoin() {
                 className={inputClass}
                 required
               />
+              <button
+                type="button"
+                onClick={() => hapusKategori(p.kunci, p.label)}
+                className="justify-self-start rounded-full bg-destructive px-4 py-2 text-xs font-extrabold text-destructive-foreground"
+              >
+                Hapus
+              </button>
             </div>
           ))}
           <button
@@ -2044,6 +2051,44 @@ function TabPoin() {
             className="inline-flex w-fit items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-extrabold text-accent-foreground shadow-pop disabled:opacity-60"
           >
             <Save className="h-4 w-4" /> {loading ? "Menyimpan..." : "Simpan Pengaturan Poin"}
+          </button>
+        </form>
+      </section>
+
+      <section className="rounded-3xl border border-border bg-card p-6 shadow-card">
+        <h2 className="mb-1 text-lg font-extrabold">Tambah Kategori Poin</h2>
+        <p className="mb-4 text-sm font-semibold text-muted-foreground">
+          Contoh: Jawaban Kuis Benar, Selesai Modul, Piket Kelas.
+        </p>
+        <form onSubmit={tambahKategori} className="grid gap-3 md:grid-cols-[1fr_1fr_140px_auto]">
+          <input
+            className={inputClass}
+            placeholder="Nama kategori"
+            value={baru.label}
+            onChange={(e) => setBaru({ ...baru, label: e.target.value })}
+            required
+          />
+          <input
+            className={inputClass}
+            placeholder="Keterangan (opsional)"
+            value={baru.deskripsi}
+            onChange={(e) => setBaru({ ...baru, deskripsi: e.target.value })}
+          />
+          <input
+            className={inputClass}
+            type="number"
+            min={0}
+            max={10000}
+            value={baru.nilai}
+            onChange={(e) => setBaru({ ...baru, nilai: Number(e.target.value) || 0 })}
+            required
+          />
+          <button
+            type="submit"
+            disabled={menambah || baru.label.trim().length < 2}
+            className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-extrabold text-primary-foreground shadow-pop disabled:opacity-60"
+          >
+            {menambah ? "Menambah..." : "Tambah"}
           </button>
         </form>
       </section>
