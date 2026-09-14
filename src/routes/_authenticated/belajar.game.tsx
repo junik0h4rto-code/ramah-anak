@@ -21,12 +21,12 @@ export const Route = createFileRoute("/_authenticated/belajar/game")({
       {
         name: "description",
         content:
-          "Mainkan kuis trivia dan putar roda keberuntungan di Pusat Game SMPN 26 BANDUNG untuk mengumpulkan Poin Siswa.",
+          "Mainkan kuis trivia dan Roda Inspirasi Kebaikan di Pusat Game SMPN 26 BANDUNG untuk mengumpulkan Poin Siswa.",
       },
       { property: "og:title", content: "Pusat Game - SMPN 26 BANDUNG" },
       {
         property: "og:description",
-        content: "Kuis trivia dan roda keberuntungan berhadiah Poin Siswa.",
+        content: "Kuis trivia dan Roda Inspirasi Kebaikan berhadiah Poin Siswa.",
       },
     ],
   }),
@@ -284,7 +284,7 @@ function RodaKeberuntungan() {
             <RotateCw className="h-5 w-5" />
           </span>
           <div>
-            <h2 className="text-xl font-extrabold">Roda Keberuntungan</h2>
+            <h2 className="text-xl font-extrabold">Roda Inspirasi Kebaikan</h2>
             <p className="text-xs font-semibold text-muted-foreground">
               Biaya 10 Poin per putaran &middot; sisa hari ini {sisa}/3
             </p>
@@ -330,11 +330,13 @@ function RodaKeberuntungan() {
       >
         {berputar
           ? "Roda Berputar..."
-          : sisa <= 0
-            ? "Batas 3 Putaran Hari Ini Habis"
-            : (saldo ?? 0) < 10
-              ? "Poin Belum Cukup (butuh 10)"
-              : "PUTAR RODA (-10 Poin)"}
+          : !siapPakai
+            ? "Menyiapkan roda..."
+            : sisa <= 0
+              ? "Batas 3 Putaran Hari Ini Habis"
+              : (saldo ?? 0) < 10
+                ? "Poin Belum Cukup (butuh 10)"
+                : "PUTAR RODA (-10 Poin)"}
       </button>
 
       <p className="mt-3 min-h-6 text-sm font-bold text-muted-foreground">
