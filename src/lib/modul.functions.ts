@@ -13,17 +13,35 @@ const modulSchema = z.object({
   kuis_pertanyaan: z.string().optional(),
   kuis_opsi: z.array(z.string()).optional(),
   kuis_jawaban: z.number().int().min(0).max(3).optional(),
+  // Daftar rombel tujuan dipisah koma (mis. "VII A, VII B"). Kosong = semua kelas.
+  kelas_target: z.string().max(400).nullable().optional(),
 });
+
+/** Cocokkan kelas siswa dengan daftar rombel tujuan materi. */
+function cocokKelas(target: string | null, kelasSiswa: string | null) {
+  const t = (target ?? "").trim();
+  if (!t) return true;
+  const kelas = (kelasSiswa ?? "").trim().toLowerCase();
+  if (!kelas) return false;
+  return t
+    .split(",")
+    .map((x) => x.trim().toLowerCase())
+    .filter(Boolean)
+    .some((x) => x === kelas || kelas.startsWith(`${x} `) || kelas === x.replace(/\s+/g, ""));
+}
 
 export const listModul = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { data, error } = await context.supabase
-      .from("modul")
-      .select("*")
-      .order("created_at", { ascending: false });
+    const [{ data, error }, { data: roles }, { data: profil }] = await Promise.all([
+      context.supabase.from("modul").select("*").order("created_at", { ascending: false }),
+      context.supabase.from("user_roles").select("role").eq("user_id", context.userId),
+      context.supabase.from("profiles").select("kelas").eq("id", context.userId).maybeSingle(),
+    ]);
     if (error) throw new Error(error.message);
-    return data ?? [];
+    const pengajar = (roles ?? []).some((r) => r.role === "guru" || r.role === "admin");
+    if (pengajar) return data ?? [];
+    return (data ?? []).filter((m) => cocokKelas(m.kelas_target, profil?.kelas ?? null));
   });
 
 export const createModul = createServerFn({ method: "POST" })
@@ -43,6 +61,7 @@ export const createModul = createServerFn({ method: "POST" })
         kuis_pertanyaan: data.kuis_pertanyaan ?? null,
         kuis_opsi: data.kuis_opsi ?? [],
         kuis_jawaban: data.kuis_jawaban ?? 0,
+        kelas_target: data.kelas_target?.trim() ? data.kelas_target.trim() : null,
         created_by: context.userId,
       })
       .select()
@@ -68,6 +87,7 @@ export const updateModul = createServerFn({ method: "POST" })
         kuis_pertanyaan: data.kuis_pertanyaan ?? null,
         kuis_opsi: data.kuis_opsi ?? [],
         kuis_jawaban: data.kuis_jawaban ?? 0,
+        kelas_target: data.kelas_target?.trim() ? data.kelas_target.trim() : null,
       })
       .eq("id", data.id)
       .select()
