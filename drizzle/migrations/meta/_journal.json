@@ -22,6 +22,13 @@
       "when": 1789405661517,
       "tag": "0002_harden_public_access_and_function_grants",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789413332631,
+      "tag": "0003_deny_client_writes_on_gamification_tables",
+      "breakpoints": true
     }
   ]
 }
