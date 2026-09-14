@@ -133,7 +133,7 @@ function ProfilPage() {
               </h2>
               {data.lencana.length === 0 ? (
                 <p className="mt-3 text-sm font-semibold text-muted-foreground">
-                  Belum ada lencana. Menangkan lencana dari Roda Keberuntungan di Pusat Game!
+                  Belum ada lencana. Menangkan lencana dari Roda Inspirasi Kebaikan di Pusat Game!
                 </p>
               ) : (
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">

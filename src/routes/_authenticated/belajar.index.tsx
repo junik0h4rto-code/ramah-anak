@@ -69,7 +69,7 @@ const GAME_REKOMENDASI = [
   {
     id: "roda",
     to: "/belajar/game" as const,
-    judul: "Roda Keberuntungan",
+    judul: "Roda Inspirasi Kebaikan",
     guru: "Tim Guru SMPN 26",
     koin: 50,
     ikon: "Sparkles",

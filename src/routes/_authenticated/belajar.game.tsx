@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Brain, Coins, Gift, RotateCw, Trophy } from "lucide-react";
 import { toast } from "sonner";
@@ -17,16 +17,16 @@ import { useGamifikasi } from "@/lib/gamifikasi-store";
 export const Route = createFileRoute("/_authenticated/belajar/game")({
   head: () => ({
     meta: [
-      { title: "Pusat Game - Kuis Trivia dan Roda Keberuntungan" },
+      { title: "Pusat Game - Kuis Trivia dan Roda Inspirasi Kebaikan" },
       {
         name: "description",
         content:
-          "Mainkan kuis trivia dan putar roda keberuntungan di Pusat Game SMPN 26 BANDUNG untuk mengumpulkan Poin Siswa.",
+          "Mainkan kuis trivia dan Roda Inspirasi Kebaikan di Pusat Game SMPN 26 BANDUNG untuk mengumpulkan Poin Siswa.",
       },
       { property: "og:title", content: "Pusat Game - SMPN 26 BANDUNG" },
       {
         property: "og:description",
-        content: "Kuis trivia dan roda keberuntungan berhadiah Poin Siswa.",
+        content: "Kuis trivia dan Roda Inspirasi Kebaikan berhadiah Poin Siswa.",
       },
     ],
   }),
@@ -226,10 +226,12 @@ function RodaKeberuntungan() {
   const spin = useServerFn(putarRoda);
   const [sudut, setSudut] = useState(0);
   const [berputar, setBerputar] = useState(false);
+  const [siapPakai, setSiapPakai] = useState(false);
   const [saldo, setSaldo] = useState<number | null>(null);
   const [sisa, setSisa] = useState<number>(3);
   const [hasil, setHasil] = useState<{ label: string; koin: number; lencana: boolean } | null>(null);
   const [dialogTerbuka, setDialogTerbuka] = useState(false);
+  const jedaRef = useRef<number | null>(null);
 
   useEffect(() => {
     let aktif = true;
@@ -239,13 +241,17 @@ function RodaKeberuntungan() {
         setSaldo(s.saldoKoin);
         setSisa(s.sisaPutaran);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (aktif) setSiapPakai(true);
+      });
     return () => {
       aktif = false;
+      if (jedaRef.current) window.clearTimeout(jedaRef.current);
     };
   }, [ambilStatus]);
 
-  const bisaPutar = !berputar && sisa > 0 && (saldo ?? 0) >= 10;
+  const bisaPutar = siapPakai && !berputar && sisa > 0 && (saldo ?? 0) >= 10;
 
   async function putar() {
     if (!bisaPutar) return;
@@ -253,16 +259,17 @@ function RodaKeberuntungan() {
     setHasil(null);
     try {
       const r = await spin({});
-      const target =
-        360 * 5 + (360 - r.hadiahIndex * SEGMEN - SEGMEN / 2) - (sudut % 360);
-      setSudut((s) => s + target);
-      window.setTimeout(() => {
+      // Putaran penuh beberapa kali, lalu berhenti tepat di tengah sektor hadiah.
+      const posisiSektor = 360 - (r.hadiahIndex * SEGMEN + SEGMEN / 2);
+      const putaranSekarang = sudut % 360;
+      setSudut(sudut + 360 * 5 + ((posisiSektor - putaranSekarang + 360) % 360));
+      jedaRef.current = window.setTimeout(() => {
         setSaldo(r.saldoKoin);
         setSisa(r.sisaPutaran);
         setHasil({ label: r.hadiahLabel, koin: r.koinHadiah, lencana: r.lencana });
         setDialogTerbuka(true);
         setBerputar(false);
-      }, 3200);
+      }, 3100);
     } catch (e) {
       setBerputar(false);
       toast.error(e instanceof Error ? e.message : "Gagal memutar roda");
@@ -277,7 +284,7 @@ function RodaKeberuntungan() {
             <RotateCw className="h-5 w-5" />
           </span>
           <div>
-            <h2 className="text-xl font-extrabold">Roda Keberuntungan</h2>
+            <h2 className="text-xl font-extrabold">Roda Inspirasi Kebaikan</h2>
             <p className="text-xs font-semibold text-muted-foreground">
               Biaya 10 Poin per putaran &middot; sisa hari ini {sisa}/3
             </p>
@@ -323,11 +330,13 @@ function RodaKeberuntungan() {
       >
         {berputar
           ? "Roda Berputar..."
-          : sisa <= 0
-            ? "Batas 3 Putaran Hari Ini Habis"
-            : (saldo ?? 0) < 10
-              ? "Poin Belum Cukup (butuh 10)"
-              : "PUTAR RODA (-10 Poin)"}
+          : !siapPakai
+            ? "Menyiapkan roda..."
+            : sisa <= 0
+              ? "Batas 3 Putaran Hari Ini Habis"
+              : (saldo ?? 0) < 10
+                ? "Poin Belum Cukup (butuh 10)"
+                : "PUTAR RODA (-10 Poin)"}
       </button>
 
       <p className="mt-3 min-h-6 text-sm font-bold text-muted-foreground">
