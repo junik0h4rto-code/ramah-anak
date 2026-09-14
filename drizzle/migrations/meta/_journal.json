@@ -29,6 +29,13 @@
       "when": 1789413332631,
       "tag": "0003_deny_client_writes_on_gamification_tables",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789413357117,
+      "tag": "0004_restore_educator_update_penukaran",
+      "breakpoints": true
     }
   ]
 }
