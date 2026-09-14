@@ -10,7 +10,7 @@ import {
   Sparkles,
   Trophy,
 } from "lucide-react";
-import heroAsset from "@/assets/hero-sekolah.jpg.asset.json";
+import heroAsset from "@/assets/BG_smpn26.jpg.asset.json";
 const heroImage = heroAsset.url;
 import { AGENDA, PENGUMUMAN, formatTanggal } from "@/lib/school-data";
 import { useGamifikasi } from "@/lib/gamifikasi-store";
@@ -33,6 +33,8 @@ export const Route = createFileRoute("/")({
         content:
           "Belajar seru, kumpulkan Poin Siswa, dan tukarkan hadiah di Toko Reward sekolah.",
       },
+       { property: "og:type", content: "website" },
+       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: async ({ context }) => {
@@ -136,7 +138,7 @@ function Beranda() {
           <div className="overflow-hidden rounded-3xl bg-card shadow-pop">
             <img
               src={heroImage}
-              alt="Ilustrasi siswa SMPN 26 BANDUNG di depan gedung sekolah"
+              alt="Gedung dan halaman SMPN 26 BANDUNG"
               width={1600}
               height={1008}
               className="h-full w-full object-cover"
