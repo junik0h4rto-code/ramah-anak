@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Brain, Coins, Gift, RotateCw, Trophy } from "lucide-react";
 import { toast } from "sonner";
@@ -17,7 +17,7 @@ import { useGamifikasi } from "@/lib/gamifikasi-store";
 export const Route = createFileRoute("/_authenticated/belajar/game")({
   head: () => ({
     meta: [
-      { title: "Pusat Game - Kuis Trivia dan Roda Keberuntungan" },
+      { title: "Pusat Game - Kuis Trivia dan Roda Inspirasi Kebaikan" },
       {
         name: "description",
         content:
