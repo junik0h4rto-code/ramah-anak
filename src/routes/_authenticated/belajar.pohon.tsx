@@ -267,30 +267,48 @@ function HalamanPohon() {
             className="mt-3 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm font-semibold"
           />
 
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-3 flex flex-wrap items-center gap-3">
             <label className="cursor-pointer rounded-xl border border-dashed border-border bg-background px-3 py-2 text-xs font-extrabold">
-              {foto ? "Ganti Foto" : "Pilih Foto Bukti"}
+              {foto ? "Ganti Foto dari Galeri" : "Pilih Foto dari Galeri"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  void pilihFoto(e.target.files?.[0]);
+                  e.target.value = "";
+                }}
+              />
+            </label>
+            <label className="cursor-pointer rounded-xl border border-dashed border-border bg-background px-3 py-2 text-xs font-extrabold">
+              Ambil Foto Kamera
               <input
                 type="file"
                 accept="image/*"
                 capture="environment"
                 className="hidden"
-                onChange={(e) => void pilihFoto(e.target.files?.[0])}
+                onChange={(e) => {
+                  void pilihFoto(e.target.files?.[0]);
+                  e.target.value = "";
+                }}
               />
             </label>
+            {fotoProses && (
+              <span className="text-xs font-bold text-muted-foreground">Memproses foto...</span>
+            )}
             {foto && (
               <>
                 <img
                   src={foto}
                   alt="Pratinjau foto bukti perilaku terpuji"
-                  className="h-14 w-14 rounded-xl object-cover"
+                  className="h-20 w-20 rounded-xl border border-border object-cover"
                 />
                 <button
                   type="button"
                   onClick={() => setFoto(null)}
                   className="text-xs font-bold text-destructive"
                 >
-                  Hapus
+                  Hapus Foto
                 </button>
               </>
             )}
