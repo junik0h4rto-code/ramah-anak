@@ -226,10 +226,12 @@ function RodaKeberuntungan() {
   const spin = useServerFn(putarRoda);
   const [sudut, setSudut] = useState(0);
   const [berputar, setBerputar] = useState(false);
+  const [siapPakai, setSiapPakai] = useState(false);
   const [saldo, setSaldo] = useState<number | null>(null);
   const [sisa, setSisa] = useState<number>(3);
   const [hasil, setHasil] = useState<{ label: string; koin: number; lencana: boolean } | null>(null);
   const [dialogTerbuka, setDialogTerbuka] = useState(false);
+  const jedaRef = useRef<number | null>(null);
 
   useEffect(() => {
     let aktif = true;
@@ -239,13 +241,17 @@ function RodaKeberuntungan() {
         setSaldo(s.saldoKoin);
         setSisa(s.sisaPutaran);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (aktif) setSiapPakai(true);
+      });
     return () => {
       aktif = false;
+      if (jedaRef.current) window.clearTimeout(jedaRef.current);
     };
   }, [ambilStatus]);
 
-  const bisaPutar = !berputar && sisa > 0 && (saldo ?? 0) >= 10;
+  const bisaPutar = siapPakai && !berputar && sisa > 0 && (saldo ?? 0) >= 10;
 
   async function putar() {
     if (!bisaPutar) return;
@@ -253,16 +259,17 @@ function RodaKeberuntungan() {
     setHasil(null);
     try {
       const r = await spin({});
-      const target =
-        360 * 5 + (360 - r.hadiahIndex * SEGMEN - SEGMEN / 2) - (sudut % 360);
-      setSudut((s) => s + target);
-      window.setTimeout(() => {
+      // Putaran penuh beberapa kali, lalu berhenti tepat di tengah sektor hadiah.
+      const posisiSektor = 360 - (r.hadiahIndex * SEGMEN + SEGMEN / 2);
+      const putaranSekarang = sudut % 360;
+      setSudut(sudut + 360 * 5 + ((posisiSektor - putaranSekarang + 360) % 360));
+      jedaRef.current = window.setTimeout(() => {
         setSaldo(r.saldoKoin);
         setSisa(r.sisaPutaran);
         setHasil({ label: r.hadiahLabel, koin: r.koinHadiah, lencana: r.lencana });
         setDialogTerbuka(true);
         setBerputar(false);
-      }, 3200);
+      }, 3100);
     } catch (e) {
       setBerputar(false);
       toast.error(e instanceof Error ? e.message : "Gagal memutar roda");
