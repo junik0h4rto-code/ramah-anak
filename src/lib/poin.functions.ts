@@ -56,3 +56,68 @@ export const simpanPengaturanPoin = createServerFn({ method: "POST" })
     }
     return { ok: true };
   });
+
+function buatKunci(label: string) {
+  return label
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 60);
+}
+
+export const tambahPengaturanPoin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z
+      .object({
+        label: z.string().trim().min(2).max(80),
+        deskripsi: z.string().trim().max(200).default(""),
+        nilai: z.number().int().min(0).max(10000),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    await pastikanAdmin(context.supabase as Client, context.userId);
+    const kunci = buatKunci(data.label);
+    if (!kunci) throw new Error("Nama kategori tidak valid.");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: adaKunci } = await supabaseAdmin
+      .from("pengaturan_poin")
+      .select("kunci")
+      .eq("kunci", kunci)
+      .maybeSingle();
+    if (adaKunci) throw new Error("Kategori poin dengan nama itu sudah ada.");
+
+    const { data: terakhir } = await supabaseAdmin
+      .from("pengaturan_poin")
+      .select("urutan")
+      .order("urutan", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    const { error } = await supabaseAdmin.from("pengaturan_poin").insert({
+      kunci,
+      label: data.label,
+      deskripsi: data.deskripsi || `Poin untuk ${data.label}.`,
+      nilai: data.nilai,
+      urutan: ((terakhir?.urutan as number | undefined) ?? 0) + 1,
+    });
+    if (error) throw new Error(error.message);
+    return { kunci };
+  });
+
+export const hapusPengaturanPoin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ kunci: z.string().min(1) }).parse(input))
+  .handler(async ({ data, context }) => {
+    await pastikanAdmin(context.supabase as Client, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
+      .from("pengaturan_poin")
+      .delete()
+      .eq("kunci", data.kunci);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
