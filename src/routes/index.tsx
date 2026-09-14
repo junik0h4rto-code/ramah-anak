@@ -119,14 +119,14 @@ function Beranda() {
               >
                 Lihat Pengumuman
               </Link>
-              <a
-                href="https://asesmen.smpn26bdg.online"
+              <Link
+                to="/asesmen"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-primary-foreground px-6 py-3 text-sm font-extrabold text-primary shadow-pop transition-transform hover:-translate-y-0.5"
               >
                 Mulai Asesmen <ArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
             </div>
             <dl className="mt-9 grid max-w-lg grid-cols-3 gap-4">
               {[
