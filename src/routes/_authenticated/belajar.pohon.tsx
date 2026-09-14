@@ -99,10 +99,18 @@ function HalamanPohon() {
 
   async function pilihFoto(file: File | undefined) {
     if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Pilih berkas gambar ya (JPG atau PNG).");
+      return;
+    }
+    setFotoProses(true);
     try {
       setFoto(await kompresGambar(file, 900, 300_000));
+      toast.success("Foto bukti siap dikirim.");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Foto gagal diproses");
+    } finally {
+      setFotoProses(false);
     }
   }
 
