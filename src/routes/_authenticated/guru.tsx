@@ -56,7 +56,12 @@ import {
 
 } from "@/lib/admin.functions";
 import { useAuth } from "@/lib/auth-store";
-import { listPengaturanPoin, simpanPengaturanPoin } from "@/lib/poin.functions";
+import {
+  listPengaturanPoin,
+  simpanPengaturanPoin,
+  tambahPengaturanPoin,
+  hapusPengaturanPoin,
+} from "@/lib/poin.functions";
 import {
   katalogPerilaku,
   catatPerilaku,
