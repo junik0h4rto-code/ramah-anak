@@ -282,6 +282,7 @@ export type Database = {
           judul: string
           kategori: string | null
           kelas: string | null
+          kelas_target: string | null
           koin_reward: number
           konten: string | null
           kuis_jawaban: number
@@ -299,6 +300,7 @@ export type Database = {
           judul: string
           kategori?: string | null
           kelas?: string | null
+          kelas_target?: string | null
           koin_reward?: number
           konten?: string | null
           kuis_jawaban?: number
@@ -316,6 +318,7 @@ export type Database = {
           judul?: string
           kategori?: string | null
           kelas?: string | null
+          kelas_target?: string | null
           koin_reward?: number
           konten?: string | null
           kuis_jawaban?: number
