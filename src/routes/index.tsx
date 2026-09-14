@@ -93,7 +93,7 @@ function Beranda() {
   return (
     <div>
       <section className="bg-gradient-navy text-primary-foreground">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 lg:grid-cols-2 lg:py-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 lg:grid-cols-[1fr_0.45fr] lg:py-20">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-accent px-3.5 py-1.5 text-xs font-extrabold uppercase tracking-wide text-accent-foreground">
               <Sparkles className="h-4 w-4" /> Sekolah Digital Ramah Anak
@@ -135,13 +135,13 @@ function Beranda() {
               ))}
             </dl>
           </div>
-          <div className="overflow-hidden rounded-3xl bg-card shadow-pop">
+          <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl bg-card shadow-pop lg:max-w-sm">
             <img
               src={heroImage}
               alt="Gedung dan halaman SMPN 26 BANDUNG"
-              width={1600}
-              height={1008}
-              className="h-full w-full object-cover"
+              width={800}
+              height={504}
+              className="h-auto w-full object-cover"
             />
           </div>
         </div>
