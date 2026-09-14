@@ -49,7 +49,9 @@ export const listBeritaPublic = createServerFn({ method: "GET" }).handler(async 
   const supabasePublic = createPublicClient();
   const { data, error } = await supabasePublic
     .from("berita")
-    .select("*")
+    .select(
+      "id, judul, isi, kategori, gambar_url, tanggal_kegiatan, published, kelas_target, created_at, updated_at",
+    )
     .eq("published", true)
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
