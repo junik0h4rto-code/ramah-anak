@@ -1,0 +1,1 @@
+ALTER TABLE public.modul ADD COLUMN IF NOT EXISTS kelas_target text;

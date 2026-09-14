@@ -439,6 +439,7 @@ function TabMateri() {
 
   const [editingModul, setEditingModul] = useState<string | null>(null);
   const [simpan, setSimpan] = useState(false);
+  const [kelasTarget, setKelasTarget] = useState<string[]>([]);
   const [modulForm, setModulForm] = useState({
     judul: "",
     kategori: "",
@@ -454,6 +455,7 @@ function TabMateri() {
 
   function resetModul() {
     setEditingModul(null);
+    setKelasTarget([]);
     setModulForm({
       judul: "",
       kategori: "",
@@ -482,6 +484,7 @@ function TabMateri() {
       kuis_pertanyaan: modulForm.kuis_pertanyaan,
       kuis_opsi: modulForm.opsi.filter((o) => o.trim().length > 0),
       kuis_jawaban: modulForm.kuis_jawaban,
+      kelas_target: kelasTarget.length > 0 ? kelasTarget.join(", ") : null,
     };
     try {
       if (editingModul) {
@@ -586,6 +589,19 @@ function TabMateri() {
                 ))}
               </select>
             </div>
+          </div>
+
+          <div className="rounded-2xl border border-dashed border-border p-4">
+            <label className={labelClass}>Kelas Tujuan (rombel spesifik)</label>
+            <p className="mb-3 mt-1 text-xs font-semibold text-muted-foreground">
+              Pilih rombel yang boleh melihat materi ini, misalnya VII A dan VII B. Jika tidak
+              dipilih, materi tampil untuk semua kelas.
+            </p>
+            <PilihKelasTarget
+              nilai={kelasTarget}
+              onChange={setKelasTarget}
+              labelSemua="Tujuan: semua kelas"
+            />
           </div>
 
           <div>
@@ -699,6 +715,7 @@ function TabMateri() {
                 <p className="font-extrabold">{m.judul}</p>
                 <p className="text-xs font-semibold text-muted-foreground">
                   {m.mapel} • Kelas {m.kelas} • {m.koin_reward} koin
+                  {m.kelas_target ? ` • Tujuan: ${m.kelas_target}` : " • Semua kelas"}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -718,6 +735,12 @@ function TabMateri() {
                       opsi: [0, 1, 2, 3].map((i) => m.kuis_opsi?.[i] ?? ""),
                       kuis_jawaban: m.kuis_jawaban ?? 0,
                     });
+                    setKelasTarget(
+                      (m.kelas_target ?? "")
+                        .split(",")
+                        .map((x) => x.trim())
+                        .filter(Boolean),
+                    );
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
                   className="grid h-9 w-9 place-items-center rounded-xl border border-border"
@@ -767,11 +790,13 @@ function TabPengumuman({ mode }: { mode: "kelas" | "sekolah" }) {
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState(kosong);
   const [simpan, setSimpan] = useState(false);
+  const [kelasTarget, setKelasTarget] = useState<string[]>([]);
   const fotoRef = useRef<HTMLInputElement>(null);
 
   function reset() {
     setEditing(null);
     setForm(kosong);
+    setKelasTarget([]);
   }
 
   async function pilihFoto(file: File) {
@@ -790,7 +815,11 @@ function TabPengumuman({ mode }: { mode: "kelas" | "sekolah" }) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setSimpan(true);
-    const payload = { ...form, tanggal_kegiatan: form.tanggal_kegiatan || undefined };
+    const payload = {
+      ...form,
+      tanggal_kegiatan: form.tanggal_kegiatan || undefined,
+      kelas_target: modeKelas && kelasTarget.length > 0 ? kelasTarget.join(", ") : null,
+    };
     try {
       if (editing) {
         await ubahBerita({ data: { ...payload, id: editing } });
@@ -823,6 +852,7 @@ function TabPengumuman({ mode }: { mode: "kelas" | "sekolah" }) {
           kategori: b.kategori ?? undefined,
           tanggal_kegiatan: b.tanggal_kegiatan ?? undefined,
           gambar_url: b.gambar_url ?? null,
+          kelas_target: b.kelas_target ?? null,
           published: !b.published,
         },
       });
@@ -898,6 +928,20 @@ function TabPengumuman({ mode }: { mode: "kelas" | "sekolah" }) {
               />
             </div>
           </div>
+          {modeKelas && (
+            <div className="rounded-2xl border border-dashed border-border p-4">
+              <label className={labelClass}>Kelas Tujuan</label>
+              <p className="mb-3 mt-1 text-xs font-semibold text-muted-foreground">
+                Pilih rombel penerima, misalnya VII A dan VII B. Jika tidak dipilih, pengumuman
+                dikirim ke semua siswa.
+              </p>
+              <PilihKelasTarget
+                nilai={kelasTarget}
+                onChange={setKelasTarget}
+                labelSemua="Tujuan: semua siswa"
+              />
+            </div>
+          )}
           <div>
             <label className={labelClass}>Isi Pengumuman</label>
             <textarea
