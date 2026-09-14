@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AsesmenRouteImport } from './routes/asesmen'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BeritaRouteImport } from './routes/berita'
 import { Route as DaftarRouteImport } from './routes/daftar'
@@ -34,6 +35,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AsesmenRoute = AsesmenRouteImport.update({
+  id: '/asesmen',
+  path: '/asesmen',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -119,6 +125,7 @@ const ApiPublicSetupAdminRoute = ApiPublicSetupAdminRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/asesmen': typeof AsesmenRoute
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/asesmen': typeof AsesmenRoute
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/asesmen': typeof AsesmenRoute
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/asesmen'
     | '/auth'
     | '/berita'
     | '/daftar'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/asesmen'
     | '/auth'
     | '/berita'
     | '/daftar'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/asesmen'
     | '/auth'
     | '/berita'
     | '/daftar'
@@ -232,6 +244,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AsesmenRoute: typeof AsesmenRoute
   AuthRoute: typeof AuthRoute
   BeritaRoute: typeof BeritaRoute
   DaftarRoute: typeof DaftarRoute
@@ -254,6 +267,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asesmen': {
+      id: '/asesmen'
+      path: '/asesmen'
+      fullPath: '/asesmen'
+      preLoaderRoute: typeof AsesmenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -403,6 +423,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AsesmenRoute: AsesmenRoute,
   AuthRoute: AuthRoute,
   BeritaRoute: BeritaRoute,
   DaftarRoute: DaftarRoute,
