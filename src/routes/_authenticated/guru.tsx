@@ -1942,8 +1942,44 @@ function TabPoin() {
     queryFn: () => listPengaturanPoin(),
   });
   const simpan = useServerFn(simpanPengaturanPoin);
+  const tambah = useServerFn(tambahPengaturanPoin);
+  const hapus = useServerFn(hapusPengaturanPoin);
   const [nilai, setNilai] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(false);
+  const [baru, setBaru] = useState({ label: "", deskripsi: "", nilai: 10 });
+  const [menambah, setMenambah] = useState(false);
+
+  async function tambahKategori(e: React.FormEvent) {
+    e.preventDefault();
+    setMenambah(true);
+    try {
+      await tambah({
+        data: {
+          label: baru.label.trim(),
+          deskripsi: baru.deskripsi.trim(),
+          nilai: Number(baru.nilai) || 0,
+        },
+      });
+      toast.success("Kategori poin ditambahkan.");
+      setBaru({ label: "", deskripsi: "", nilai: 10 });
+      await qc.invalidateQueries({ queryKey: ["panel-pengaturan-poin"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Gagal menambah kategori poin");
+    } finally {
+      setMenambah(false);
+    }
+  }
+
+  async function hapusKategori(kunci: string, label: string) {
+    if (!window.confirm(`Hapus kategori poin "${label}"?`)) return;
+    try {
+      await hapus({ data: { kunci } });
+      toast.success("Kategori poin dihapus.");
+      await qc.invalidateQueries({ queryKey: ["panel-pengaturan-poin"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Gagal menghapus kategori poin");
+    }
+  }
 
   useEffect(() => {
     setNilai(Object.fromEntries(pengaturan.map((p) => [p.kunci, p.nilai])));
