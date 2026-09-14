@@ -74,6 +74,7 @@ function HalamanPohon() {
   const [perilakuPilih, setPerilakuPilih] = useState("");
   const [catatan, setCatatan] = useState("");
   const [foto, setFoto] = useState<string | null>(null);
+  const [fotoProses, setFotoProses] = useState(false);
   const [kirimProses, setKirimProses] = useState(false);
 
   const [data, setData] = useState<StatusPohon | null>(null);
