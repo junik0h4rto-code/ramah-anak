@@ -1,10 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { MailCheck, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { pastikanProfil } from "@/lib/profil.functions";
+import { listKelasPublik } from "@/lib/kelas-publik.functions";
 
 export const Route = createFileRoute("/daftar")({
   head: () => ({
@@ -27,12 +29,18 @@ export const Route = createFileRoute("/daftar")({
   component: HalamanDaftar,
 });
 
-const skema = z.object({
-  nama: z.string().trim().min(3, "Nama lengkap minimal 3 karakter").max(100, "Nama terlalu panjang"),
-  email: z.string().trim().email("Email tidak valid").max(255, "Email terlalu panjang"),
-  password: z.string().min(6, "Password minimal 6 karakter").max(72, "Password terlalu panjang"),
-  peran: z.enum(["siswa", "guru"]),
-});
+const skema = z
+  .object({
+    nama: z.string().trim().min(3, "Nama lengkap minimal 3 karakter").max(100, "Nama terlalu panjang"),
+    email: z.string().trim().email("Email tidak valid").max(255, "Email terlalu panjang"),
+    password: z.string().min(6, "Password minimal 6 karakter").max(72, "Password terlalu panjang"),
+    peran: z.enum(["siswa", "guru"]),
+    kelas: z.string().trim().max(30).optional(),
+  })
+  .refine((v) => v.peran !== "siswa" || !!v.kelas, {
+    message: "Kelas wajib dipilih untuk akun siswa",
+    path: ["kelas"],
+  });
 
 function HalamanDaftar() {
   const navigate = useNavigate();
@@ -40,6 +48,11 @@ function HalamanDaftar() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [peran, setPeran] = useState<"siswa" | "guru">("siswa");
+  const [kelas, setKelas] = useState("");
+  const { data: daftarKelas = [] } = useQuery({
+    queryKey: ["kelas-publik"],
+    queryFn: () => listKelasPublik(),
+  });
   const [galat, setGalat] = useState("");
   const [memuat, setMemuat] = useState(false);
   const [perluKonfirmasi, setPerluKonfirmasi] = useState(false);
@@ -48,7 +61,7 @@ function HalamanDaftar() {
     e.preventDefault();
     setGalat("");
 
-    const hasil = skema.safeParse({ nama, email, password, peran });
+    const hasil = skema.safeParse({ nama, email, password, peran, kelas: kelas || undefined });
     if (!hasil.success) {
       setGalat(hasil.error.issues[0]?.message ?? "Data belum lengkap.");
       return;
@@ -84,7 +97,13 @@ function HalamanDaftar() {
     }
 
     try {
-      await pastikanProfil({ data: { nama: hasil.data.nama, peran: hasil.data.peran } });
+      await pastikanProfil({
+        data: {
+          nama: hasil.data.nama,
+          peran: hasil.data.peran,
+          ...(hasil.data.kelas ? { kelas: hasil.data.kelas } : {}),
+        },
+      });
     } catch {
       // Profil akan dilengkapi saat masuk berikutnya jika gagal
     }
@@ -187,6 +206,31 @@ function HalamanDaftar() {
               <option value="guru">Guru</option>
             </select>
           </div>
+
+          {peran === "siswa" && (
+            <div>
+              <label className={labelClass} htmlFor="kelas">
+                Kelas
+              </label>
+              <select
+                id="kelas"
+                value={kelas}
+                onChange={(e) => setKelas(e.target.value)}
+                className={inputClass}
+              >
+                <option value="">Pilih kelas kamu</option>
+                {daftarKelas.map((k) => (
+                  <option key={k} value={k}>
+                    {k}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-xs font-semibold text-muted-foreground">
+                Pilih kelas sesuai rombel tahun ini agar materi dan pengumuman kelas tampil tepat.
+              </p>
+            </div>
+          )}
+
 
           {galat && (
             <p className="rounded-2xl bg-destructive/10 px-4 py-2.5 text-sm font-bold text-destructive">

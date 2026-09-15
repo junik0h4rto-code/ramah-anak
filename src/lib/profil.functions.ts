@@ -13,6 +13,7 @@ export const pastikanProfil = createServerFn({ method: "POST" })
       .object({
         nama: z.string().trim().min(1).max(100),
         peran: z.enum(["siswa", "guru"]),
+        kelas: z.string().trim().max(30).optional(),
       })
       .parse(input),
   )
@@ -24,6 +25,14 @@ export const pastikanProfil = createServerFn({ method: "POST" })
       _peran: data.peran,
     });
     if (error) throw new Error("Gagal menyiapkan profil");
+
+    if (data.peran === "siswa" && data.kelas) {
+      const { error: errKelas } = await supabaseAdmin
+        .from("profiles")
+        .update({ kelas: data.kelas })
+        .eq("id", context.userId);
+      if (errKelas) throw new Error("Gagal menyimpan kelas");
+    }
     return { ok: true };
   });
 
