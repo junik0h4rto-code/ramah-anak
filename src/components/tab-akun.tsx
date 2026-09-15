@@ -184,8 +184,12 @@ export function TabAkun() {
             </button>
           </li>
         ))}
-        {(akun ?? []).length === 0 && (
-          <li className="text-sm font-semibold text-muted-foreground">Belum ada akun.</li>
+        {terfilter.length === 0 && (
+          <li className="text-sm font-semibold text-muted-foreground">
+            {daftar.length === 0
+              ? "Belum ada akun."
+              : `Belum ada akun dengan peran ${PERAN_LABEL[filterPeran] ?? filterPeran}.`}
+          </li>
         )}
       </ul>
     </section>
