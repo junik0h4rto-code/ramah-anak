@@ -150,7 +150,7 @@ export function TabAkun() {
       )}
 
       <ul className="mt-4 grid gap-3">
-        {(akun ?? []).map((a) => (
+        {terfilter.map((a) => (
           <li key={a.id} className="flex flex-wrap items-center gap-3 rounded-2xl bg-secondary/60 p-4">
             <div className="min-w-0 flex-1">
               <p className="truncate font-extrabold">
