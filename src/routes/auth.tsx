@@ -127,36 +127,33 @@ function HalamanAuth() {
         </form>
       </section>
 
-      <section className="grid gap-4">
-        <h2 className="font-display text-xl font-extrabold">Akun Demo</h2>
-        {DEMO.map((d) => (
-          <article key={d.email} className="rounded-3xl border border-border bg-card p-5 shadow-card">
-            <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent-soft text-accent-foreground">
-                <d.icon className="h-5 w-5" />
-              </span>
-              <p className="font-display text-lg font-extrabold">Akun {d.peran}</p>
-            </div>
-            <p className="mt-3 text-sm font-semibold">
-              Email: <span className="font-bold text-primary">{d.email}</span>
-            </p>
-            <p className="text-sm font-semibold">
-              Password: <span className="font-bold text-primary">{d.password}</span>
-            </p>
-            <p className="mt-2 text-xs font-semibold text-muted-foreground">{d.catatan}</p>
-            <button
-              type="button"
-              onClick={() => {
-                setEmail(d.email);
-                setPassword(d.password);
-                setGalat("");
-              }}
-              className="mt-4 rounded-full border border-border px-4 py-2 text-xs font-extrabold hover:border-accent"
-            >
-              Isi Otomatis
-            </button>
-          </article>
-        ))}
+      <section className="grid content-start gap-4">
+        <h2 className="font-display text-xl font-extrabold">Satu Akun, Dua Peran</h2>
+        <article className="rounded-3xl border border-border bg-card p-5 shadow-card">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent-soft text-accent-foreground">
+              <Sparkles className="h-5 w-5" />
+            </span>
+            <p className="font-display text-lg font-extrabold">Siswa</p>
+          </div>
+          <p className="mt-2 text-sm font-semibold text-muted-foreground">
+            Masuk dengan email & password yang terdaftar untuk membuka Dasbor Belajar, Pusat Game, dan Toko Reward.
+          </p>
+        </article>
+        <article className="rounded-3xl border border-border bg-card p-5 shadow-card">
+          <div className="flex items-center gap-3">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent-soft text-accent-foreground">
+              <ShieldCheck className="h-5 w-5" />
+            </span>
+            <p className="font-display text-lg font-extrabold">Guru / Admin</p>
+          </div>
+          <p className="mt-2 text-sm font-semibold text-muted-foreground">
+            Masuk dengan akun pendidik untuk membuka Panel Guru: kelola nilai, modul belajar, dan Poin Bonus.
+          </p>
+        </article>
+        <p className="rounded-2xl border border-dashed border-border p-4 text-xs font-semibold text-muted-foreground">
+          Lupa password atau akun belum terdaftar? Hubungi admin sekolah untuk dibuatkan atau direset.
+        </p>
       </section>
     </div>
   );
