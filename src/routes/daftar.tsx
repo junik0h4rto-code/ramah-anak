@@ -29,12 +29,18 @@ export const Route = createFileRoute("/daftar")({
   component: HalamanDaftar,
 });
 
-const skema = z.object({
-  nama: z.string().trim().min(3, "Nama lengkap minimal 3 karakter").max(100, "Nama terlalu panjang"),
-  email: z.string().trim().email("Email tidak valid").max(255, "Email terlalu panjang"),
-  password: z.string().min(6, "Password minimal 6 karakter").max(72, "Password terlalu panjang"),
-  peran: z.enum(["siswa", "guru"]),
-});
+const skema = z
+  .object({
+    nama: z.string().trim().min(3, "Nama lengkap minimal 3 karakter").max(100, "Nama terlalu panjang"),
+    email: z.string().trim().email("Email tidak valid").max(255, "Email terlalu panjang"),
+    password: z.string().min(6, "Password minimal 6 karakter").max(72, "Password terlalu panjang"),
+    peran: z.enum(["siswa", "guru"]),
+    kelas: z.string().trim().max(30).optional(),
+  })
+  .refine((v) => v.peran !== "siswa" || !!v.kelas, {
+    message: "Kelas wajib dipilih untuk akun siswa",
+    path: ["kelas"],
+  });
 
 function HalamanDaftar() {
   const navigate = useNavigate();
@@ -42,6 +48,11 @@ function HalamanDaftar() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [peran, setPeran] = useState<"siswa" | "guru">("siswa");
+  const [kelas, setKelas] = useState("");
+  const { data: daftarKelas = [] } = useQuery({
+    queryKey: ["kelas-publik"],
+    queryFn: () => listKelasPublik(),
+  });
   const [galat, setGalat] = useState("");
   const [memuat, setMemuat] = useState(false);
   const [perluKonfirmasi, setPerluKonfirmasi] = useState(false);
