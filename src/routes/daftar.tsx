@@ -207,6 +207,31 @@ function HalamanDaftar() {
             </select>
           </div>
 
+          {peran === "siswa" && (
+            <div>
+              <label className={labelClass} htmlFor="kelas">
+                Kelas
+              </label>
+              <select
+                id="kelas"
+                value={kelas}
+                onChange={(e) => setKelas(e.target.value)}
+                className={inputClass}
+              >
+                <option value="">Pilih kelas kamu</option>
+                {daftarKelas.map((k) => (
+                  <option key={k} value={k}>
+                    {k}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-xs font-semibold text-muted-foreground">
+                Pilih kelas sesuai rombel tahun ini agar materi dan pengumuman kelas tampil tepat.
+              </p>
+            </div>
+          )}
+
+
           {galat && (
             <p className="rounded-2xl bg-destructive/10 px-4 py-2.5 text-sm font-bold text-destructive">
               {galat}
