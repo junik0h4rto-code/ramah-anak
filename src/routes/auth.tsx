@@ -115,6 +115,14 @@ function HalamanAuth() {
             <LogIn className="h-4 w-4" /> {memuat ? "Memuat..." : "Masuk"}
           </button>
 
+          <Link
+            to="/lupa-sandi"
+            className="text-center text-xs font-extrabold text-primary underline"
+          >
+            Lupa kata sandi?
+          </Link>
+
+
           <div className="rounded-2xl border border-dashed border-border p-4 text-center">
             <p className="text-xs font-semibold text-muted-foreground">Belum punya akun sekolah?</p>
             <Link
@@ -152,7 +160,8 @@ function HalamanAuth() {
           </p>
         </article>
         <p className="rounded-2xl border border-dashed border-border p-4 text-xs font-semibold text-muted-foreground">
-          Lupa password atau akun belum terdaftar? Hubungi admin sekolah untuk dibuatkan atau direset.
+          Lupa kata sandi? Gunakan tautan "Lupa kata sandi?" untuk menerima tautan reset di email. Jika
+          email belum terdaftar, hubungi admin sekolah.
         </p>
       </section>
     </div>

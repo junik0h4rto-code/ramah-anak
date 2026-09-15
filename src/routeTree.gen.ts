@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AsesmenRouteImport } from './routes/asesmen'
+import { Route as AturSandiRouteImport } from './routes/atur-sandi'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BeritaRouteImport } from './routes/berita'
 import { Route as DaftarRouteImport } from './routes/daftar'
 import { Route as KalenderRouteImport } from './routes/kalender'
+import { Route as LupaSandiRouteImport } from './routes/lupa-sandi'
 import { Route as PengumumanRouteImport } from './routes/pengumuman'
 import { Route as AuthenticatedBelajarRouteImport } from './routes/_authenticated/belajar'
 import { Route as AuthenticatedGuruRouteImport } from './routes/_authenticated/guru'
@@ -42,6 +44,11 @@ const AsesmenRoute = AsesmenRouteImport.update({
   path: '/asesmen',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AturSandiRoute = AturSandiRouteImport.update({
+  id: '/atur-sandi',
+  path: '/atur-sandi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -60,6 +67,11 @@ const DaftarRoute = DaftarRouteImport.update({
 const KalenderRoute = KalenderRouteImport.update({
   id: '/kalender',
   path: '/kalender',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LupaSandiRoute = LupaSandiRouteImport.update({
+  id: '/lupa-sandi',
+  path: '/lupa-sandi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PengumumanRoute = PengumumanRouteImport.update({
@@ -126,10 +138,12 @@ const ApiPublicSetupAdminRoute = ApiPublicSetupAdminRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/asesmen': typeof AsesmenRoute
+  '/atur-sandi': typeof AturSandiRoute
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
   '/kalender': typeof KalenderRoute
+  '/lupa-sandi': typeof LupaSandiRoute
   '/pengumuman': typeof PengumumanRoute
   '/belajar': typeof AuthenticatedBelajarRouteWithChildren
   '/guru': typeof AuthenticatedGuruRoute
@@ -145,10 +159,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/asesmen': typeof AsesmenRoute
+  '/atur-sandi': typeof AturSandiRoute
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
   '/kalender': typeof KalenderRoute
+  '/lupa-sandi': typeof LupaSandiRoute
   '/pengumuman': typeof PengumumanRoute
   '/guru': typeof AuthenticatedGuruRoute
   '/profil': typeof AuthenticatedProfilRoute
@@ -165,10 +181,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/asesmen': typeof AsesmenRoute
+  '/atur-sandi': typeof AturSandiRoute
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
   '/kalender': typeof KalenderRoute
+  '/lupa-sandi': typeof LupaSandiRoute
   '/pengumuman': typeof PengumumanRoute
   '/_authenticated/belajar': typeof AuthenticatedBelajarRouteWithChildren
   '/_authenticated/guru': typeof AuthenticatedGuruRoute
@@ -186,10 +204,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/asesmen'
+    | '/atur-sandi'
     | '/auth'
     | '/berita'
     | '/daftar'
     | '/kalender'
+    | '/lupa-sandi'
     | '/pengumuman'
     | '/belajar'
     | '/guru'
@@ -205,10 +225,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/asesmen'
+    | '/atur-sandi'
     | '/auth'
     | '/berita'
     | '/daftar'
     | '/kalender'
+    | '/lupa-sandi'
     | '/pengumuman'
     | '/guru'
     | '/profil'
@@ -224,10 +246,12 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/asesmen'
+    | '/atur-sandi'
     | '/auth'
     | '/berita'
     | '/daftar'
     | '/kalender'
+    | '/lupa-sandi'
     | '/pengumuman'
     | '/_authenticated/belajar'
     | '/_authenticated/guru'
@@ -245,10 +269,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AsesmenRoute: typeof AsesmenRoute
+  AturSandiRoute: typeof AturSandiRoute
   AuthRoute: typeof AuthRoute
   BeritaRoute: typeof BeritaRoute
   DaftarRoute: typeof DaftarRoute
   KalenderRoute: typeof KalenderRoute
+  LupaSandiRoute: typeof LupaSandiRoute
   PengumumanRoute: typeof PengumumanRoute
   ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
 }
@@ -274,6 +300,13 @@ declare module '@tanstack/react-router' {
       path: '/asesmen'
       fullPath: '/asesmen'
       preLoaderRoute: typeof AsesmenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/atur-sandi': {
+      id: '/atur-sandi'
+      path: '/atur-sandi'
+      fullPath: '/atur-sandi'
+      preLoaderRoute: typeof AturSandiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -302,6 +335,13 @@ declare module '@tanstack/react-router' {
       path: '/kalender'
       fullPath: '/kalender'
       preLoaderRoute: typeof KalenderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lupa-sandi': {
+      id: '/lupa-sandi'
+      path: '/lupa-sandi'
+      fullPath: '/lupa-sandi'
+      preLoaderRoute: typeof LupaSandiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pengumuman': {
@@ -424,10 +464,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AsesmenRoute: AsesmenRoute,
+  AturSandiRoute: AturSandiRoute,
   AuthRoute: AuthRoute,
   BeritaRoute: BeritaRoute,
   DaftarRoute: DaftarRoute,
   KalenderRoute: KalenderRoute,
+  LupaSandiRoute: LupaSandiRoute,
   PengumumanRoute: PengumumanRoute,
   ApiPublicSetupAdminRoute: ApiPublicSetupAdminRoute,
 }
