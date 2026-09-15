@@ -66,12 +66,40 @@ export function TabAkun() {
     return <p className="p-6 text-sm font-semibold text-muted-foreground">Memuat akun…</p>;
   }
 
+  const daftar = akun ?? [];
+  const hitung = (p: "siswa" | "guru" | "admin") => daftar.filter((a) => a.peran === p).length;
+  const terfilter =
+    filterPeran === "semua" ? daftar : daftar.filter((a) => a.peran === filterPeran);
+
   return (
     <section className="card-fun p-6">
       <h2 className="text-xl font-extrabold">🪪 Akun Terdaftar</h2>
       <p className="mt-1 text-sm font-semibold text-muted-foreground">
         Kelola akun siswa, guru, dan admin.
       </p>
+
+      <div className="mt-4 flex flex-wrap gap-2">
+        {(
+          [
+            ["semua", `Semua (${daftar.length})`],
+            ["siswa", `🎒 Siswa (${hitung("siswa")})`],
+            ["guru", `🧑‍🏫 Guru (${hitung("guru")})`],
+            ["admin", `🛡️ Admin (${hitung("admin")})`],
+          ] as const
+        ).map(([nilai, label]) => (
+          <button
+            key={nilai}
+            onClick={() => setFilterPeran(nilai)}
+            className={`pop rounded-full px-4 py-2 text-xs font-extrabold ${
+              filterPeran === nilai
+                ? "bg-primary text-primary-foreground"
+                : "bg-secondary text-secondary-foreground"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
 
       {edit && (
         <div className="mt-4 grid gap-3 rounded-2xl border-2 border-dashed border-input p-4 sm:grid-cols-2">
