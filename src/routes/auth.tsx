@@ -23,22 +23,6 @@ export const Route = createFileRoute("/auth")({
   component: HalamanAuth,
 });
 
-const DEMO = [
-  {
-    peran: "Siswa",
-    email: "siswa@sekolah.sch.id",
-    password: "siswa123",
-    icon: Sparkles,
-    catatan: "Akses Ruang Belajar, Pusat Game, dan Toko Reward.",
-  },
-  {
-    peran: "Guru",
-    email: "guru@sekolah.sch.id",
-    password: "guru123",
-    icon: ShieldCheck,
-    catatan: "Kelola nilai siswa, modul belajar, dan Poin Bonus.",
-  },
-];
 
 function HalamanAuth() {
   const { masuk, pengguna, siap } = useAuth();
@@ -86,7 +70,7 @@ function HalamanAuth() {
         </span>
         <h1 className="mt-4 font-display text-3xl font-extrabold">Masuk Portal Sekolah</h1>
         <p className="mt-2 text-sm font-semibold text-muted-foreground">
-          Pilih peranmu dengan akun demo di samping, lalu tekan Masuk.
+          Masukkan email dan password akun sekolahmu. Siswa akan diarahkan ke Dasbor Belajar, guru ke Panel Guru.
         </p>
 
         <form onSubmit={kirim} className="mt-6 grid gap-4">
