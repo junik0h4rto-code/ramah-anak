@@ -61,7 +61,7 @@ function HalamanDaftar() {
     e.preventDefault();
     setGalat("");
 
-    const hasil = skema.safeParse({ nama, email, password, peran });
+    const hasil = skema.safeParse({ nama, email, password, peran, kelas: kelas || undefined });
     if (!hasil.success) {
       setGalat(hasil.error.issues[0]?.message ?? "Data belum lengkap.");
       return;
@@ -97,7 +97,13 @@ function HalamanDaftar() {
     }
 
     try {
-      await pastikanProfil({ data: { nama: hasil.data.nama, peran: hasil.data.peran } });
+      await pastikanProfil({
+        data: {
+          nama: hasil.data.nama,
+          peran: hasil.data.peran,
+          ...(hasil.data.kelas ? { kelas: hasil.data.kelas } : {}),
+        },
+      });
     } catch {
       // Profil akan dilengkapi saat masuk berikutnya jika gagal
     }
