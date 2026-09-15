@@ -25,6 +25,7 @@ export function TabAkun() {
     queryFn: () => fetchAkun(),
   });
 
+  const [filterPeran, setFilterPeran] = useState<"semua" | "siswa" | "guru" | "admin">("semua");
   const [edit, setEdit] = useState<ItemAkun | null>(null);
   const [nama, setNama] = useState("");
   const [kelas, setKelas] = useState("");
