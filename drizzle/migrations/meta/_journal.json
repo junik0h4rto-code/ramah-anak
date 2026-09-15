@@ -57,6 +57,13 @@
       "when": 1789501826769,
       "tag": "0007_tighten_grants_hadiah_poin_kelas",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789505068618,
+      "tag": "0008_restrictive_write_guards_educator_tables",
+      "breakpoints": true
     }
   ]
 }
