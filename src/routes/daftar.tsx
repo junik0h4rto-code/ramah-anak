@@ -1,10 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { MailCheck, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { pastikanProfil } from "@/lib/profil.functions";
+import { listKelasPublik } from "@/lib/kelas-publik.functions";
 
 export const Route = createFileRoute("/daftar")({
   head: () => ({
