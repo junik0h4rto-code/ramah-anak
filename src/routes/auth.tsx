@@ -34,6 +34,7 @@ export const Route = createFileRoute("/auth")({
 function HalamanAuth() {
   const { masuk, pengguna, siap } = useAuth();
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [galat, setGalat] = useState("");
