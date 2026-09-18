@@ -4,7 +4,14 @@ import { GraduationCap, LogIn, ShieldCheck, Sparkles, UserPlus } from "lucide-re
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth-store";
 
+function amanNext(nilai: unknown): string | undefined {
+  if (typeof nilai !== "string") return undefined;
+  if (!nilai.startsWith("/") || nilai.startsWith("//")) return undefined;
+  return nilai;
+}
+
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>) => ({ next: amanNext(s['next']) }),
   head: () => ({
     meta: [
       { title: "Masuk Akun - SMPN 26 BANDUNG" },

@@ -18,11 +18,14 @@ import { Route as BeritaRouteImport } from './routes/berita'
 import { Route as DaftarRouteImport } from './routes/daftar'
 import { Route as KalenderRouteImport } from './routes/kalender'
 import { Route as LupaSandiRouteImport } from './routes/lupa-sandi'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PengumumanRouteImport } from './routes/pengumuman'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedBelajarRouteImport } from './routes/_authenticated/belajar'
 import { Route as AuthenticatedGuruRouteImport } from './routes/_authenticated/guru'
 import { Route as AuthenticatedProfilRouteImport } from './routes/_authenticated/profil'
 import { Route as AuthenticatedTokoRouteImport } from './routes/_authenticated/toko'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedBelajarIndexRouteImport } from './routes/_authenticated/belajar.index'
 import { Route as AuthenticatedBelajarModulIdRouteImport } from './routes/_authenticated/belajar.$modulId'
 import { Route as AuthenticatedBelajarGameRouteImport } from './routes/_authenticated/belajar.game'
@@ -74,11 +77,22 @@ const LupaSandiRoute = LupaSandiRouteImport.update({
   path: '/lupa-sandi',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PengumumanRoute = PengumumanRouteImport.update({
   id: '/pengumuman',
   path: '/pengumuman',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedBelajarRoute = AuthenticatedBelajarRouteImport.update({
   id: '/belajar',
   path: '/belajar',
@@ -98,6 +112,11 @@ const AuthenticatedTokoRoute = AuthenticatedTokoRouteImport.update({
   id: '/toko',
   path: '/toko',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedBelajarIndexRoute =
   AuthenticatedBelajarIndexRouteImport.update({
@@ -144,11 +163,14 @@ export interface FileRoutesByFullPath {
   '/daftar': typeof DaftarRoute
   '/kalender': typeof KalenderRoute
   '/lupa-sandi': typeof LupaSandiRoute
+  '/mcp': typeof McpRoute
   '/pengumuman': typeof PengumumanRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/belajar': typeof AuthenticatedBelajarRouteWithChildren
   '/guru': typeof AuthenticatedGuruRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/toko': typeof AuthenticatedTokoRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/belajar/game': typeof AuthenticatedBelajarGameRoute
   '/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
@@ -165,10 +187,13 @@ export interface FileRoutesByTo {
   '/daftar': typeof DaftarRoute
   '/kalender': typeof KalenderRoute
   '/lupa-sandi': typeof LupaSandiRoute
+  '/mcp': typeof McpRoute
   '/pengumuman': typeof PengumumanRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/guru': typeof AuthenticatedGuruRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/toko': typeof AuthenticatedTokoRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/belajar/game': typeof AuthenticatedBelajarGameRoute
   '/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
@@ -187,11 +212,14 @@ export interface FileRoutesById {
   '/daftar': typeof DaftarRoute
   '/kalender': typeof KalenderRoute
   '/lupa-sandi': typeof LupaSandiRoute
+  '/mcp': typeof McpRoute
   '/pengumuman': typeof PengumumanRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/belajar': typeof AuthenticatedBelajarRouteWithChildren
   '/_authenticated/guru': typeof AuthenticatedGuruRoute
   '/_authenticated/profil': typeof AuthenticatedProfilRoute
   '/_authenticated/toko': typeof AuthenticatedTokoRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/_authenticated/belajar/game': typeof AuthenticatedBelajarGameRoute
   '/_authenticated/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
@@ -210,11 +238,14 @@ export interface FileRouteTypes {
     | '/daftar'
     | '/kalender'
     | '/lupa-sandi'
+    | '/mcp'
     | '/pengumuman'
+    | '/.well-known/oauth-protected-resource'
     | '/belajar'
     | '/guru'
     | '/profil'
     | '/toko'
+    | '/.lovable/oauth/consent'
     | '/belajar/$modulId'
     | '/belajar/game'
     | '/belajar/kuis'
@@ -231,10 +262,13 @@ export interface FileRouteTypes {
     | '/daftar'
     | '/kalender'
     | '/lupa-sandi'
+    | '/mcp'
     | '/pengumuman'
+    | '/.well-known/oauth-protected-resource'
     | '/guru'
     | '/profil'
     | '/toko'
+    | '/.lovable/oauth/consent'
     | '/belajar/$modulId'
     | '/belajar/game'
     | '/belajar/kuis'
@@ -252,11 +286,14 @@ export interface FileRouteTypes {
     | '/daftar'
     | '/kalender'
     | '/lupa-sandi'
+    | '/mcp'
     | '/pengumuman'
+    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/belajar'
     | '/_authenticated/guru'
     | '/_authenticated/profil'
     | '/_authenticated/toko'
+    | '/.lovable/oauth/consent'
     | '/_authenticated/belajar/$modulId'
     | '/_authenticated/belajar/game'
     | '/_authenticated/belajar/kuis'
@@ -275,7 +312,10 @@ export interface RootRouteChildren {
   DaftarRoute: typeof DaftarRoute
   KalenderRoute: typeof KalenderRoute
   LupaSandiRoute: typeof LupaSandiRoute
+  McpRoute: typeof McpRoute
   PengumumanRoute: typeof PengumumanRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
 }
 
@@ -344,11 +384,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LupaSandiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pengumuman': {
       id: '/pengumuman'
       path: '/pengumuman'
       fullPath: '/pengumuman'
       preLoaderRoute: typeof PengumumanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/belajar': {
@@ -378,6 +432,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/toko'
       preLoaderRoute: typeof AuthenticatedTokoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/belajar/': {
       id: '/_authenticated/belajar/'
@@ -470,7 +531,11 @@ const rootRouteChildren: RootRouteChildren = {
   DaftarRoute: DaftarRoute,
   KalenderRoute: KalenderRoute,
   LupaSandiRoute: LupaSandiRoute,
+  McpRoute: McpRoute,
   PengumumanRoute: PengumumanRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicSetupAdminRoute: ApiPublicSetupAdminRoute,
 }
 export const routeTree = rootRouteImport
