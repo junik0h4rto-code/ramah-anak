@@ -11,7 +11,10 @@ function amanNext(nilai: unknown): string | undefined {
 }
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>) => ({ next: amanNext(s['next']) }),
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const next = amanNext(s['next']);
+    return next ? { next } : {};
+  },
   head: () => ({
     meta: [
       { title: "Masuk Akun - SMPN 26 BANDUNG" },
