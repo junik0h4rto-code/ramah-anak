@@ -4,7 +4,17 @@ import { GraduationCap, LogIn, ShieldCheck, Sparkles, UserPlus } from "lucide-re
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth-store";
 
+function amanNext(nilai: unknown): string | undefined {
+  if (typeof nilai !== "string") return undefined;
+  if (!nilai.startsWith("/") || nilai.startsWith("//")) return undefined;
+  return nilai;
+}
+
 export const Route = createFileRoute("/auth")({
+  validateSearch: (s: Record<string, unknown>): { next?: string } => {
+    const next = amanNext(s['next']);
+    return next ? { next } : {};
+  },
   head: () => ({
     meta: [
       { title: "Masuk Akun - SMPN 26 BANDUNG" },
@@ -27,6 +37,7 @@ export const Route = createFileRoute("/auth")({
 function HalamanAuth() {
   const { masuk, pengguna, siap } = useAuth();
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [galat, setGalat] = useState("");
@@ -34,12 +45,16 @@ function HalamanAuth() {
 
   useEffect(() => {
     if (siap && pengguna) {
+      if (next) {
+        window.location.replace(next);
+        return;
+      }
       navigate({
         to: pengguna.peran === "siswa" ? "/belajar" : "/guru",
         replace: true,
       });
     }
-  }, [siap, pengguna, navigate]);
+  }, [siap, pengguna, navigate, next]);
 
   async function kirim(e: React.FormEvent) {
     e.preventDefault();
@@ -52,6 +67,10 @@ function HalamanAuth() {
       return;
     }
     toast.success("Berhasil masuk");
+    if (next) {
+      window.location.replace(next);
+      return;
+    }
     navigate({
       to: hasil.peran === "siswa" ? "/belajar" : "/guru",
       replace: true,
