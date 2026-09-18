@@ -42,12 +42,16 @@ function HalamanAuth() {
 
   useEffect(() => {
     if (siap && pengguna) {
+      if (next) {
+        window.location.replace(next);
+        return;
+      }
       navigate({
         to: pengguna.peran === "siswa" ? "/belajar" : "/guru",
         replace: true,
       });
     }
-  }, [siap, pengguna, navigate]);
+  }, [siap, pengguna, navigate, next]);
 
   async function kirim(e: React.FormEvent) {
     e.preventDefault();
@@ -60,6 +64,10 @@ function HalamanAuth() {
       return;
     }
     toast.success("Berhasil masuk");
+    if (next) {
+      window.location.replace(next);
+      return;
+    }
     navigate({
       to: hasil.peran === "siswa" ? "/belajar" : "/guru",
       replace: true,
