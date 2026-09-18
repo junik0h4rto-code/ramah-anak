@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "sdk_version": "2.2.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://xepdcfydoklkblzyaiqx.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "sekolah-gembira-hub",
+      "version": "0.1.0",
+      "title": "Sekolah Gembira Hub"
+    },
+    "tools": [
+      {
+        "name": "profil_saya",
+        "title": "Profil saya",
+        "description": "Ambil profil pengguna yang sedang masuk: nama, email, kelas/mapel, dan jumlah koin.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": null,
+        "outputSchema": null
+      },
+      {
+        "name": "daftar_modul",
+        "title": "Daftar modul belajar",
+        "description": "Tampilkan modul belajar yang tersedia, opsional difilter kelas atau mata pelajaran.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "kelas": {
+              "description": "Filter nama kelas, mis. VII A.",
+              "type": "string",
+              "maxLength": 30
+            },
+            "mapel": {
+              "description": "Filter mata pelajaran.",
+              "type": "string",
+              "maxLength": 60
+            },
+            "batas": {
+              "description": "Jumlah maksimum modul (default 20).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "daftar_hadiah",
+        "title": "Katalog Toko Reward",
+        "description": "Tampilkan hadiah di Toko Reward beserta harga koin dan stoknya.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "kategori": {
+              "description": "Filter kategori hadiah.",
+              "type": "string",
+              "maxLength": 60
+            },
+            "batas": {
+              "description": "Jumlah maksimum hadiah (default 30).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "berita_terbaru",
+        "title": "Berita & pengumuman terbaru",
+        "description": "Ambil berita dan pengumuman sekolah yang sudah dipublikasikan.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "batas": {
+              "description": "Jumlah maksimum berita (default 10).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 30
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "nilai_saya",
+        "title": "Nilai saya",
+        "description": "Ambil daftar nilai milik pengguna yang sedang masuk (siswa).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "mapel": {
+              "description": "Filter mata pelajaran.",
+              "type": "string",
+              "maxLength": 60
+            },
+            "batas": {
+              "description": "Jumlah maksimum baris (default 30).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
