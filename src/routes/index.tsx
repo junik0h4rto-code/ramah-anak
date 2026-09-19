@@ -147,8 +147,8 @@ function Beranda() {
           </div>
           <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl bg-card shadow-pop lg:max-w-sm">
             <img
-              src={heroImage}
-              alt="Gedung dan halaman SMPN 26 BANDUNG"
+              src={sekolah.hero_url || heroImage}
+              alt={`Gedung dan halaman ${sekolah.nama_sekolah}`}
               width={800}
               height={504}
               className="h-auto w-full object-cover"
