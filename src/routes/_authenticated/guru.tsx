@@ -1656,6 +1656,54 @@ function TabPengaturan() {
             PNG/JPG/WebP, disarankan persegi. Logo otomatis dikecilkan agar ringan.
           </p>
 
+          <p className={`${labelClass} mt-6`}>Gambar Beranda</p>
+          <div className="mt-3 overflow-hidden rounded-2xl bg-muted">
+            {form.hero_url ? (
+              <img
+                src={form.hero_url}
+                alt="Pratinjau gambar beranda"
+                className="h-40 w-full object-cover"
+              />
+            ) : (
+              <span className="grid h-40 w-full place-items-center text-muted-foreground">
+                <ImageIcon className="h-10 w-10" />
+              </span>
+            )}
+          </div>
+          <input
+            ref={heroRef}
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) void pilihHero(f);
+              e.target.value = "";
+            }}
+          />
+          <div className="mt-4 grid gap-2">
+            <button
+              type="button"
+              onClick={() => heroRef.current?.click()}
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-extrabold text-primary-foreground"
+            >
+              <Upload className="h-4 w-4" /> Unggah Gambar Beranda
+            </button>
+            {form.hero_url && (
+              <button
+                type="button"
+                onClick={() => setForm({ ...form, hero_url: null })}
+                className="inline-flex items-center justify-center gap-2 rounded-full border border-input px-4 py-2.5 text-sm font-extrabold text-muted-foreground"
+              >
+                <Trash2 className="h-4 w-4" /> Kembalikan Gambar Bawaan
+              </button>
+            )}
+          </div>
+          <p className="mt-3 text-xs font-semibold text-muted-foreground">
+            Gambar ini tampil di halaman depan. Disarankan mendatar (landscape); otomatis
+            dikecilkan agar ringan.
+          </p>
+
           <p className={`${labelClass} mt-6`}>Pratinjau Menu Atas</p>
           <div className="mt-2 flex items-center gap-2.5 rounded-2xl bg-gradient-navy p-3 text-primary-foreground">
             <LogoSekolah className="h-10 w-10" />
