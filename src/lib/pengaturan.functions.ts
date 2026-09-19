@@ -11,6 +11,7 @@ export type PengaturanSekolah = {
   telepon: string;
   email: string;
   logo_url: string | null;
+  hero_url: string | null;
   npsn: string;
   akreditasi: string;
   kepala_sekolah: string;
