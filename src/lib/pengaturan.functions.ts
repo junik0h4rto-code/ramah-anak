@@ -60,6 +60,15 @@ const pengaturanSchema = z.object({
     .regex(/^data:image\/(png|jpeg|webp);base64,/, "Format logo tidak valid")
     .max(400_000, "Ukuran logo terlalu besar")
     .nullable(),
+  // Gambar utama beranda: data URL hasil kompresi di browser atau tautan https.
+  hero_url: z
+    .string()
+    .refine(
+      (v) => /^data:image\/(png|jpeg|webp);base64,/.test(v) || /^https:\/\//.test(v),
+      "Format gambar beranda tidak valid",
+    )
+    .max(1_200_000, "Ukuran gambar beranda terlalu besar")
+    .nullable(),
   npsn: teks(20),
   akreditasi: teks(40),
   kepala_sekolah: teks(120),
