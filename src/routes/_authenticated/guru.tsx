@@ -1387,6 +1387,20 @@ function TabPengaturan() {
     setForm((f) => ({ ...f, logo_url: dataUrl }));
   }
 
+  async function pilihHero(file: File) {
+    if (!file.type.startsWith("image/")) {
+      toast.error("File harus berupa gambar (PNG/JPG/WebP).");
+      return;
+    }
+    try {
+      const dataUrl = await kompresGambar(file, 1400, 900_000);
+      setForm((f) => ({ ...f, hero_url: dataUrl }));
+      toast.success("Gambar beranda siap. Tekan Simpan Pengaturan.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Gagal memproses gambar.");
+    }
+  }
+
   function terapkanTautanMaps(url: string) {
     const titik = koordinatDariTautanMaps(url);
     if (!titik) {
