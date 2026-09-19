@@ -89,6 +89,7 @@ function Beranda() {
     queryFn: () => listBeritaPublic(),
   });
   const { koin } = useGamifikasi();
+  const sekolah = usePengaturanSekolah();
   const beritaTerbaru = berita.slice(0, 3);
 
   return (
