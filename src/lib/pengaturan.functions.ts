@@ -32,6 +32,7 @@ export const PENGATURAN_DEFAULT: PengaturanSekolah = {
   telepon: "(022) 2012277",
   email: "",
   logo_url: null,
+  hero_url: null,
   npsn: "",
   akreditasi: "",
   kepala_sekolah: "",
