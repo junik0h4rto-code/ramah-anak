@@ -14,6 +14,7 @@ import heroAsset from "@/assets/BG_smpn26.jpg.asset.json";
 const heroImage = heroAsset.url;
 import { AGENDA, PENGUMUMAN, formatTanggal } from "@/lib/school-data";
 import { useGamifikasi } from "@/lib/gamifikasi-store";
+import { usePengaturanSekolah } from "@/lib/pengaturan-store";
 import { listBeritaPublic } from "@/lib/berita.functions";
 import { pastikanSeedAwal } from "@/lib/seed.functions";
 import { useSuspenseQuery } from "@tanstack/react-query";
