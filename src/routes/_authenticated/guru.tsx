@@ -1363,6 +1363,7 @@ function TabPengaturan() {
   const [form, setForm] = useState<PengaturanSekolah>(awal);
   const [proses, setProses] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const heroRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => setForm(awal), [awal]);
 
