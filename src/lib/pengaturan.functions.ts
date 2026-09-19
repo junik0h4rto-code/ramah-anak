@@ -83,7 +83,7 @@ const pengaturanSchema = z.object({
 });
 
 const KOLOM =
-  "nama_sekolah, tagline, alamat, telepon, email, logo_url, npsn, akreditasi, kepala_sekolah, maps_url, latitude, longitude, instagram, facebook, youtube, tiktok, whatsapp";
+  "nama_sekolah, tagline, alamat, telepon, email, logo_url, hero_url, npsn, akreditasi, kepala_sekolah, maps_url, latitude, longitude, instagram, facebook, youtube, tiktok, whatsapp";
 
 function createPublicClient() {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
