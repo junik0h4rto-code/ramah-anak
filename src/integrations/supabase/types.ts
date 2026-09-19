@@ -434,6 +434,7 @@ export type Database = {
           created_at: string
           email: string
           facebook: string
+          hero_url: string | null
           id: number
           instagram: string
           kepala_sekolah: string
@@ -458,6 +459,7 @@ export type Database = {
           created_at?: string
           email?: string
           facebook?: string
+          hero_url?: string | null
           id?: number
           instagram?: string
           kepala_sekolah?: string
@@ -482,6 +484,7 @@ export type Database = {
           created_at?: string
           email?: string
           facebook?: string
+          hero_url?: string | null
           id?: number
           instagram?: string
           kepala_sekolah?: string

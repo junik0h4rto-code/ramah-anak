@@ -11,6 +11,7 @@ export type PengaturanSekolah = {
   telepon: string;
   email: string;
   logo_url: string | null;
+  hero_url: string | null;
   npsn: string;
   akreditasi: string;
   kepala_sekolah: string;
@@ -31,6 +32,7 @@ export const PENGATURAN_DEFAULT: PengaturanSekolah = {
   telepon: "(022) 2012277",
   email: "",
   logo_url: null,
+  hero_url: null,
   npsn: "",
   akreditasi: "",
   kepala_sekolah: "",
@@ -58,6 +60,15 @@ const pengaturanSchema = z.object({
     .regex(/^data:image\/(png|jpeg|webp);base64,/, "Format logo tidak valid")
     .max(400_000, "Ukuran logo terlalu besar")
     .nullable(),
+  // Gambar utama beranda: data URL hasil kompresi di browser atau tautan https.
+  hero_url: z
+    .string()
+    .refine(
+      (v) => /^data:image\/(png|jpeg|webp);base64,/.test(v) || /^https:\/\//.test(v),
+      "Format gambar beranda tidak valid",
+    )
+    .max(1_200_000, "Ukuran gambar beranda terlalu besar")
+    .nullable(),
   npsn: teks(20),
   akreditasi: teks(40),
   kepala_sekolah: teks(120),
@@ -72,7 +83,7 @@ const pengaturanSchema = z.object({
 });
 
 const KOLOM =
-  "nama_sekolah, tagline, alamat, telepon, email, logo_url, npsn, akreditasi, kepala_sekolah, maps_url, latitude, longitude, instagram, facebook, youtube, tiktok, whatsapp";
+  "nama_sekolah, tagline, alamat, telepon, email, logo_url, hero_url, npsn, akreditasi, kepala_sekolah, maps_url, latitude, longitude, instagram, facebook, youtube, tiktok, whatsapp";
 
 function createPublicClient() {
   const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;

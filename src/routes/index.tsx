@@ -14,6 +14,7 @@ import heroAsset from "@/assets/BG_smpn26.jpg.asset.json";
 const heroImage = heroAsset.url;
 import { AGENDA, PENGUMUMAN, formatTanggal } from "@/lib/school-data";
 import { useGamifikasi } from "@/lib/gamifikasi-store";
+import { usePengaturanSekolah } from "@/lib/pengaturan-store";
 import { listBeritaPublic } from "@/lib/berita.functions";
 import { pastikanSeedAwal } from "@/lib/seed.functions";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -88,6 +89,7 @@ function Beranda() {
     queryFn: () => listBeritaPublic(),
   });
   const { koin } = useGamifikasi();
+  const sekolah = usePengaturanSekolah();
   const beritaTerbaru = berita.slice(0, 3);
 
   return (
@@ -145,8 +147,8 @@ function Beranda() {
           </div>
           <div className="mx-auto w-full max-w-md overflow-hidden rounded-3xl bg-card shadow-pop lg:max-w-sm">
             <img
-              src={heroImage}
-              alt="Gedung dan halaman SMPN 26 BANDUNG"
+              src={sekolah.hero_url || heroImage}
+              alt={`Gedung dan halaman ${sekolah.nama_sekolah}`}
               width={800}
               height={504}
               className="h-auto w-full object-cover"
