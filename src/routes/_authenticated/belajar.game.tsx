@@ -56,6 +56,27 @@ function PusatGame() {
       </div>
       <div className="mx-auto max-w-7xl px-4 pt-6">
         <Link
+          to="/belajar/petualangan"
+          className="flex flex-wrap items-center justify-between gap-4 rounded-3xl bg-gradient-to-r from-primary/20 via-card to-accent/25 p-6 shadow-card ring-2 ring-primary/30 transition-colors hover:ring-primary"
+        >
+          <div className="flex items-center gap-4">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-2xl">
+              🗺️
+            </span>
+            <div>
+              <p className="font-display text-xl font-extrabold">Petualangan Harta Karun (Mabar)</p>
+              <p className="text-sm font-bold text-muted-foreground">
+                Kalahkan monster dengan teka-teki pelajaran, main bareng teman lewat Room Code
+              </p>
+            </div>
+          </div>
+          <span className="rounded-full bg-primary px-6 py-3 text-sm font-extrabold text-primary-foreground">
+            Mulai Petualangan
+          </span>
+        </Link>
+      </div>
+      <div className="mx-auto max-w-7xl px-4 pt-6">
+        <Link
           to="/toko"
           className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border bg-card p-6 shadow-card transition-colors hover:border-primary"
         >

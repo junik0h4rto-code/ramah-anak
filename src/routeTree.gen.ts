@@ -30,6 +30,7 @@ import { Route as AuthenticatedBelajarIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedBelajarModulIdRouteImport } from './routes/_authenticated/belajar.$modulId'
 import { Route as AuthenticatedBelajarGameRouteImport } from './routes/_authenticated/belajar.game'
 import { Route as AuthenticatedBelajarKuisRouteImport } from './routes/_authenticated/belajar.kuis'
+import { Route as AuthenticatedBelajarPetualanganRouteImport } from './routes/_authenticated/belajar.petualangan'
 import { Route as AuthenticatedBelajarPohonRouteImport } from './routes/_authenticated/belajar.pohon'
 import { Route as ApiPublicSetupAdminRouteImport } from './routes/api/public/setup-admin'
 
@@ -142,6 +143,12 @@ const AuthenticatedBelajarKuisRoute =
     path: '/kuis',
     getParentRoute: () => AuthenticatedBelajarRoute,
   } as any)
+const AuthenticatedBelajarPetualanganRoute =
+  AuthenticatedBelajarPetualanganRouteImport.update({
+    id: '/petualangan',
+    path: '/petualangan',
+    getParentRoute: () => AuthenticatedBelajarRoute,
+  } as any)
 const AuthenticatedBelajarPohonRoute =
   AuthenticatedBelajarPohonRouteImport.update({
     id: '/pohon',
@@ -174,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/belajar/game': typeof AuthenticatedBelajarGameRoute
   '/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
+  '/belajar/petualangan': typeof AuthenticatedBelajarPetualanganRoute
   '/belajar/pohon': typeof AuthenticatedBelajarPohonRoute
   '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/belajar/': typeof AuthenticatedBelajarIndexRoute
@@ -197,6 +205,7 @@ export interface FileRoutesByTo {
   '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/belajar/game': typeof AuthenticatedBelajarGameRoute
   '/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
+  '/belajar/petualangan': typeof AuthenticatedBelajarPetualanganRoute
   '/belajar/pohon': typeof AuthenticatedBelajarPohonRoute
   '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/belajar': typeof AuthenticatedBelajarIndexRoute
@@ -223,6 +232,7 @@ export interface FileRoutesById {
   '/_authenticated/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/_authenticated/belajar/game': typeof AuthenticatedBelajarGameRoute
   '/_authenticated/belajar/kuis': typeof AuthenticatedBelajarKuisRoute
+  '/_authenticated/belajar/petualangan': typeof AuthenticatedBelajarPetualanganRoute
   '/_authenticated/belajar/pohon': typeof AuthenticatedBelajarPohonRoute
   '/api/public/setup-admin': typeof ApiPublicSetupAdminRoute
   '/_authenticated/belajar/': typeof AuthenticatedBelajarIndexRoute
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/belajar/$modulId'
     | '/belajar/game'
     | '/belajar/kuis'
+    | '/belajar/petualangan'
     | '/belajar/pohon'
     | '/api/public/setup-admin'
     | '/belajar/'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
     | '/belajar/$modulId'
     | '/belajar/game'
     | '/belajar/kuis'
+    | '/belajar/petualangan'
     | '/belajar/pohon'
     | '/api/public/setup-admin'
     | '/belajar'
@@ -297,6 +309,7 @@ export interface FileRouteTypes {
     | '/_authenticated/belajar/$modulId'
     | '/_authenticated/belajar/game'
     | '/_authenticated/belajar/kuis'
+    | '/_authenticated/belajar/petualangan'
     | '/_authenticated/belajar/pohon'
     | '/api/public/setup-admin'
     | '/_authenticated/belajar/'
@@ -468,6 +481,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBelajarKuisRouteImport
       parentRoute: typeof AuthenticatedBelajarRoute
     }
+    '/_authenticated/belajar/petualangan': {
+      id: '/_authenticated/belajar/petualangan'
+      path: '/petualangan'
+      fullPath: '/belajar/petualangan'
+      preLoaderRoute: typeof AuthenticatedBelajarPetualanganRouteImport
+      parentRoute: typeof AuthenticatedBelajarRoute
+    }
     '/_authenticated/belajar/pohon': {
       id: '/_authenticated/belajar/pohon'
       path: '/pohon'
@@ -489,6 +509,7 @@ interface AuthenticatedBelajarRouteChildren {
   AuthenticatedBelajarModulIdRoute: typeof AuthenticatedBelajarModulIdRoute
   AuthenticatedBelajarGameRoute: typeof AuthenticatedBelajarGameRoute
   AuthenticatedBelajarKuisRoute: typeof AuthenticatedBelajarKuisRoute
+  AuthenticatedBelajarPetualanganRoute: typeof AuthenticatedBelajarPetualanganRoute
   AuthenticatedBelajarPohonRoute: typeof AuthenticatedBelajarPohonRoute
   AuthenticatedBelajarIndexRoute: typeof AuthenticatedBelajarIndexRoute
 }
@@ -497,6 +518,7 @@ const AuthenticatedBelajarRouteChildren: AuthenticatedBelajarRouteChildren = {
   AuthenticatedBelajarModulIdRoute: AuthenticatedBelajarModulIdRoute,
   AuthenticatedBelajarGameRoute: AuthenticatedBelajarGameRoute,
   AuthenticatedBelajarKuisRoute: AuthenticatedBelajarKuisRoute,
+  AuthenticatedBelajarPetualanganRoute: AuthenticatedBelajarPetualanganRoute,
   AuthenticatedBelajarPohonRoute: AuthenticatedBelajarPohonRoute,
   AuthenticatedBelajarIndexRoute: AuthenticatedBelajarIndexRoute,
 }
