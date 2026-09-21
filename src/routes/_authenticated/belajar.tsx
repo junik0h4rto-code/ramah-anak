@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { Coins, Flame, Gamepad2, LayoutGrid, Sprout } from "lucide-react";
+import { Coins, Flame, Gamepad2, LayoutGrid, Sprout, Swords } from "lucide-react";
 import { useGamifikasi } from "@/lib/gamifikasi-store";
 import { RoleGate } from "@/components/role-gate";
 
@@ -47,6 +47,12 @@ function BelajarLayout() {
               className="inline-flex items-center gap-2 rounded-full bg-card/70 px-5 py-2.5 text-sm font-extrabold text-accent-foreground transition-colors data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
             >
               <Gamepad2 className="h-4 w-4" /> Pusat Game
+            </Link>
+            <Link
+              to="/belajar/petualangan"
+              className="inline-flex items-center gap-2 rounded-full bg-card/70 px-5 py-2.5 text-sm font-extrabold text-accent-foreground transition-colors data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
+            >
+              <Swords className="h-4 w-4" /> Petualangan
             </Link>
             <Link
               to="/belajar/pohon"
