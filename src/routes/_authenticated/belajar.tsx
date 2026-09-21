@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { Coins, Flame, Gamepad2, LayoutGrid, Sprout } from "lucide-react";
+import { Coins, Flame, Gamepad2, LayoutGrid, Sprout, Swords } from "lucide-react";
 import { useGamifikasi } from "@/lib/gamifikasi-store";
 import { RoleGate } from "@/components/role-gate";
 
