@@ -49,6 +49,12 @@ function BelajarLayout() {
               <Gamepad2 className="h-4 w-4" /> Pusat Game
             </Link>
             <Link
+              to="/belajar/petualangan"
+              className="inline-flex items-center gap-2 rounded-full bg-card/70 px-5 py-2.5 text-sm font-extrabold text-accent-foreground transition-colors data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
+            >
+              <Swords className="h-4 w-4" /> Petualangan
+            </Link>
+            <Link
               to="/belajar/pohon"
               className="inline-flex items-center gap-2 rounded-full bg-card/70 px-5 py-2.5 text-sm font-extrabold text-accent-foreground transition-colors data-[status=active]:bg-primary data-[status=active]:text-primary-foreground"
             >
