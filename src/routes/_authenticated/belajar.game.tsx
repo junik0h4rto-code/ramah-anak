@@ -75,6 +75,7 @@ function PusatGame() {
           </span>
         </Link>
       </div>
+      <GerbangIlmu />
       <div className="mx-auto max-w-7xl px-4 pt-6">
         <Link
           to="/toko"
