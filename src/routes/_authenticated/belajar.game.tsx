@@ -75,6 +75,7 @@ function PusatGame() {
           </span>
         </Link>
       </div>
+      <GerbangIlmu />
       <div className="mx-auto max-w-7xl px-4 pt-6">
         <Link
           to="/toko"
@@ -403,3 +404,31 @@ function RodaKeberuntungan() {
   );
 }
 
+
+const URL_GERBANG_ILMU = "https://www.instaplay.ai/play/gerbang-ilmu-kuil-bayangan/eb4f9a7b";
+
+function GerbangIlmu() {
+  return (
+    <div className="mx-auto max-w-7xl px-4 pt-6">
+      <a
+        href={URL_GERBANG_ILMU}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border bg-card p-6 shadow-card transition-colors hover:border-primary"
+      >
+        <div className="flex items-center gap-4">
+          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-accent-soft text-2xl">⛩️</span>
+          <div>
+            <p className="font-display text-xl font-extrabold">Gerbang Ilmu: Kuil Bayangan</p>
+            <p className="text-sm font-bold text-muted-foreground">
+              Jelajahi kuil misterius dan pecahkan tantangan ilmu (dibuka di tab baru)
+            </p>
+          </div>
+        </div>
+        <span className="rounded-full bg-primary px-6 py-3 text-sm font-extrabold text-primary-foreground">
+          Main Sekarang
+        </span>
+      </a>
+    </div>
+  );
+}
