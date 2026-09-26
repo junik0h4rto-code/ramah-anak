@@ -31,6 +31,7 @@ const SEMUA_GRUP: Grup[] = [
     label: "Informasi Sekolah",
     items: [
       { to: "/", label: "Beranda", icon: Home },
+      { to: "/informasi", label: "Pusat Informasi", icon: Info },
       { to: "/berita", label: "Berita", icon: Newspaper },
       { to: "/pengumuman", label: "Pengumuman", icon: Megaphone },
       { to: "/kalender", label: "Kalender Agenda", icon: CalendarDays },
