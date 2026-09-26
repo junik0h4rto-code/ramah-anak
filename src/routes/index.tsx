@@ -53,14 +53,14 @@ function ringkasan(isi: string, max = 120) {
 }
 
 type KartuJelajahi =
-  | { to: "/berita" | "/belajar" | "/belajar/game" | "/profil-sekolah"; judul: string; teks: string; icon: LucideIcon }
+  | { to: "/informasi" | "/belajar" | "/belajar/game" | "/profil-sekolah"; judul: string; teks: string; icon: LucideIcon }
   | { href: string; judul: string; teks: string; icon: LucideIcon };
 
 const KARTU_JELAJAHI: KartuJelajahi[] = [
   {
-    to: "/berita",
+    to: "/informasi",
     judul: "Informasi Sekolah",
-    teks: "Berita, pengumuman, dan kalender agenda terbaru.",
+    teks: "Pengumuman dan berita sekolah dalam satu halaman.",
     icon: Megaphone,
   },
   {

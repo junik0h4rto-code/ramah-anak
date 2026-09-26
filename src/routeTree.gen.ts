@@ -16,6 +16,7 @@ import { Route as AturSandiRouteImport } from './routes/atur-sandi'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BeritaRouteImport } from './routes/berita'
 import { Route as DaftarRouteImport } from './routes/daftar'
+import { Route as InformasiRouteImport } from './routes/informasi'
 import { Route as KalenderRouteImport } from './routes/kalender'
 import { Route as LupaSandiRouteImport } from './routes/lupa-sandi'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -67,6 +68,11 @@ const BeritaRoute = BeritaRouteImport.update({
 const DaftarRoute = DaftarRouteImport.update({
   id: '/daftar',
   path: '/daftar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InformasiRoute = InformasiRouteImport.update({
+  id: '/informasi',
+  path: '/informasi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KalenderRoute = KalenderRouteImport.update({
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
+  '/informasi': typeof InformasiRoute
   '/kalender': typeof KalenderRoute
   '/lupa-sandi': typeof LupaSandiRoute
   '/mcp': typeof McpRoute
@@ -200,6 +207,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
+  '/informasi': typeof InformasiRoute
   '/kalender': typeof KalenderRoute
   '/lupa-sandi': typeof LupaSandiRoute
   '/mcp': typeof McpRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/berita': typeof BeritaRoute
   '/daftar': typeof DaftarRoute
+  '/informasi': typeof InformasiRoute
   '/kalender': typeof KalenderRoute
   '/lupa-sandi': typeof LupaSandiRoute
   '/mcp': typeof McpRoute
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/berita'
     | '/daftar'
+    | '/informasi'
     | '/kalender'
     | '/lupa-sandi'
     | '/mcp'
@@ -281,6 +291,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/berita'
     | '/daftar'
+    | '/informasi'
     | '/kalender'
     | '/lupa-sandi'
     | '/mcp'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/berita'
     | '/daftar'
+    | '/informasi'
     | '/kalender'
     | '/lupa-sandi'
     | '/mcp'
@@ -335,6 +347,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BeritaRoute: typeof BeritaRoute
   DaftarRoute: typeof DaftarRoute
+  InformasiRoute: typeof InformasiRoute
   KalenderRoute: typeof KalenderRoute
   LupaSandiRoute: typeof LupaSandiRoute
   McpRoute: typeof McpRoute
@@ -394,6 +407,13 @@ declare module '@tanstack/react-router' {
       path: '/daftar'
       fullPath: '/daftar'
       preLoaderRoute: typeof DaftarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/informasi': {
+      id: '/informasi'
+      path: '/informasi'
+      fullPath: '/informasi'
+      preLoaderRoute: typeof InformasiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/kalender': {
@@ -571,6 +591,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BeritaRoute: BeritaRoute,
   DaftarRoute: DaftarRoute,
+  InformasiRoute: InformasiRoute,
   KalenderRoute: KalenderRoute,
   LupaSandiRoute: LupaSandiRoute,
   McpRoute: McpRoute,
