@@ -20,6 +20,7 @@ import { Route as KalenderRouteImport } from './routes/kalender'
 import { Route as LupaSandiRouteImport } from './routes/lupa-sandi'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as PengumumanRouteImport } from './routes/pengumuman'
+import { Route as ProfilSekolahRouteImport } from './routes/profil-sekolah'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedBelajarRouteImport } from './routes/_authenticated/belajar'
 import { Route as AuthenticatedGuruRouteImport } from './routes/_authenticated/guru'
@@ -86,6 +87,11 @@ const McpRoute = McpRouteImport.update({
 const PengumumanRoute = PengumumanRouteImport.update({
   id: '/pengumuman',
   path: '/pengumuman',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilSekolahRoute = ProfilSekolahRouteImport.update({
+  id: '/profil-sekolah',
+  path: '/profil-sekolah',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
@@ -172,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/lupa-sandi': typeof LupaSandiRoute
   '/mcp': typeof McpRoute
   '/pengumuman': typeof PengumumanRoute
+  '/profil-sekolah': typeof ProfilSekolahRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/belajar': typeof AuthenticatedBelajarRouteWithChildren
   '/guru': typeof AuthenticatedGuruRoute
@@ -197,6 +204,7 @@ export interface FileRoutesByTo {
   '/lupa-sandi': typeof LupaSandiRoute
   '/mcp': typeof McpRoute
   '/pengumuman': typeof PengumumanRoute
+  '/profil-sekolah': typeof ProfilSekolahRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/guru': typeof AuthenticatedGuruRoute
   '/profil': typeof AuthenticatedProfilRoute
@@ -223,6 +231,7 @@ export interface FileRoutesById {
   '/lupa-sandi': typeof LupaSandiRoute
   '/mcp': typeof McpRoute
   '/pengumuman': typeof PengumumanRoute
+  '/profil-sekolah': typeof ProfilSekolahRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/belajar': typeof AuthenticatedBelajarRouteWithChildren
   '/_authenticated/guru': typeof AuthenticatedGuruRoute
@@ -250,6 +259,7 @@ export interface FileRouteTypes {
     | '/lupa-sandi'
     | '/mcp'
     | '/pengumuman'
+    | '/profil-sekolah'
     | '/.well-known/oauth-protected-resource'
     | '/belajar'
     | '/guru'
@@ -275,6 +285,7 @@ export interface FileRouteTypes {
     | '/lupa-sandi'
     | '/mcp'
     | '/pengumuman'
+    | '/profil-sekolah'
     | '/.well-known/oauth-protected-resource'
     | '/guru'
     | '/profil'
@@ -300,6 +311,7 @@ export interface FileRouteTypes {
     | '/lupa-sandi'
     | '/mcp'
     | '/pengumuman'
+    | '/profil-sekolah'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/belajar'
     | '/_authenticated/guru'
@@ -327,6 +339,7 @@ export interface RootRouteChildren {
   LupaSandiRoute: typeof LupaSandiRoute
   McpRoute: typeof McpRoute
   PengumumanRoute: typeof PengumumanRoute
+  ProfilSekolahRoute: typeof ProfilSekolahRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
@@ -409,6 +422,13 @@ declare module '@tanstack/react-router' {
       path: '/pengumuman'
       fullPath: '/pengumuman'
       preLoaderRoute: typeof PengumumanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil-sekolah': {
+      id: '/profil-sekolah'
+      path: '/profil-sekolah'
+      fullPath: '/profil-sekolah'
+      preLoaderRoute: typeof ProfilSekolahRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.well-known/oauth-protected-resource': {
@@ -555,6 +575,7 @@ const rootRouteChildren: RootRouteChildren = {
   LupaSandiRoute: LupaSandiRoute,
   McpRoute: McpRoute,
   PengumumanRoute: PengumumanRoute,
+  ProfilSekolahRoute: ProfilSekolahRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,

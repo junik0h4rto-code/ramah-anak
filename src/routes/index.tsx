@@ -53,7 +53,7 @@ function ringkasan(isi: string, max = 120) {
 }
 
 type KartuJelajahi =
-  | { to: "/berita" | "/belajar" | "/belajar/game"; judul: string; teks: string; icon: LucideIcon }
+  | { to: "/berita" | "/belajar" | "/belajar/game" | "/profil-sekolah"; judul: string; teks: string; icon: LucideIcon }
   | { href: string; judul: string; teks: string; icon: LucideIcon };
 
 const KARTU_JELAJAHI: KartuJelajahi[] = [
@@ -76,9 +76,9 @@ const KARTU_JELAJAHI: KartuJelajahi[] = [
     icon: Gamepad2,
   },
   {
-    href: "https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/208B1F06-2DF5-E011-9D07-BB8A37B0B6F3",
+    to: "/profil-sekolah",
     judul: "Profil Sekolah",
-    teks: "Lihat profil resmi SMPN 26 BANDUNG di Dapodik Kemendikdasmen.",
+    teks: "Kenali warga sekolah, fasilitas, dan cara belajar di SMPN 26 BANDUNG.",
     icon: School,
   },
 ];
