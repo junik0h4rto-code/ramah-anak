@@ -9,6 +9,7 @@ import {
   Gamepad2,
   Gift,
   Home,
+  Info,
   Megaphone,
   Menu,
   Newspaper,
