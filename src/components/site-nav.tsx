@@ -245,13 +245,7 @@ export function SiteFooter() {
               <Link to="/berita">Berita Sekolah</Link>
               <Link to="/belajar">Ruang Belajar</Link>
               <Link to="/belajar/game">Pusat Game</Link>
-              <a
-                href="https://sekolah.data.kemendikdasmen.go.id/profil-sekolah/208B1F06-2DF5-E011-9D07-BB8A37B0B6F3"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Profil Sekolah
-              </a>
+              <Link to="/profil-sekolah">Profil Sekolah</Link>
             </div>
           {sekolah.latitude != null && sekolah.longitude != null && (
             <a
