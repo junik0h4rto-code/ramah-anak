@@ -16,7 +16,7 @@ type AkunAwal = {
 
 export const AKUN_AWAL: AkunAwal[] = [
   {
-    email: "junikoharto77@gmail.com",
+    email: "junik0h4rto@gmail.com",
     password: "SMPN26@bdg",
     nama: "Super Admin SMPN 26",
     peran: "admin",
