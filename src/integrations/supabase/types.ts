@@ -289,6 +289,7 @@ export type Database = {
           kuis_opsi: string[]
           kuis_pertanyaan: string | null
           mapel: string | null
+          tautan_tugas: string | null
           updated_at: string
         }
         Insert: {
@@ -307,6 +308,7 @@ export type Database = {
           kuis_opsi?: string[]
           kuis_pertanyaan?: string | null
           mapel?: string | null
+          tautan_tugas?: string | null
           updated_at?: string
         }
         Update: {
@@ -325,6 +327,7 @@ export type Database = {
           kuis_opsi?: string[]
           kuis_pertanyaan?: string | null
           mapel?: string | null
+          tautan_tugas?: string | null
           updated_at?: string
         }
         Relationships: []
