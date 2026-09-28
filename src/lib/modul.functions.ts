@@ -15,6 +15,7 @@ const modulSchema = z.object({
   kuis_jawaban: z.number().int().min(0).max(3).optional(),
   // Daftar rombel tujuan dipisah koma (mis. "VII A, VII B"). Kosong = semua kelas.
   kelas_target: z.string().max(400).nullable().optional(),
+  tautan_tugas: z.string().trim().max(500).refine((u) => !u || /^https?:\/\//i.test(u), "Link tugas harus diawali https://").nullable().optional(),
 });
 
 /** Cocokkan kelas siswa dengan daftar rombel tujuan materi. */
@@ -62,6 +63,7 @@ export const createModul = createServerFn({ method: "POST" })
         kuis_opsi: data.kuis_opsi ?? [],
         kuis_jawaban: data.kuis_jawaban ?? 0,
         kelas_target: data.kelas_target?.trim() ? data.kelas_target.trim() : null,
+        tautan_tugas: data.tautan_tugas?.trim() ? data.tautan_tugas.trim() : null,
         created_by: context.userId,
       })
       .select()
@@ -88,6 +90,7 @@ export const updateModul = createServerFn({ method: "POST" })
         kuis_opsi: data.kuis_opsi ?? [],
         kuis_jawaban: data.kuis_jawaban ?? 0,
         kelas_target: data.kelas_target?.trim() ? data.kelas_target.trim() : null,
+        tautan_tugas: data.tautan_tugas?.trim() ? data.tautan_tugas.trim() : null,
       })
       .eq("id", data.id)
       .select()
@@ -158,4 +161,31 @@ export const simpanRefleksi = createServerFn({ method: "POST" })
     );
     if (error) throw new Error(error.message);
     return { ok: true };
+  });
+
+export const listRefleksiSiswa = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase
+      .from("refleksi_modul")
+      .select("id, user_id, modul_id, jawaban_1, jawaban_2, jawaban_3, created_at")
+      .order("created_at", { ascending: false })
+      .limit(500);
+    if (error) throw new Error(error.message);
+    const rows = data ?? [];
+    const uids = [...new Set(rows.map((r) => r.user_id))];
+    const mids = [...new Set(rows.map((r) => r.modul_id))];
+    const [{ data: prof }, { data: mod }] = await Promise.all([
+      uids.length ? context.supabase.from("profiles").select("id, nama, kelas").in("id", uids) : Promise.resolve({ data: [] as { id: string; nama: string; kelas: string | null }[] }),
+      mids.length ? context.supabase.from("modul").select("id, judul, mapel").in("id", mids) : Promise.resolve({ data: [] as { id: string; judul: string; mapel: string | null }[] }),
+    ]);
+    const pm = new Map((prof ?? []).map((p) => [p.id, p]));
+    const mm = new Map((mod ?? []).map((m) => [m.id, m]));
+    return rows.map((r) => ({
+      ...r,
+      nama: pm.get(r.user_id)?.nama ?? "Siswa",
+      kelas: pm.get(r.user_id)?.kelas ?? null,
+      judul: mm.get(r.modul_id)?.judul ?? "Modul",
+      mapel: mm.get(r.modul_id)?.mapel ?? null,
+    }));
   });

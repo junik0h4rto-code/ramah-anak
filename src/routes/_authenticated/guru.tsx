@@ -41,6 +41,7 @@ import { listModul, createModul, updateModul, deleteModul } from "@/lib/modul.fu
 import { listAkun, updateAkun, deleteAkun } from "@/lib/akun.functions";
 import { TabAkun } from "@/components/tab-akun";
 import { TabTesFormatif } from "@/components/tab-tes-formatif";
+import { TabRefleksi } from "@/components/tab-refleksi";
 import {
   listBeritaEducator,
   createBerita,
@@ -128,6 +129,7 @@ type TabId =
   | "kelas"
   | "materi"
   | "tes-formatif"
+  | "refleksi"
   | "pengumuman"
   | "pengumuman-sekolah"
   | "akun"
@@ -143,6 +145,7 @@ const TABS: { id: TabId; label: string; icon: typeof LayoutDashboard; adminSaja?
   { id: "kelas", label: "Kelas & Rombel", icon: School },
   { id: "materi", label: "Input Materi Belajar", icon: BookOpen },
   { id: "tes-formatif", label: "Tes Formatif", icon: CheckCircle2 },
+  { id: "refleksi", label: "Refleksi Siswa", icon: BookOpen },
   { id: "pengumuman", label: "Pengumuman Kelas", icon: Megaphone },
   { id: "pengumuman-sekolah", label: "Pengumuman Sekolah", icon: Megaphone, adminSaja: true },
   { id: "bonus", label: "Bonus Kegiatan Sekolah", icon: Sparkles },
@@ -208,6 +211,7 @@ function HalamanGuru() {
               {tab === "kelas" && <TabKelas />}
               {tab === "materi" && <TabMateri />}
               {tab === "tes-formatif" && <TabTesFormatif />}
+              {tab === "refleksi" && <TabRefleksi />}
               {tab === "pengumuman" && <TabPengumuman mode="kelas" />}
               {tab === "pengumuman-sekolah" && isAdmin && <TabPengumuman mode="sekolah" />}
               {tab === "akun" && isAdmin && <TabAkun />}
@@ -460,6 +464,7 @@ function TabMateri() {
     kuis_pertanyaan: "",
     opsi: ["", "", "", ""],
     kuis_jawaban: 0,
+    tautan_tugas: "",
   });
 
   function resetModul() {
@@ -476,6 +481,7 @@ function TabMateri() {
       kuis_pertanyaan: "",
       opsi: ["", "", "", ""],
       kuis_jawaban: 0,
+      tautan_tugas: "",
     });
   }
 
@@ -493,6 +499,7 @@ function TabMateri() {
       kuis_pertanyaan: modulForm.kuis_pertanyaan,
       kuis_opsi: modulForm.opsi.filter((o) => o.trim().length > 0),
       kuis_jawaban: modulForm.kuis_jawaban,
+      tautan_tugas: modulForm.tautan_tugas.trim() || null,
       kelas_target: kelasTarget.length > 0 ? kelasTarget.join(", ") : null,
     };
     try {
@@ -637,6 +644,20 @@ function TabMateri() {
             />
           </div>
 
+          <div>
+            <label className={labelClass}>Link Pengumpulan Tugas (opsional)</label>
+            <input
+              type="url"
+              value={modulForm.tautan_tugas}
+              onChange={(e) => setModulForm({ ...modulForm, tautan_tugas: e.target.value })}
+              placeholder="https://forms.gle/... atau Google Classroom/Drive"
+              className={inputClass}
+            />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Untuk materi Pembelajaran atau Proyek. Link tampil di tab Pengumpulan Tugas pada Ruang Belajar siswa.
+            </p>
+          </div>
+
           <div className="rounded-2xl border border-dashed border-border p-4">
             <p className="mb-3 text-xs font-extrabold uppercase tracking-wide text-accent-foreground">
               Pertanyaan Kuis Kunci
@@ -746,6 +767,7 @@ function TabMateri() {
                       kuis_pertanyaan: m.kuis_pertanyaan ?? "",
                       opsi: [0, 1, 2, 3].map((i) => m.kuis_opsi?.[i] ?? ""),
                       kuis_jawaban: m.kuis_jawaban ?? 0,
+                      tautan_tugas: m.tautan_tugas ?? "",
                     });
                     setKelasTarget(
                       (m.kelas_target ?? "")

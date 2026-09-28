@@ -137,6 +137,7 @@ type ModulUI = {
   rating: number;
   dibaca: number;
   jenis: string;
+  tugas: string | null;
 };
 
 function jenisKonten(k: string | null) {
@@ -150,7 +151,7 @@ function jenisKonten(k: string | null) {
 function KatalogModul() {
   const [filter, setFilter] = useState("Semua");
   const [cari, setCari] = useState("");
-  const [jenisTab, setJenisTab] = useState<"Pembelajaran" | "Proyek">("Pembelajaran");
+  const [jenisTab, setJenisTab] = useState<"Pembelajaran" | "Proyek" | "Tugas">("Pembelajaran");
   const [banner, setBanner] = useState(0);
   const [checkinBuka, setCheckinBuka] = useState(false);
   const [bantuanBuka, setBantuanBuka] = useState(false);
@@ -183,6 +184,7 @@ function KatalogModul() {
         rating: Number((4.5 + ((i * 7) % 5) * 0.1).toFixed(1)),
         dibaca: 60 + ((i * 37) % 240),
         jenis: jenisKonten(m.kategori),
+        tugas: m.tautan_tugas ?? null,
       })),
     [modulDb],
   );
@@ -191,7 +193,9 @@ function KatalogModul() {
     const q = cari.trim().toLowerCase();
     return semua.filter(
       (m) =>
-        m.jenis === jenisTab &&
+        (jenisTab === "Tugas"
+          ? !!m.tugas && (m.jenis === "Pembelajaran" || m.jenis === "Proyek")
+          : m.jenis === jenisTab) &&
         (filter === "Semua" || m.mapel === filter) &&
         (!q ||
           m.nama.toLowerCase().includes(q) ||
@@ -524,7 +528,7 @@ function KatalogModul() {
 
         <h2 className="mt-8 text-2xl font-extrabold">Katalog Modul Pelajaran</h2>
         <div className="mt-4 inline-flex rounded-full border border-border bg-card p-1 shadow-card" role="tablist">
-          {(["Pembelajaran", "Proyek"] as const).map((j) => (
+          {(["Pembelajaran", "Proyek", "Tugas"] as const).map((j) => (
             <button
               key={j}
               type="button"
@@ -535,12 +539,18 @@ function KatalogModul() {
                 jenisTab === j ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
               }`}
             >
-              {j === "Pembelajaran" ? "📘 Pembelajaran" : "🛠️ Proyek"} ({jumlahJenis(j)})
+              {j === "Pembelajaran" ? "📘 Pembelajaran" : j === "Proyek" ? "🛠️ Proyek" : "📤 Pengumpulan Tugas"} (
+              {j === "Tugas"
+                ? semua.filter((m) => m.tugas && (m.jenis === "Pembelajaran" || m.jenis === "Proyek")).length
+                : jumlahJenis(j)}
+              )
             </button>
           ))}
         </div>
         <p className="mt-3 text-sm text-muted-foreground">
-          {daftar.length} modul {jenisTab.toLowerCase()} tersedia. Setiap modul yang tuntas memberi Poin Belajar.
+          {jenisTab === "Tugas"
+            ? `${daftar.length} tugas perlu dikumpulkan. Tekan "Kumpulkan" untuk membuka link dari guru.`
+            : `${daftar.length} modul ${jenisTab.toLowerCase()} tersedia. Setiap modul yang tuntas memberi Poin Belajar.`}
         </p>
 
         <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
