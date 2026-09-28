@@ -1,4 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/lib/auth-store";
+import { listModul } from "@/lib/modul.functions";
+import { listTesFormatif } from "@/lib/tes-formatif.functions";
 import {
   AlertCircle,
   ArrowRight,
@@ -8,6 +13,8 @@ import {
   Megaphone,
   Monitor,
   Sparkles,
+  ClipboardCheck,
+  FileText,
 } from "lucide-react";
 
 export const Route = createFileRoute("/asesmen")({
@@ -33,6 +40,7 @@ export const Route = createFileRoute("/asesmen")({
 });
 
 function HalamanAsesmen() {
+  const [tab, setTab] = useState<"cbt" | "formatif" | "ujian">("cbt");
   return (
     <div className="flex min-h-screen flex-col">
       <section className="bg-gradient-navy text-primary-foreground">
@@ -52,6 +60,29 @@ function HalamanAsesmen() {
       </section>
 
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-10 sm:py-14">
+        <div className="mb-8 grid grid-cols-3 gap-1 rounded-full border border-border bg-card p-1 shadow-card" role="tablist">
+          {([
+            ["cbt", "Ujian CBT"],
+            ["formatif", "Tes Formatif"],
+            ["ujian", "Materi Ujian"],
+          ] as const).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={tab === id}
+              onClick={() => setTab(id)}
+              className={`rounded-full px-3 py-2.5 text-xs font-extrabold transition-colors sm:text-sm ${
+                tab === id ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {tab === "formatif" && <TesFormatif />}
+        {tab === "ujian" && <MateriUjian />}
+        {tab === "cbt" && (<>
         <article className="space-y-10">
           <section className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
             <h2 className="flex items-center gap-2 text-xl font-extrabold text-foreground sm:text-2xl">
@@ -172,6 +203,7 @@ function HalamanAsesmen() {
             </Link>
           </div>
         </div>
+        </>)}
       </main>
     </div>
   );
@@ -194,5 +226,99 @@ function CalendarIcon(props: { className?: string }) {
       <line x1="8" x2="8" y1="2" y2="6" />
       <line x1="3" x2="21" y1="10" y2="10" />
     </svg>
+  );
+}
+
+function TesFormatif() {
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["tes-formatif"],
+    queryFn: () => listTesFormatif(),
+  });
+  return (
+    <section className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+      <h2 className="flex items-center gap-2 text-xl font-extrabold sm:text-2xl">
+        <ClipboardCheck className="h-6 w-6 shrink-0 text-accent" /> Tes Formatif
+      </h2>
+      <p className="mt-2 text-sm text-muted-foreground">
+        Tes singkat dari guru untuk mengukur pemahamanmu. Klik tombol untuk membuka tes di tab baru.
+      </p>
+      {isLoading && <p className="mt-5 text-sm text-muted-foreground">Memuat...</p>}
+      {!isLoading && data.length === 0 && (
+        <p className="mt-5 rounded-2xl border border-dashed border-border p-6 text-center text-sm font-semibold text-muted-foreground">
+          Belum ada tes formatif dari guru.
+        </p>
+      )}
+      <ul className="mt-5 grid gap-4">
+        {data.map((t) => (
+          <li key={t.id} className="rounded-2xl border border-border bg-background p-4">
+            <p className="font-bold">{t.judul}</p>
+            <p className="mt-1 text-xs font-semibold text-muted-foreground">
+              {[t.mapel, t.kelas_target].filter(Boolean).join(" · ") || "Semua kelas"}
+            </p>
+            {t.keterangan && <p className="mt-2 text-sm text-muted-foreground">{t.keterangan}</p>}
+            <a
+              href={t.tautan}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-extrabold text-accent-foreground shadow-pop"
+            >
+              Kerjakan Tes <ExternalLink className="h-4 w-4" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function MateriUjian() {
+  const { pengguna, siap } = useAuth();
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["modul"],
+    queryFn: () => listModul(),
+    enabled: !!pengguna,
+  });
+  const ujian = data.filter((m) => (m.kategori ?? "").toLowerCase() === "ujian");
+  return (
+    <section className="rounded-3xl border border-border bg-card p-6 shadow-card sm:p-8">
+      <h2 className="flex items-center gap-2 text-xl font-extrabold sm:text-2xl">
+        <FileText className="h-6 w-6 shrink-0 text-primary" /> Materi Ujian
+      </h2>
+      <p className="mt-2 text-sm text-muted-foreground">Konten ujian yang disiapkan guru untuk kelasmu.</p>
+      {siap && !pengguna ? (
+        <div className="mt-5 rounded-2xl border border-dashed border-border p-6 text-center">
+          <p className="text-sm font-semibold text-muted-foreground">Masuk akun untuk melihat materi ujian.</p>
+          <Link to="/auth" className="mt-3 inline-block rounded-full bg-primary px-5 py-2 text-sm font-extrabold text-primary-foreground">
+            Masuk
+          </Link>
+        </div>
+      ) : isLoading || !siap ? (
+        <p className="mt-5 text-sm text-muted-foreground">Memuat...</p>
+      ) : ujian.length === 0 ? (
+        <p className="mt-5 rounded-2xl border border-dashed border-border p-6 text-center text-sm font-semibold text-muted-foreground">
+          Belum ada materi ujian.
+        </p>
+      ) : (
+        <ul className="mt-5 grid gap-3">
+          {ujian.map((m) => (
+            <li key={m.id}>
+              <Link
+                to="/belajar/$modulId"
+                params={{ modulId: m.id }}
+                className="flex items-center justify-between gap-3 rounded-2xl border border-border bg-background p-4 hover:border-primary"
+              >
+                <span>
+                  <span className="block font-bold">{m.judul}</span>
+                  <span className="text-xs font-semibold text-muted-foreground">
+                    {m.mapel || "Umum"} · {m.kelas || "Semua kelas"}
+                  </span>
+                </span>
+                <ArrowRight className="h-5 w-5 shrink-0 text-primary" />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
