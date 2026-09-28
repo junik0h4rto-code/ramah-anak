@@ -266,3 +266,49 @@ export const leaderboardPohon = createServerFn({ method: "GET" })
       total_panen: number;
     }[];
   });
+
+const itemKatalogSchema = z.object({
+  kategori: z.string().trim().min(1, "Kategori wajib diisi").max(60),
+  jenis: z.string().trim().min(1, "Jenis perilaku wajib diisi").max(200),
+  poin: z.number().int().min(1).max(100),
+});
+
+export const tambahKatalogPerilaku = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z.object({ items: z.array(itemKatalogSchema).min(1).max(500) }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    await pastikanGuru(context.supabase as Client, context.userId);
+    const { data: ada } = await context.supabase
+      .from("katalog_perilaku")
+      .select("kategori, jenis")
+      .eq("aktif", true);
+    const kunci = new Set((ada ?? []).map((a) => `${a.kategori.toLowerCase()}|${a.jenis.toLowerCase()}`));
+    const baru = data.items.filter((i) => {
+      const k = `${i.kategori.toLowerCase()}|${i.jenis.toLowerCase()}`;
+      if (kunci.has(k)) return false;
+      kunci.add(k);
+      return true;
+    });
+    if (baru.length) {
+      const { error } = await context.supabase
+        .from("katalog_perilaku")
+        .insert(baru.map((b) => ({ ...b, aktif: true })));
+      if (error) throw new Error(error.message);
+    }
+    return { ditambah: baru.length, dilewati: data.items.length - baru.length };
+  });
+
+export const hapusKatalogPerilaku = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    await pastikanGuru(context.supabase as Client, context.userId);
+    const { error } = await context.supabase
+      .from("katalog_perilaku")
+      .update({ aktif: false })
+      .eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
