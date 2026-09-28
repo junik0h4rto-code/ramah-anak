@@ -481,6 +481,7 @@ function TabMateri() {
       kuis_pertanyaan: "",
       opsi: ["", "", "", ""],
       kuis_jawaban: 0,
+      tautan_tugas: "",
     });
   }
 
