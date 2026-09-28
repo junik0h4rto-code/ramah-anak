@@ -137,6 +137,7 @@ type ModulUI = {
   rating: number;
   dibaca: number;
   jenis: string;
+  tugas: string | null;
 };
 
 function jenisKonten(k: string | null) {
