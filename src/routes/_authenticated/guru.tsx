@@ -58,6 +58,7 @@ import {
 
 } from "@/lib/admin.functions";
 import { useAuth } from "@/lib/auth-store";
+import { KelolaKatalogPerilaku } from "@/components/kelola-katalog-perilaku";
 import {
   listPengaturanPoin,
   simpanPengaturanPoin,
@@ -1751,6 +1752,8 @@ function TabPengaturan() {
 
 function TabPerilaku() {
   const qc = useQueryClient();
+  const { pengguna: penggunaAktif } = useAuth();
+  const bolehKelolaKatalog = penggunaAktif?.peran === "admin";
   const { data: siswa } = useSuspenseQuery({
     queryKey: ["panel-siswa"],
     queryFn: () => daftarSiswa(),
@@ -2028,6 +2031,8 @@ function TabPerilaku() {
           </table>
         </div>
       </section>
+
+      {bolehKelolaKatalog && <KelolaKatalogPerilaku katalog={katalog} />}
     </div>
   );
 }
