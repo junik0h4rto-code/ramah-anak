@@ -11,7 +11,6 @@ import {
   Coins,
   Code2,
   Flame,
-  Gamepad2,
   Gift,
   Languages,
   LifeBuoy,
@@ -56,32 +55,11 @@ export const Route = createFileRoute("/_authenticated/belajar/")({
   component: KatalogModul,
 });
 
-const GAME_REKOMENDASI = [
-  {
-    id: "kuis",
-    to: "/belajar/kuis" as const,
-    judul: "Kuis Trivia Arcade",
-    guru: "Tim Guru SMPN 26",
-    koin: 50,
-    ikon: "Gamepad2",
-    warna: "from-primary to-accent",
-  },
-  {
-    id: "roda",
-    to: "/belajar/game" as const,
-    judul: "Roda Inspirasi Kebaikan",
-    guru: "Tim Guru SMPN 26",
-    koin: 50,
-    ikon: "Sparkles",
-    warna: "from-accent to-coin",
-  },
-];
-
 const BANNER = [
   {
     id: "b1",
-    judul: "Event Kuis Mingguan: Bonus 50 Poin!",
-    teks: "Ikuti kuis trivia di Pusat Game setiap Jumat dan raih poin ekstra.",
+    judul: "Belajar Tuntas, Poin Mengalir!",
+    teks: "Baca materi sampai selesai dan jawab evaluasi untuk mendapatkan Poin Belajar.",
     kelas: "from-accent to-coin",
   },
   {
@@ -318,12 +296,6 @@ function KatalogModul() {
               <span className="text-center text-[11px] font-bold leading-tight">{k.label}</span>
             </button>
           ))}
-          <Link to="/belajar/game" className="grid justify-items-center gap-2">
-            <span className="grid h-14 w-14 place-items-center rounded-full bg-primary-soft text-primary">
-              <Gamepad2 className="h-6 w-6" />
-            </span>
-            <span className="text-center text-[11px] font-bold leading-tight">Pusat Game</span>
-          </Link>
         </div>
 
         {/* Aksi cepat */}
@@ -415,46 +387,15 @@ function KatalogModul() {
         {/* Pengumuman dari guru */}
         <PapanPengumuman />
 
-        {/* Rekomendasi game & materi */}
+        {/* Rekomendasi materi */}
         <section className="mt-8">
-          <div className="flex items-end justify-between">
-            <div>
-              <h2 className="text-2xl font-extrabold">Rekomendasi Game & Materi Hari Ini</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Pilihan terbaik untuk mengumpulkan poin hari ini.
-              </p>
-            </div>
-            <Link to="/belajar/game" className="text-sm font-bold text-primary hover:underline">
-              Semua game
-            </Link>
+          <div>
+            <h2 className="text-2xl font-extrabold">Rekomendasi Materi Hari Ini</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Materi pilihan terbaru dari guru untuk kamu pelajari.
+            </p>
           </div>
           <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {GAME_REKOMENDASI.map((g) => (
-              <Link
-                key={g.id}
-                to={g.to}
-                className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-transform hover:-translate-y-1"
-              >
-                <div className={`relative grid h-32 place-items-center bg-gradient-to-br ${g.warna}`}>
-                  <DynamicIcon name={g.ikon} className="h-12 w-12 text-primary-foreground" />
-                  <span className="absolute left-2 top-2 rounded-md bg-card/90 px-2 py-0.5 text-[10px] font-extrabold text-accent-foreground">
-                    GAME
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col p-3">
-                  <h3 className="line-clamp-2 text-sm font-bold leading-snug">{g.judul}</h3>
-                  <p className="mt-1 text-[11px] font-semibold text-muted-foreground">
-                    oleh {g.guru}
-                  </p>
-                  <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-success px-2 py-0.5 text-[10px] font-extrabold text-success-foreground">
-                    <Coins className="h-3 w-3" /> Dapatkan +{g.koin} Poin
-                  </span>
-                  <span className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-center text-sm font-extrabold text-accent-foreground shadow-pop">
-                    <Play className="h-4 w-4 fill-current" /> Mainkan Sekarang
-                  </span>
-                </div>
-              </Link>
-            ))}
             {rekomendasi.slice(0, 6).map((m) => (
               <Link
                 key={m.id}
@@ -490,7 +431,7 @@ function KatalogModul() {
                   </span>
                   <span className="mt-auto pt-3">
                     <span className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-sm font-extrabold text-accent-foreground shadow-pop">
-                      <Play className="h-4 w-4 fill-current" /> Mainkan Sekarang
+                      <Play className="h-4 w-4 fill-current" /> Pelajari Sekarang
                     </span>
                   </span>
                 </div>
