@@ -52,7 +52,7 @@ export function KelolaKatalogPerilaku({ katalog }: { katalog: ItemKatalog[] }) {
   async function simpanSatu(e: React.FormEvent) {
     e.preventDefault();
     const kat = (kategori === "__baru" ? kategoriBaru : kategori).trim();
-    if (!kat || !jenis.trim()) return toast.error("Kategori dan jenis perilaku wajib diisi");
+    if (!kat || !jenis.trim()) { toast.error("Kategori dan jenis perilaku wajib diisi"); return; }
     if (await kirim([{ kategori: kat, jenis: jenis.trim(), poin }])) {
       setJenis("");
       setKategoriBaru("");
@@ -77,7 +77,7 @@ export function KelolaKatalogPerilaku({ katalog }: { katalog: ItemKatalog[] }) {
     try {
       const XLSX = await import("xlsx");
       const wb = XLSX.read(await file.arrayBuffer());
-      const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(wb.Sheets[wb.SheetNames[0]], {
+      const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(wb.Sheets[wb.SheetNames[0] ?? ""]!, {
         defval: "",
       });
       const ambil = (r: Record<string, unknown>, kunci: string[]) => {
@@ -92,8 +92,7 @@ export function KelolaKatalogPerilaku({ katalog }: { katalog: ItemKatalog[] }) {
         }))
         .filter((b) => b.kategori && b.jenis)
         .map((b) => ({ ...b, poin: Math.min(100, Math.max(1, b.poin)) }));
-      if (!hasil.length)
-        return toast.error("Tidak ada baris valid. Pastikan kolom: Kategori, Jenis Perilaku, Poin.");
+      if (!hasil.length) { toast.error("Tidak ada baris valid. Pastikan kolom: Kategori, Jenis Perilaku, Poin."); return; }
       setPratinjau(hasil);
     } catch {
       toast.error("File tidak bisa dibaca. Gunakan format .xlsx atau .csv");
