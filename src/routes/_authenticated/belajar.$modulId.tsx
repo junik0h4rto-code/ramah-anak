@@ -208,17 +208,28 @@ function DetailModul() {
             mengklaim Poin Belajar kamu.
           </p>
 
-          {poin.length > 0 ? (
+          {poin.length > 0 && (
             <ul className="list-disc space-y-2 pl-5 text-muted-foreground">
               {poin.map((p, i) => (
                 <li key={i}>{p}</li>
               ))}
             </ul>
+          )}
+
+          {modul.konten?.trim() ? (
+            <div className="rounded-3xl border border-border bg-card p-5 shadow-card sm:p-7">
+              <h2 className="mb-4 text-xl font-extrabold">Isi Materi</h2>
+              <div className="whitespace-pre-wrap break-words text-[15px] leading-relaxed text-foreground">
+                {modul.konten}
+              </div>
+            </div>
           ) : (
-            <p className="text-muted-foreground">
-              Materi ini belum memiliki uraian lengkap. Tanyakan kepada gurumu untuk penjelasan tambahan
-              di kelas.
-            </p>
+            poin.length === 0 && (
+              <p className="text-muted-foreground">
+                Materi ini belum memiliki uraian lengkap. Tanyakan kepada gurumu untuk penjelasan tambahan
+                di kelas.
+              </p>
+            )
           )}
 
           <p className="text-muted-foreground">
