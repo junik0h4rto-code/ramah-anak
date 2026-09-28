@@ -136,11 +136,21 @@ type ModulUI = {
   koin: number;
   rating: number;
   dibaca: number;
+  jenis: string;
 };
+
+function jenisKonten(k: string | null) {
+  const v = (k ?? "").trim().toLowerCase();
+  if (v === "latihan") return "Latihan";
+  if (v === "ujian") return "Ujian";
+  if (v === "proyek") return "Proyek";
+  return "Pembelajaran";
+}
 
 function KatalogModul() {
   const [filter, setFilter] = useState("Semua");
   const [cari, setCari] = useState("");
+  const [jenisTab, setJenisTab] = useState<"Pembelajaran" | "Proyek">("Pembelajaran");
   const [banner, setBanner] = useState(0);
   const [checkinBuka, setCheckinBuka] = useState(false);
   const [bantuanBuka, setBantuanBuka] = useState(false);
@@ -172,6 +182,7 @@ function KatalogModul() {
         koin: m.koin_reward || 0,
         rating: Number((4.5 + ((i * 7) % 5) * 0.1).toFixed(1)),
         dibaca: 60 + ((i * 37) % 240),
+        jenis: jenisKonten(m.kategori),
       })),
     [modulDb],
   );
@@ -180,15 +191,24 @@ function KatalogModul() {
     const q = cari.trim().toLowerCase();
     return semua.filter(
       (m) =>
+        m.jenis === jenisTab &&
         (filter === "Semua" || m.mapel === filter) &&
         (!q ||
           m.nama.toLowerCase().includes(q) ||
           m.mapel.toLowerCase().includes(q) ||
           m.kelas.toLowerCase().includes(q)),
     );
-  }, [cari, filter, semua]);
+  }, [cari, filter, semua, jenisTab]);
 
-  const populer = useMemo(() => [...semua].sort((a, b) => b.koin - a.koin).slice(0, 6), [semua]);
+  const populer = useMemo(
+    () => semua.filter((m) => m.jenis === "Latihan").sort((a, b) => b.koin - a.koin),
+    [semua],
+  );
+  const idKatalog = useMemo(
+    () => new Set(semua.filter((m) => m.jenis === "Pembelajaran" || m.jenis === "Proyek").map((m) => m.id)),
+    [semua],
+  );
+  const jumlahJenis = (j: string) => semua.filter((m) => m.jenis === j).length;
 
   return (
     <div className="pb-12">
@@ -396,7 +416,7 @@ function KatalogModul() {
             </p>
           </div>
           <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {rekomendasi.slice(0, 6).map((m) => (
+            {rekomendasi.filter((m) => idKatalog.has(m.id)).slice(0, 6).map((m) => (
               <Link
                 key={m.id}
                 to="/belajar/$modulId"
@@ -458,6 +478,14 @@ function KatalogModul() {
               ))}
             </span>
           </div>
+          <p className="mt-1 text-xs font-semibold text-muted-foreground">
+            Kumpulan latihan soal dari guru untuk mengasah pemahamanmu.
+          </p>
+          {populer.length === 0 && (
+            <p className="mt-4 rounded-2xl border border-dashed border-border p-5 text-center text-sm font-semibold text-muted-foreground">
+              Belum ada latihan dari guru.
+            </p>
+          )}
           <div className="mt-4 flex gap-4 overflow-x-auto pb-2">
             {populer.map((m) => (
               <Link
@@ -495,8 +523,24 @@ function KatalogModul() {
         </div>
 
         <h2 className="mt-8 text-2xl font-extrabold">Katalog Modul Pelajaran</h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          {daftar.length} modul tersedia. Setiap modul yang tuntas memberi Poin Belajar.
+        <div className="mt-4 inline-flex rounded-full border border-border bg-card p-1 shadow-card" role="tablist">
+          {(["Pembelajaran", "Proyek"] as const).map((j) => (
+            <button
+              key={j}
+              type="button"
+              role="tab"
+              aria-selected={jenisTab === j}
+              onClick={() => setJenisTab(j)}
+              className={`rounded-full px-5 py-2 text-sm font-extrabold transition-colors ${
+                jenisTab === j ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
+              }`}
+            >
+              {j === "Pembelajaran" ? "📘 Pembelajaran" : "🛠️ Proyek"} ({jumlahJenis(j)})
+            </button>
+          ))}
+        </div>
+        <p className="mt-3 text-sm text-muted-foreground">
+          {daftar.length} modul {jenisTab.toLowerCase()} tersedia. Setiap modul yang tuntas memberi Poin Belajar.
         </p>
 
         <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
