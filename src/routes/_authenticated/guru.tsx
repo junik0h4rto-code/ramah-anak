@@ -40,6 +40,7 @@ import {
 import { listModul, createModul, updateModul, deleteModul } from "@/lib/modul.functions";
 import { listAkun, updateAkun, deleteAkun } from "@/lib/akun.functions";
 import { TabAkun } from "@/components/tab-akun";
+import { TabTesFormatif } from "@/components/tab-tes-formatif";
 import {
   listBeritaEducator,
   createBerita,
@@ -126,6 +127,7 @@ type TabId =
   | "dasbor"
   | "kelas"
   | "materi"
+  | "tes-formatif"
   | "pengumuman"
   | "pengumuman-sekolah"
   | "akun"
@@ -140,6 +142,7 @@ const TABS: { id: TabId; label: string; icon: typeof LayoutDashboard; adminSaja?
   { id: "dasbor", label: "Dasbor Statistik", icon: LayoutDashboard },
   { id: "kelas", label: "Kelas & Rombel", icon: School },
   { id: "materi", label: "Input Materi Belajar", icon: BookOpen },
+  { id: "tes-formatif", label: "Tes Formatif", icon: CheckCircle2 },
   { id: "pengumuman", label: "Pengumuman Kelas", icon: Megaphone },
   { id: "pengumuman-sekolah", label: "Pengumuman Sekolah", icon: Megaphone, adminSaja: true },
   { id: "bonus", label: "Bonus Kegiatan Sekolah", icon: Sparkles },
@@ -204,6 +207,7 @@ function HalamanGuru() {
               {tab === "dasbor" && <TabDasbor />}
               {tab === "kelas" && <TabKelas />}
               {tab === "materi" && <TabMateri />}
+              {tab === "tes-formatif" && <TabTesFormatif />}
               {tab === "pengumuman" && <TabPengumuman mode="kelas" />}
               {tab === "pengumuman-sekolah" && isAdmin && <TabPengumuman mode="sekolah" />}
               {tab === "akun" && isAdmin && <TabAkun />}
@@ -577,6 +581,9 @@ function TabMateri() {
                   </option>
                 ))}
               </select>
+              <p className="mt-1 text-[11px] font-semibold text-muted-foreground">
+                Pembelajaran &amp; Proyek → Ruang Belajar · Latihan → Flash Belajar · Ujian → Portal Asesmen
+              </p>
             </div>
             <div>
               <label className={labelClass}>Kelas</label>

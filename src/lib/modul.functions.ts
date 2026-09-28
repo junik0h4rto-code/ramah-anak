@@ -134,3 +134,28 @@ export const klaimKoinModul = createServerFn({ method: "POST" })
       saldoKoin: row?.saldo_koin ?? 0,
     };
   });
+
+export const simpanRefleksi = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) =>
+    z
+      .object({
+        modul_id: z.string().uuid(),
+        jawaban: z.array(z.string().trim().min(5, "Setiap jawaban refleksi minimal 5 karakter").max(2000)).length(3),
+      })
+      .parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase.from("refleksi_modul").upsert(
+      {
+        user_id: context.userId,
+        modul_id: data.modul_id,
+        jawaban_1: data.jawaban[0]!,
+        jawaban_2: data.jawaban[1]!,
+        jawaban_3: data.jawaban[2]!,
+      },
+      { onConflict: "user_id,modul_id" },
+    );
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
