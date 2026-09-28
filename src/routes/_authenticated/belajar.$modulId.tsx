@@ -6,7 +6,7 @@ import confetti from "canvas-confetti";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { DynamicIcon } from "@/components/dynamic-icon";
 import { useGamifikasi } from "@/lib/gamifikasi-store";
-import { getModul, klaimKoinModul } from "@/lib/modul.functions";
+import { getModul, klaimKoinModul, simpanRefleksi } from "@/lib/modul.functions";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/belajar/$modulId")({
@@ -75,6 +75,13 @@ function tanggalIndo(iso: string | null) {
   });
 }
 
+const PERTANYAAN_REFLEKSI = [
+  "Apa hal paling penting yang kamu pelajari dari materi ini?",
+  "Bagian mana yang masih sulit kamu pahami, dan apa yang akan kamu lakukan untuk memahaminya?",
+  "Bagaimana kamu akan menerapkan materi ini dalam kehidupan sehari-hari?",
+];
+const MIN_REFLEKSI = 5;
+
 function DetailModul() {
   const { modulId } = Route.useParams();
   const navigate = useNavigate();
@@ -88,6 +95,7 @@ function DetailModul() {
   const [progres, setProgres] = useState(0);
   const [jawaban, setJawaban] = useState<"benar" | "salah" | null>(null);
   const [mengirim, setMengirim] = useState(false);
+  const [refleksi, setRefleksi] = useState<string[]>(["", "", ""]);
 
   const hitungProgres = useCallback(() => {
     const el = kontenRef.current;
@@ -115,12 +123,14 @@ function DetailModul() {
   const sudahSelesai = modulSelesai.includes(modul.id);
   const selesaiBaca = progres >= 98;
   const jawabanBenar = jawaban === "benar";
-  const bisaKlaim = selesaiBaca && jawabanBenar && !sudahSelesai && !mengirim;
+  const refleksiLengkap = refleksi.every((r) => r.trim().length >= MIN_REFLEKSI);
+  const bisaKlaim = selesaiBaca && jawabanBenar && refleksiLengkap && !sudahSelesai && !mengirim;
 
   async function klaim() {
     if (!modul) return;
     setMengirim(true);
     try {
+      await simpanRefleksi({ data: { modul_id: modul.id, jawaban: refleksi.map((r) => r.trim()) } });
       const hasil = await klaimKoinModul({ data: { id: modul.id } });
       selesaikanModul(modul.id, hasil.koinDidapat || koin, modul.judul);
       confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 } });
@@ -256,7 +266,7 @@ function DetailModul() {
 
         {/* Evaluasi singkat */}
         <section className="mt-10 rounded-3xl border border-border bg-card p-6 shadow-card">
-          <h2 className="text-lg font-extrabold">Evaluasi Singkat</h2>
+          <h2 className="text-lg font-extrabold">Evaluasi Singkat &amp; Refleksi</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Benar atau salah: materi <strong className="text-foreground">{modul.judul}</strong> termasuk
             mata pelajaran <strong className="text-foreground">{modul.mapel || "umum"}</strong> dan memberi
@@ -294,6 +304,33 @@ function DetailModul() {
             </p>
           )}
 
+          <div className="mt-8 border-t border-border pt-6">
+            <h3 className="text-base font-extrabold">Refleksi Belajar</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Jawab ketiga pertanyaan refleksi berikut dengan kalimatmu sendiri sebelum menyelesaikan modul.
+            </p>
+            <div className="mt-4 grid gap-4">
+              {PERTANYAAN_REFLEKSI.map((q, i) => (
+                <label key={i} className="grid gap-2">
+                  <span className="text-sm font-bold text-foreground">
+                    {i + 1}. {q}
+                  </span>
+                  <textarea
+                    value={refleksi[i]}
+                    onChange={(e) =>
+                      setRefleksi((r) => r.map((v, j) => (j === i ? e.target.value : v)))
+                    }
+                    disabled={sudahSelesai}
+                    rows={3}
+                    maxLength={2000}
+                    placeholder="Tulis jawabanmu di sini..."
+                    className="w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-accent disabled:opacity-60"
+                  />
+                </label>
+              ))}
+            </div>
+          </div>
+
           <button
             type="button"
             disabled={!bisaKlaim}
@@ -322,7 +359,11 @@ function DetailModul() {
 
           {!sudahSelesai && !bisaKlaim && (
             <p className="mt-3 text-center text-xs font-semibold text-muted-foreground">
-              {selesaiBaca ? "Jawab evaluasi dengan benar" : "Gulir materi sampai bawah"} untuk membuka
+              {!selesaiBaca
+                ? "Gulir materi sampai bawah"
+                : !jawabanBenar
+                  ? "Jawab evaluasi dengan benar"
+                  : "Isi ketiga jawaban refleksi"} untuk membuka
               tombol klaim poin.
             </p>
           )}
