@@ -11,7 +11,6 @@ import {
   Coins,
   Code2,
   Flame,
-  Gamepad2,
   Gift,
   Languages,
   LifeBuoy,
@@ -56,32 +55,11 @@ export const Route = createFileRoute("/_authenticated/belajar/")({
   component: KatalogModul,
 });
 
-const GAME_REKOMENDASI = [
-  {
-    id: "kuis",
-    to: "/belajar/kuis" as const,
-    judul: "Kuis Trivia Arcade",
-    guru: "Tim Guru SMPN 26",
-    koin: 50,
-    ikon: "Gamepad2",
-    warna: "from-primary to-accent",
-  },
-  {
-    id: "roda",
-    to: "/belajar/game" as const,
-    judul: "Roda Inspirasi Kebaikan",
-    guru: "Tim Guru SMPN 26",
-    koin: 50,
-    ikon: "Sparkles",
-    warna: "from-accent to-coin",
-  },
-];
-
 const BANNER = [
   {
     id: "b1",
-    judul: "Event Kuis Mingguan: Bonus 50 Poin!",
-    teks: "Ikuti kuis trivia di Pusat Game setiap Jumat dan raih poin ekstra.",
+    judul: "Belajar Tuntas, Poin Mengalir!",
+    teks: "Baca materi sampai selesai dan jawab evaluasi untuk mendapatkan Poin Belajar.",
     kelas: "from-accent to-coin",
   },
   {
