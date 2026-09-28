@@ -226,6 +226,18 @@ function DetailModul() {
             </ul>
           )}
 
+          {modul.tautan_tugas && (
+            <a
+              href={modul.tautan_tugas}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between gap-3 rounded-3xl border-2 border-primary bg-primary/10 p-5 font-extrabold"
+            >
+              <span>📤 Kumpulkan tugas modul ini</span>
+              <span className="rounded-full bg-primary px-4 py-2 text-sm text-primary-foreground">Buka Link</span>
+            </a>
+          )}
+
           {modul.konten?.trim() ? (
             <div className="rounded-3xl border border-border bg-card p-5 shadow-card sm:p-7">
               <h2 className="mb-4 text-xl font-extrabold">Isi Materi</h2>
