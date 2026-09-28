@@ -581,6 +581,9 @@ function TabMateri() {
                   </option>
                 ))}
               </select>
+              <p className="mt-1 text-[11px] font-semibold text-muted-foreground">
+                Pembelajaran &amp; Proyek → Ruang Belajar · Latihan → Flash Belajar · Ujian → Portal Asesmen
+              </p>
             </div>
             <div>
               <label className={labelClass}>Kelas</label>
