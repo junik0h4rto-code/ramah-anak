@@ -662,6 +662,44 @@ export type Database = {
         }
         Relationships: []
       }
+      refleksi_modul: {
+        Row: {
+          created_at: string
+          id: string
+          jawaban_1: string
+          jawaban_2: string
+          jawaban_3: string
+          modul_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          jawaban_1: string
+          jawaban_2: string
+          jawaban_3: string
+          modul_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          jawaban_1?: string
+          jawaban_2?: string
+          jawaban_3?: string
+          modul_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "refleksi_modul_modul_id_fkey"
+            columns: ["modul_id"]
+            isOneToOne: false
+            referencedRelation: "modul"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       roda_putaran: {
         Row: {
           created_at: string
@@ -686,6 +724,42 @@ export type Database = {
           id?: string
           koin_bersih?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      tes_formatif: {
+        Row: {
+          aktif: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          judul: string
+          kelas_target: string | null
+          keterangan: string | null
+          mapel: string | null
+          tautan: string
+        }
+        Insert: {
+          aktif?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          judul: string
+          kelas_target?: string | null
+          keterangan?: string | null
+          mapel?: string | null
+          tautan: string
+        }
+        Update: {
+          aktif?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          judul?: string
+          kelas_target?: string | null
+          keterangan?: string | null
+          mapel?: string | null
+          tautan?: string
         }
         Relationships: []
       }
