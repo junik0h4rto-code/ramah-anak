@@ -4,9 +4,9 @@ import { useServerFn } from "@tanstack/react-start";
 import { listRefleksiSiswa } from "@/lib/modul.functions";
 
 const PERTANYAAN = [
-  "Apa hal terpenting yang kamu pelajari?",
-  "Bagian mana yang masih sulit dipahami?",
-  "Bagaimana kamu akan menerapkannya?",
+  "Apa hal paling penting yang kamu pelajari dari materi ini?",
+  "Bagian mana yang masih sulit kamu pahami, dan apa yang akan kamu lakukan untuk memahaminya?",
+  "Bagaimana kamu akan menerapkan materi ini dalam kehidupan sehari-hari?",
 ];
 const inputClass =
   "w-full rounded-2xl border border-input bg-background px-4 py-2.5 text-sm font-semibold outline-none focus:border-accent";
