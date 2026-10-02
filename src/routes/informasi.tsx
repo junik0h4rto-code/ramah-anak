@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { AlertTriangle, Info, Megaphone, Newspaper } from "lucide-react";
+import { AlertTriangle, CalendarDays, Info, Megaphone, Newspaper } from "lucide-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { formatTanggal } from "@/lib/school-data";
 import { listBeritaPublic } from "@/lib/berita.functions";
@@ -34,12 +34,13 @@ export const Route = createFileRoute("/informasi")({
   component: InformasiPage,
 });
 
-type Filter = "semua" | "pengumuman" | "berita";
+type Filter = "semua" | "pengumuman" | "berita" | "agenda";
 
 const FILTER: { key: Filter; label: string }[] = [
   { key: "semua", label: "Semua" },
   { key: "pengumuman", label: "Pengumuman" },
   { key: "berita", label: "Berita" },
+  { key: "agenda", label: "Kalender Agenda" },
 ];
 
 function isPengumuman(kategori: string | null) {
@@ -55,12 +56,20 @@ function InformasiPage() {
 
   const jumlah = useMemo(() => {
     const pengumuman = semua.filter((b) => isPengumuman(b.kategori)).length;
-    return { semua: semua.length, pengumuman, berita: semua.length - pengumuman };
+    const agenda = semua.filter((b) => Boolean(b.tanggal_kegiatan)).length;
+    return { semua: semua.length, pengumuman, berita: semua.length - pengumuman, agenda };
   }, [semua]);
 
   const daftar = useMemo(() => {
     if (filter === "pengumuman") return semua.filter((b) => isPengumuman(b.kategori));
     if (filter === "berita") return semua.filter((b) => !isPengumuman(b.kategori));
+    if (filter === "agenda") {
+      return semua
+        .filter((b) => Boolean(b.tanggal_kegiatan))
+        .toSorted((a, b) =>
+          (a.tanggal_kegiatan ?? "").localeCompare(b.tanggal_kegiatan ?? ""),
+        );
+    }
     return semua;
   }, [semua, filter]);
 
@@ -130,6 +139,12 @@ function InformasiPage() {
                     )}
                   </span>
                   <span className="text-muted-foreground">{formatTanggal(b.created_at)}</span>
+                  {b.tanggal_kegiatan && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-2.5 py-1 text-primary">
+                      <CalendarDays className="h-3.5 w-3.5" />
+                      Agenda: {formatTanggal(b.tanggal_kegiatan)}
+                    </span>
+                  )}
                 </div>
 
                 {b.gambar_url && (
