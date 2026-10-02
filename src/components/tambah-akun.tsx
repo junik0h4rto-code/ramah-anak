@@ -47,8 +47,8 @@ export function TambahAkun() {
     }
   };
 
-  const simpanSatu = async () => {
-    if (password.length < 6) return toast.error("Kata sandi minimal 6 karakter");
+  const simpanSatu = async (): Promise<void> => {
+    if (password.length < 6) { toast.error("Kata sandi minimal 6 karakter"); return; }
     const ok = await jalankan([
       { nama, email, password, peran, kelas: kelas || undefined, mapel: mapel || undefined },
     ]);
