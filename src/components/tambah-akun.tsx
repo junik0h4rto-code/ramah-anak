@@ -60,8 +60,8 @@ export function TambahAkun() {
   const unduhTemplate = async () => {
     const XLSX = await import("xlsx");
     const ws = XLSX.utils.json_to_sheet([
-      { Nama: "Budi Santoso", Email: "budi@contoh.sch.id", Password: "rahasia123", Peran: "siswa", Kelas: "7A", Mapel: "" },
-      { Nama: "Ibu Sari", Email: "sari@contoh.sch.id", Password: "rahasia123", Peran: "guru", Kelas: "", Mapel: "IPA" },
+      { Nama: "Budi Santoso", Email: "budi@contoh.sch.id", Password: "rahasia123", Peran: "siswa", Kelas: "7A", Mapel: "", "Wali Kelas": "", "Kelas Diampu": "" },
+      { Nama: "Ibu Sari", Email: "sari@contoh.sch.id", Password: "rahasia123", Peran: "guru", Kelas: "", Mapel: "IPA", "Wali Kelas": "7A", "Kelas Diampu": "7A, 7B, 8C" },
     ]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Akun");
@@ -85,6 +85,8 @@ export function TambahAkun() {
           peran: normPeran(ambil(r, "peran")),
           kelas: ambil(r, "kelas") || undefined,
           mapel: ambil(r, "mapel") || undefined,
+          waliKelas: ambil(r, "wali kelas") || undefined,
+          kelasDiampu: ambil(r, "kelas diampu").split(",").map((x) => x.trim()).filter(Boolean),
         }))
         .filter((a) => a.nama && a.email.includes("@") && a.password.length >= 6);
       if (!daftar.length) toast.error("Tidak ada baris valid (cek Nama, Email, Password min. 6 karakter)");
@@ -146,7 +148,7 @@ export function TambahAkun() {
       <div className="mt-6 rounded-2xl border-2 border-dashed border-input p-4">
         <p className="font-extrabold">📥 Tambah masal dari Excel</p>
         <p className="mt-1 text-sm font-semibold text-muted-foreground">
-          Kolom: Nama, Email, Password, Peran (siswa/guru/admin), Kelas, Mapel.
+          Kolom: Nama, Email, Password, Peran (siswa/guru/admin), Kelas, Mapel, Wali Kelas, Kelas Diampu (untuk guru, pisahkan dengan koma).
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <button onClick={unduhTemplate} className="pop rounded-full bg-secondary px-4 py-2 text-xs font-extrabold text-secondary-foreground">

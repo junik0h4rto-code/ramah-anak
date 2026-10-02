@@ -6,12 +6,12 @@ import type { Database } from "@/integrations/supabase/types";
 
 type Client = SupabaseClient<Database>;
 
-async function pastikanGuru(supabase: Client, userId: string) {
+async function pastikanAdmin(supabase: Client, userId: string) {
   const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", userId);
   if (error) throw new Error(error.message);
   const roles = (data ?? []).map((r) => r.role);
-  if (!roles.includes("guru") && !roles.includes("admin")) {
-    throw new Error("Akses ditolak: khusus guru/admin.");
+  if (!roles.includes("admin")) {
+    throw new Error("Akses ditolak: khusus admin.");
   }
 }
 
@@ -41,6 +41,8 @@ export const listKelas = createServerFn({ method: "GET" })
       context.supabase.from("user_roles").select("user_id, role").eq("role", "siswa"),
     ]);
     if (error) throw new Error(error.message);
+    const { kelasAkses } = await import("@/lib/admin.functions");
+    const akses = await kelasAkses(context.supabase as Client, context.userId);
     const idSiswa = new Set((roles ?? []).map((r) => r.user_id));
     const hitung = new Map<string, number>();
     for (const p of profil ?? []) {
@@ -49,7 +51,7 @@ export const listKelas = createServerFn({ method: "GET" })
       if (!k) continue;
       hitung.set(k, (hitung.get(k) ?? 0) + 1);
     }
-    return (data ?? []).map((k) => ({
+    return (data ?? []).filter((k) => !akses || akses.has(k.nama)).map((k) => ({
       id: k.id,
       tingkat: k.tingkat,
       rombel: k.rombel,
@@ -64,7 +66,7 @@ export const createKelas = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => kelasSchema.parse(input))
   .handler(async ({ data, context }) => {
-    await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanAdmin(context.supabase as Client, context.userId);
     const nama = `${data.tingkat} ${data.rombel}`.trim();
     const { error } = await context.supabase.from("kelas_rombel").insert({
       tingkat: data.tingkat,
@@ -81,7 +83,7 @@ export const updateKelas = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => kelasSchema.extend({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
-    await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanAdmin(context.supabase as Client, context.userId);
     const nama = `${data.tingkat} ${data.rombel}`.trim();
     const { error } = await context.supabase
       .from("kelas_rombel")
@@ -101,7 +103,7 @@ export const deleteKelas = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
-    await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanAdmin(context.supabase as Client, context.userId);
     const { error } = await context.supabase.from("kelas_rombel").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -113,7 +115,7 @@ export const setKelasSiswa = createServerFn({ method: "POST" })
     z.object({ userId: z.string().uuid(), kelas: z.string().trim().max(30) }).parse(input),
   )
   .handler(async ({ data, context }) => {
-    await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanAdmin(context.supabase as Client, context.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin
       .from("profiles")

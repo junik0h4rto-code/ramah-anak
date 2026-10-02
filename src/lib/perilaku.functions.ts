@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { pastikanBolehSiswa, pastikanBolehCatatan } from "@/lib/akses-kelas";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
@@ -50,6 +51,7 @@ export const catatPerilaku = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanBolehSiswa(context.supabase as Client, data.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: hasil, error } = await supabaseAdmin.rpc("catat_perilaku", {
       _user_id: data.userId,
@@ -143,6 +145,7 @@ export const ubahPerilaku = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanBolehCatatan(context.supabase as Client, "perilaku_siswa", data.id);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.rpc("ubah_perilaku", {
       _id: data.id,
@@ -158,6 +161,7 @@ export const hapusPerilaku = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanBolehCatatan(context.supabase as Client, "perilaku_siswa", data.id);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.rpc("hapus_perilaku", { _id: data.id });
     if (error) throw new Error(error.message);

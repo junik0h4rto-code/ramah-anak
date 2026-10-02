@@ -24,18 +24,48 @@ export type ItemAkun = {
   koin: number;
   peran: Peran;
   dibuat: string;
+  waliKelas: string | null;
+  kelasDiampu: string[];
 };
+
+async function simpanPenugasan(
+  admin: Client,
+  guruId: string,
+  nama: string,
+  peran: Peran,
+  waliKelas: string | undefined,
+  kelasDiampu: string[] | undefined,
+) {
+  await admin.from("guru_kelas").delete().eq("guru_id", guruId);
+  await admin.from("kelas_rombel").update({ wali_kelas: "" }).eq("wali_kelas", nama);
+  if (peran !== "guru") return;
+  const wali = waliKelas?.trim();
+  const rows: { guru_id: string; kelas_nama: string; sebagai: string }[] = [];
+  if (wali) {
+    await admin.from("guru_kelas").delete().eq("kelas_nama", wali).eq("sebagai", "wali");
+    rows.push({ guru_id: guruId, kelas_nama: wali, sebagai: "wali" });
+    await admin.from("kelas_rombel").update({ wali_kelas: nama }).eq("nama", wali);
+  }
+  for (const k of new Set((kelasDiampu ?? []).map((x) => x.trim()).filter(Boolean))) {
+    rows.push({ guru_id: guruId, kelas_nama: k, sebagai: "pengampu" });
+  }
+  if (rows.length) {
+    const { error } = await admin.from("guru_kelas").insert(rows);
+    if (error) throw new Error(error.message);
+  }
+}
 
 export const listAkun = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<ItemAkun[]> => {
     await pastikanAdmin(context.supabase as Client, context.userId);
-    const [{ data: profil, error }, { data: roles }] = await Promise.all([
+    const [{ data: profil, error }, { data: roles }, { data: tugas }] = await Promise.all([
       context.supabase
         .from("profiles")
         .select("id, nama, email, kelas, mapel, koin, created_at")
         .order("nama"),
       context.supabase.from("user_roles").select("user_id, role"),
+      context.supabase.from("guru_kelas").select("guru_id, kelas_nama, sebagai"),
     ]);
     if (error) throw new Error(error.message);
     const peta = new Map<string, Peran>();
@@ -49,6 +79,11 @@ export const listAkun = createServerFn({ method: "GET" })
       koin: p.koin ?? 0,
       peran: peta.get(p.id) ?? ("siswa" as Peran),
       dibuat: p.created_at,
+      waliKelas: (tugas ?? []).find((t) => t.guru_id === p.id && t.sebagai === "wali")?.kelas_nama ?? null,
+      kelasDiampu: (tugas ?? [])
+        .filter((t) => t.guru_id === p.id && t.sebagai === "pengampu")
+        .map((t) => t.kelas_nama)
+        .sort(),
     }));
   });
 
@@ -62,6 +97,8 @@ export const updateAkun = createServerFn({ method: "POST" })
         kelas: z.string().trim().max(30).optional(),
         mapel: z.string().trim().max(120).optional(),
         peran: z.enum(["siswa", "guru", "admin"]),
+        waliKelas: z.string().trim().max(30).optional(),
+        kelasDiampu: z.array(z.string().trim().max(30)).max(60).optional(),
       })
       .parse(input),
   )
@@ -85,6 +122,7 @@ export const updateAkun = createServerFn({ method: "POST" })
       .insert({ user_id: data.id, role: data.peran as Peran });
     if (errRole) throw new Error(errRole.message);
 
+    await simpanPenugasan(supabaseAdmin as Client, data.id, data.nama, data.peran as Peran, data.waliKelas, data.kelasDiampu);
     return { ok: true };
   });
 
@@ -107,6 +145,8 @@ const skemaAkunBaru = z.object({
   peran: z.enum(["siswa", "guru", "admin"]),
   kelas: z.string().trim().max(30).optional(),
   mapel: z.string().trim().max(120).optional(),
+  waliKelas: z.string().trim().max(30).optional(),
+  kelasDiampu: z.array(z.string().trim().max(30)).max(60).optional(),
 });
 export type AkunBaru = z.infer<typeof skemaAkunBaru>;
 
@@ -141,6 +181,12 @@ export const tambahAkun = createServerFn({ method: "POST" })
       );
       await supabaseAdmin.from("user_roles").delete().eq("user_id", id);
       await supabaseAdmin.from("user_roles").insert({ user_id: id, role: a.peran as Peran });
+      try {
+        await simpanPenugasan(supabaseAdmin as Client, id, a.nama, a.peran as Peran, a.waliKelas, a.kelasDiampu);
+      } catch {
+        hasil.push({ email: a.email, ok: true, pesan: "Akun dibuat, tetapi penugasan kelas gagal" });
+        continue;
+      }
       hasil.push({ email: a.email, ok: true });
     }
     return hasil;

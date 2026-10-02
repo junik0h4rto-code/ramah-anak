@@ -80,6 +80,30 @@ export type Database = {
         }
         Relationships: []
       }
+      guru_kelas: {
+        Row: {
+          created_at: string
+          guru_id: string
+          id: string
+          kelas_nama: string
+          sebagai: string
+        }
+        Insert: {
+          created_at?: string
+          guru_id: string
+          id?: string
+          kelas_nama: string
+          sebagai?: string
+        }
+        Update: {
+          created_at?: string
+          guru_id?: string
+          id?: string
+          kelas_nama?: string
+          sebagai?: string
+        }
+        Relationships: []
+      }
       hadiah: {
         Row: {
           created_at: string

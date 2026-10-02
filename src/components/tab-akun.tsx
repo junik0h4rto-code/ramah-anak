@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { TambahAkun } from "@/components/tambah-akun";
+import { listKelas } from "@/lib/kelas.functions";
 import { listAkun, updateAkun, deleteAkun, type ItemAkun } from "@/lib/akun.functions";
 
 const inputClass =
@@ -26,6 +27,10 @@ export function TabAkun() {
     queryFn: () => fetchAkun(),
   });
 
+  const fetchKelas = useServerFn(listKelas);
+  const { data: daftarKelas } = useQuery({ queryKey: ["kelas-rombel-akun"], queryFn: () => fetchKelas() });
+  const [waliKelas, setWaliKelas] = useState("");
+  const [kelasDiampu, setKelasDiampu] = useState<string[]>([]);
   const [filterPeran, setFilterPeran] = useState<"semua" | "siswa" | "guru" | "admin">("semua");
   const [edit, setEdit] = useState<ItemAkun | null>(null);
   const [nama, setNama] = useState("");
@@ -39,12 +44,14 @@ export function TabAkun() {
     setKelas(a.kelas ?? "");
     setMapel(a.mapel ?? "");
     setPeran(a.peran);
+    setWaliKelas(a.waliKelas ?? "");
+    setKelasDiampu(a.kelasDiampu ?? []);
   };
 
   const mutUpdate = useMutation({
     mutationFn: () =>
       simpanAkun({
-        data: { id: edit!.id, nama, kelas, mapel, peran },
+        data: { id: edit!.id, nama, kelas, mapel, peran, waliKelas, kelasDiampu },
       }),
     onSuccess: () => {
       toast.success("Akun berhasil diperbarui");
@@ -134,6 +141,52 @@ export function TabAkun() {
               <input id="akun-mapel" className={inputClass} value={mapel} onChange={(e) => setMapel(e.target.value)} />
             </div>
           )}
+          {peran === "siswa" && (
+            <p className="text-xs font-semibold text-muted-foreground sm:col-span-2">
+              Penempatan kelas siswa hanya diatur oleh admin di sini atau di menu Kelas &amp; Rombel.
+            </p>
+          )}
+          {peran === "guru" && (
+            <>
+              <div>
+                <label className={labelClass} htmlFor="akun-wali">Wali kelas dari</label>
+                <select id="akun-wali" className={inputClass} value={waliKelas} onChange={(e) => setWaliKelas(e.target.value)}>
+                  <option value="">— Bukan wali kelas —</option>
+                  {(daftarKelas ?? []).map((k) => (
+                    <option key={k.id} value={k.nama}>{k.nama}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <p className={labelClass}>Kelas yang diampu (mengajar)</p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {(daftarKelas ?? []).map((k) => {
+                    const aktif = kelasDiampu.includes(k.nama);
+                    return (
+                      <button
+                        type="button"
+                        key={k.id}
+                        onClick={() =>
+                          setKelasDiampu((l) => (aktif ? l.filter((x) => x !== k.nama) : [...l, k.nama]))
+                        }
+                        className={`pop rounded-full px-3 py-1.5 text-xs font-extrabold ${
+                          aktif ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground"
+                        }`}
+                      >
+                        {k.nama}
+                      </button>
+                    );
+                  })}
+                  {(daftarKelas ?? []).length === 0 && (
+                    <span className="text-xs font-semibold text-muted-foreground">Belum ada data kelas di menu Kelas &amp; Rombel.</span>
+                  )}
+                </div>
+                <p className="mt-2 text-xs font-semibold text-muted-foreground">
+                  Guru hanya bisa melihat progres siswa di kelas perwalian dan kelas yang diampu.
+                </p>
+              </div>
+            </>
+          )}
           <div className="flex items-end gap-2">
             <button
               onClick={() => mutUpdate.mutate()}
@@ -162,6 +215,9 @@ export function TabAkun() {
                   · {PERAN_LABEL[a.peran] ?? a.peran}
                   {a.kelas ? ` · ${a.kelas}` : ""}
                   {a.mapel ? ` · ${a.mapel}` : ""}
+                  {a.peran === "guru" && a.waliKelas ? ` · Wali ${a.waliKelas}` : ""}
+                  {a.peran === "guru" && a.kelasDiampu.length ? ` · Mengajar ${a.kelasDiampu.join(", ")}` : ""}
+                  {a.peran === "guru" && !a.waliKelas && !a.kelasDiampu.length ? " · Belum ada kelas" : ""}
                 </span>
               </p>
               <p className="truncate text-sm font-semibold text-muted-foreground">{a.email}</p>
