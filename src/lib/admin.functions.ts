@@ -19,7 +19,8 @@ async function pastikanGuru(supabase: Client, userId: string) {
 /** null = admin (semua kelas); selain itu set nama kelas wali/ampu guru. */
 export async function kelasAkses(supabase: Client, userId: string): Promise<Set<string> | null> {
   const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", userId);
-  if ((roles ?? []).some((r) => r.role === "admin")) return null;
+  const r = (roles ?? []).map((x) => x.role);
+  if (r.includes("admin") || !r.includes("guru")) return null;
   const { data } = await supabase.from("guru_kelas").select("kelas_nama").eq("guru_id", userId);
   return new Set((data ?? []).map((r) => r.kelas_nama));
 }
