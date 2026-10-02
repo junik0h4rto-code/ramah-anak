@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { pastikanBolehSiswa, pastikanBolehCatatan } from "@/lib/akses-kelas";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
@@ -14,6 +15,21 @@ async function pastikanGuru(supabase: Client, userId: string) {
     throw new Error("Akses ditolak: khusus guru/admin.");
   }
 }
+
+/** null = admin (semua kelas); selain itu set nama kelas wali/ampu guru. */
+export async function kelasAkses(supabase: Client, userId: string): Promise<Set<string> | null> {
+  const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", userId);
+  if ((roles ?? []).some((r) => r.role === "admin")) return null;
+  const { data } = await supabase.from("guru_kelas").select("kelas_nama").eq("guru_id", userId);
+  return new Set((data ?? []).map((r) => r.kelas_nama));
+}
+
+export const kelasSaya = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const akses = await kelasAkses(context.supabase as Client, context.userId);
+    return { semua: akses === null, kelas: akses ? [...akses].sort() : [] };
+  });
 
 export const statistikPanel = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -65,6 +81,7 @@ export const kirimKoinBonus = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanBolehSiswa(context.supabase as Client, data.userId);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: saldo, error } = await supabaseAdmin.rpc("beri_koin_bonus", {
       _user_id: data.userId,
@@ -111,6 +128,7 @@ export const selesaikanPenukaran = createServerFn({ method: "POST" })
   .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     await pastikanGuru(context.supabase as Client, context.userId);
+    await pastikanBolehCatatan(context.supabase as Client, "penukaran_hadiah", data.id);
     const { error } = await context.supabase
       .from("penukaran_hadiah")
       .update({ status: "selesai" })
@@ -141,6 +159,7 @@ export const progresKelas = createServerFn({ method: "GET" })
         context.supabase.from("lencana_siswa").select("user_id, jumlah"),
         context.supabase.from("kelas_rombel").select("nama, wali_kelas, aktif"),
       ]);
+    const akses = await kelasAkses(context.supabase as Client, context.userId);
 
     const idSiswa = new Set((roles ?? []).map((r) => r.user_id));
     const kelasDari = new Map<string, string>();
@@ -148,6 +167,7 @@ export const progresKelas = createServerFn({ method: "GET" })
 
     for (const k of rombel ?? []) {
       if (!k.aktif) continue;
+      if (akses && !akses.has(k.nama)) continue;
       peta.set(k.nama, {
         kelas: k.nama,
         waliKelas: k.wali_kelas ?? "",
