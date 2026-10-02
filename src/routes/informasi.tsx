@@ -64,9 +64,9 @@ function InformasiPage() {
     if (filter === "pengumuman") return semua.filter((b) => isPengumuman(b.kategori));
     if (filter === "berita") return semua.filter((b) => !isPengumuman(b.kategori));
     if (filter === "agenda") {
-      return semua
+      return [...semua]
         .filter((b) => Boolean(b.tanggal_kegiatan))
-        .toSorted((a, b) =>
+        .sort((a, b) =>
           (a.tanggal_kegiatan ?? "").localeCompare(b.tanggal_kegiatan ?? ""),
         );
     }
