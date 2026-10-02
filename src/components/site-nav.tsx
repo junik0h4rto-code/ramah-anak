@@ -62,6 +62,14 @@ function grupUntuk(peran: Peran | null, isEducator: boolean): Grup[] {
     if (peran === "admin") return g.peran !== "siswa";
     if (g.peran === "guru") return isEducator;
     return g.peran === peran;
+  }).map((g) => {
+    if (!peran || g.label !== "Informasi Sekolah") return g;
+    return {
+      ...g,
+      items: g.items.filter((item) =>
+        !["/berita", "/pengumuman", "/kalender"].includes(item.to),
+      ),
+    };
   });
 }
 
