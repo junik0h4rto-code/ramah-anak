@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
+import { TambahAkun } from "@/components/tambah-akun";
 import { listAkun, updateAkun, deleteAkun, type ItemAkun } from "@/lib/akun.functions";
 
 const inputClass =
@@ -72,6 +73,8 @@ export function TabAkun() {
     filterPeran === "semua" ? daftar : daftar.filter((a) => a.peran === filterPeran);
 
   return (
+    <>
+    <TambahAkun />
     <section className="card-fun p-6">
       <h2 className="text-xl font-extrabold">🪪 Akun Terdaftar</h2>
       <p className="mt-1 text-sm font-semibold text-muted-foreground">
@@ -193,5 +196,6 @@ export function TabAkun() {
         )}
       </ul>
     </section>
+    </>
   );
 }

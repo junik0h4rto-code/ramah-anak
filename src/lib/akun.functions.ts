@@ -99,3 +99,49 @@ export const deleteAkun = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+const skemaAkunBaru = z.object({
+  nama: z.string().trim().min(1).max(120),
+  email: z.string().trim().toLowerCase().email(),
+  password: z.string().min(6).max(72),
+  peran: z.enum(["siswa", "guru", "admin"]),
+  kelas: z.string().trim().max(30).optional(),
+  mapel: z.string().trim().max(120).optional(),
+});
+export type AkunBaru = z.infer<typeof skemaAkunBaru>;
+
+export const tambahAkun = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ akun: z.array(skemaAkunBaru).min(1).max(500) }).parse(input))
+  .handler(async ({ data, context }) => {
+    await pastikanAdmin(context.supabase as Client, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const hasil: { email: string; ok: boolean; pesan?: string }[] = [];
+    for (const a of data.akun) {
+      const { data: u, error } = await supabaseAdmin.auth.admin.createUser({
+        email: a.email,
+        password: a.password,
+        email_confirm: true,
+        user_metadata: { nama: a.nama, peran: a.peran },
+      });
+      if (error || !u.user) {
+        hasil.push({ email: a.email, ok: false, pesan: error?.message ?? "Gagal" });
+        continue;
+      }
+      const id = u.user.id;
+      await supabaseAdmin.from("profiles").upsert(
+        {
+          id,
+          email: a.email,
+          nama: a.nama,
+          kelas: a.peran === "siswa" && a.kelas ? a.kelas : null,
+          mapel: a.peran !== "siswa" && a.mapel ? a.mapel : null,
+        },
+        { onConflict: "id" },
+      );
+      await supabaseAdmin.from("user_roles").delete().eq("user_id", id);
+      await supabaseAdmin.from("user_roles").insert({ user_id: id, role: a.peran as Peran });
+      hasil.push({ email: a.email, ok: true });
+    }
+    return hasil;
+  });

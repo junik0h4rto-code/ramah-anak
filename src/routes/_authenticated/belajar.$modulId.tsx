@@ -36,7 +36,7 @@ export const Route = createFileRoute("/_authenticated/belajar/$modulId")({
   },
   errorComponent: ({ error }) => (
     <div role="alert" className="mx-auto max-w-3xl px-4 py-16 text-center font-semibold">
-      Gagal memuat modul: {error.message}
+      Gagal memuat modul: {(error as Error).message}
     </div>
   ),
   notFoundComponent: () => (
