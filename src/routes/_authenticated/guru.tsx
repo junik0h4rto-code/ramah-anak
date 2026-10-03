@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense, useState, useEffect, useRef } from "react";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
   BookOpen,
@@ -56,6 +56,7 @@ import {
   selesaikanPenukaran,
   progresKelas,
 
+  kelasSaya,
 } from "@/lib/admin.functions";
 import { useAuth } from "@/lib/auth-store";
 import { KelolaKatalogPerilaku } from "@/components/kelola-katalog-perilaku";
@@ -201,6 +202,7 @@ function HalamanGuru() {
           </aside>
 
           <section className="min-w-0">
+            {!isAdmin && <InfoKelasGuru />}
             <Suspense
               fallback={
                 <div className="rounded-3xl border border-border bg-card p-10 text-center text-sm font-extrabold text-muted-foreground shadow-card">
@@ -249,6 +251,19 @@ function Kartu({
       <p className="mt-1 text-xs font-extrabold uppercase tracking-wide text-muted-foreground">
         {judul}
       </p>
+    </div>
+  );
+}
+
+function InfoKelasGuru() {
+  const ambil = useServerFn(kelasSaya);
+  const { data } = useQuery({ queryKey: ["kelas-saya"], queryFn: () => ambil() });
+  if (!data || data.semua) return null;
+  return (
+    <div className="mb-4 rounded-2xl border border-dashed border-border bg-card p-4 text-sm font-semibold text-muted-foreground">
+      {data.kelas.length
+        ? `Anda melihat data siswa kelas: ${data.kelas.join(", ")}.`
+        : "Belum ada kelas yang ditugaskan. Hubungi admin."}
     </div>
   );
 }
@@ -2405,7 +2420,7 @@ function TabKelas() {
                     </span>
                   </td>
                   <td className="py-2.5">
-                    <div className="flex gap-2">
+                    {bolehKelola && <div className="flex gap-2">
                       <button
                         type="button"
                         onClick={() => {
@@ -2428,7 +2443,7 @@ function TabKelas() {
                       >
                         <Trash2 className="h-3.5 w-3.5" /> Hapus
                       </button>
-                    </div>
+                    </div>}
                   </td>
                 </tr>
               ))}
@@ -2459,6 +2474,9 @@ function TabKelas() {
                 <tr key={s.id} className="border-t border-border">
                   <td className="py-2.5 pr-4 font-semibold">{s.nama}</td>
                   <td className="py-2.5">
+                    {!bolehKelola ? (
+                      <span className="font-semibold">{s.kelas || "Belum ditempatkan"}</span>
+                    ) : (
                     <select
                       value={kelas.some((k) => k.nama === s.kelas) ? (s.kelas ?? "") : ""}
                       onChange={(e) => ubahKelasSiswa(s.id, e.target.value)}
@@ -2471,6 +2489,7 @@ function TabKelas() {
                         </option>
                       ))}
                     </select>
+                    )}
                   </td>
                 </tr>
               ))}
