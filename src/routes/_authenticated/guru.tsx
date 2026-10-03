@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense, useState, useEffect, useRef } from "react";
-import { useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
   BookOpen,
@@ -56,6 +56,7 @@ import {
   selesaikanPenukaran,
   progresKelas,
 
+  kelasSaya,
 } from "@/lib/admin.functions";
 import { useAuth } from "@/lib/auth-store";
 import { KelolaKatalogPerilaku } from "@/components/kelola-katalog-perilaku";
