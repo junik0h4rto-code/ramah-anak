@@ -201,6 +201,7 @@ function HalamanGuru() {
           </aside>
 
           <section className="min-w-0">
+            {!isAdmin && <InfoKelasGuru />}
             <Suspense
               fallback={
                 <div className="rounded-3xl border border-border bg-card p-10 text-center text-sm font-extrabold text-muted-foreground shadow-card">
@@ -249,6 +250,19 @@ function Kartu({
       <p className="mt-1 text-xs font-extrabold uppercase tracking-wide text-muted-foreground">
         {judul}
       </p>
+    </div>
+  );
+}
+
+function InfoKelasGuru() {
+  const ambil = useServerFn(kelasSaya);
+  const { data } = useQuery({ queryKey: ["kelas-saya"], queryFn: () => ambil() });
+  if (!data || data.semua) return null;
+  return (
+    <div className="mb-4 rounded-2xl border border-dashed border-border bg-card p-4 text-sm font-semibold text-muted-foreground">
+      {data.kelas.length
+        ? `Anda melihat data siswa kelas: ${data.kelas.join(", ")}.`
+        : "Belum ada kelas yang ditugaskan. Hubungi admin."}
     </div>
   );
 }
