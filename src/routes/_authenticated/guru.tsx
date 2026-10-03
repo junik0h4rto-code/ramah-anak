@@ -2405,7 +2405,7 @@ function TabKelas() {
                     </span>
                   </td>
                   <td className="py-2.5">
-                    <div className="flex gap-2">
+                    {bolehKelola && <div className="flex gap-2">
                       <button
                         type="button"
                         onClick={() => {
@@ -2428,7 +2428,7 @@ function TabKelas() {
                       >
                         <Trash2 className="h-3.5 w-3.5" /> Hapus
                       </button>
-                    </div>
+                    </div>}
                   </td>
                 </tr>
               ))}
@@ -2459,6 +2459,9 @@ function TabKelas() {
                 <tr key={s.id} className="border-t border-border">
                   <td className="py-2.5 pr-4 font-semibold">{s.nama}</td>
                   <td className="py-2.5">
+                    {!bolehKelola ? (
+                      <span className="font-semibold">{s.kelas || "Belum ditempatkan"}</span>
+                    ) : (
                     <select
                       value={kelas.some((k) => k.nama === s.kelas) ? (s.kelas ?? "") : ""}
                       onChange={(e) => ubahKelasSiswa(s.id, e.target.value)}
@@ -2471,6 +2474,7 @@ function TabKelas() {
                         </option>
                       ))}
                     </select>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -2709,7 +2713,7 @@ function TabHadiah() {
                       >
                         <Trash2 className="h-3.5 w-3.5" /> Hapus
                       </button>
-                    </div>
+                    </div>}
                   </td>
                 </tr>
               ))}
