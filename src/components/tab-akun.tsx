@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
@@ -38,6 +38,8 @@ export function TabAkun() {
   const [mapel, setMapel] = useState("");
   const [peran, setPeran] = useState<"siswa" | "guru" | "admin">("siswa");
 
+  const formEditRef = useRef<HTMLDivElement>(null);
+
   const mulaiEdit = (a: ItemAkun) => {
     setEdit(a);
     setNama(a.nama);
@@ -46,6 +48,10 @@ export function TabAkun() {
     setPeran(a.peran);
     setWaliKelas(a.waliKelas ?? "");
     setKelasDiampu(a.kelasDiampu ?? []);
+    // Form edit berada di atas daftar; gulir ke sana agar terlihat.
+    requestAnimationFrame(() => {
+      formEditRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
 
   const mutUpdate = useMutation({
@@ -112,7 +118,10 @@ export function TabAkun() {
       </div>
 
       {edit && (
-        <div className="mt-4 grid gap-3 rounded-2xl border-2 border-dashed border-input p-4 sm:grid-cols-2">
+        <div
+          ref={formEditRef}
+          className="mt-4 grid scroll-mt-24 gap-3 rounded-2xl border-2 border-dashed border-input p-4 sm:grid-cols-2"
+        >
           <div>
             <label className={labelClass} htmlFor="akun-nama">Nama</label>
             <input id="akun-nama" className={inputClass} value={nama} onChange={(e) => setNama(e.target.value)} />
