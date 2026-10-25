@@ -92,6 +92,13 @@
       "when": 1790974157868,
       "tag": "0012_guru_kelas_akses",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1792903290677,
+      "tag": "0013_teacher_lesson_generator",
+      "breakpoints": true
     }
   ]
 }
