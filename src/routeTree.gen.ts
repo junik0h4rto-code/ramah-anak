@@ -27,6 +27,7 @@ import { Route as AuthenticatedBelajarRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedGuruRouteImport } from './routes/_authenticated/guru'
 import { Route as AuthenticatedProfilRouteImport } from './routes/_authenticated/profil'
 import { Route as AuthenticatedTokoRouteImport } from './routes/_authenticated/toko'
+import { Route as ApiLessonGeneratorRouteImport } from './routes/api/lesson-generator'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as AuthenticatedBelajarIndexRouteImport } from './routes/_authenticated/belajar.index'
 import { Route as AuthenticatedBelajarModulIdRouteImport } from './routes/_authenticated/belajar.$modulId'
@@ -126,6 +127,11 @@ const AuthenticatedTokoRoute = AuthenticatedTokoRouteImport.update({
   path: '/toko',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiLessonGeneratorRoute = ApiLessonGeneratorRouteImport.update({
+  id: '/api/lesson-generator',
+  path: '/api/lesson-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -191,6 +197,7 @@ export interface FileRoutesByFullPath {
   '/guru': typeof AuthenticatedGuruRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/toko': typeof AuthenticatedTokoRoute
+  '/api/lesson-generator': typeof ApiLessonGeneratorRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/belajar/game': typeof AuthenticatedBelajarGameRoute
@@ -217,6 +224,7 @@ export interface FileRoutesByTo {
   '/guru': typeof AuthenticatedGuruRoute
   '/profil': typeof AuthenticatedProfilRoute
   '/toko': typeof AuthenticatedTokoRoute
+  '/api/lesson-generator': typeof ApiLessonGeneratorRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/belajar/game': typeof AuthenticatedBelajarGameRoute
@@ -246,6 +254,7 @@ export interface FileRoutesById {
   '/_authenticated/guru': typeof AuthenticatedGuruRoute
   '/_authenticated/profil': typeof AuthenticatedProfilRoute
   '/_authenticated/toko': typeof AuthenticatedTokoRoute
+  '/api/lesson-generator': typeof ApiLessonGeneratorRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/_authenticated/belajar/$modulId': typeof AuthenticatedBelajarModulIdRoute
   '/_authenticated/belajar/game': typeof AuthenticatedBelajarGameRoute
@@ -275,6 +284,7 @@ export interface FileRouteTypes {
     | '/guru'
     | '/profil'
     | '/toko'
+    | '/api/lesson-generator'
     | '/.lovable/oauth/consent'
     | '/belajar/$modulId'
     | '/belajar/game'
@@ -301,6 +311,7 @@ export interface FileRouteTypes {
     | '/guru'
     | '/profil'
     | '/toko'
+    | '/api/lesson-generator'
     | '/.lovable/oauth/consent'
     | '/belajar/$modulId'
     | '/belajar/game'
@@ -329,6 +340,7 @@ export interface FileRouteTypes {
     | '/_authenticated/guru'
     | '/_authenticated/profil'
     | '/_authenticated/toko'
+    | '/api/lesson-generator'
     | '/.lovable/oauth/consent'
     | '/_authenticated/belajar/$modulId'
     | '/_authenticated/belajar/game'
@@ -354,6 +366,7 @@ export interface RootRouteChildren {
   PengumumanRoute: typeof PengumumanRoute
   ProfilSekolahRoute: typeof ProfilSekolahRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiLessonGeneratorRoute: typeof ApiLessonGeneratorRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicSetupAdminRoute: typeof ApiPublicSetupAdminRoute
 }
@@ -486,6 +499,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTokoRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/lesson-generator': {
+      id: '/api/lesson-generator'
+      path: '/api/lesson-generator'
+      fullPath: '/api/lesson-generator'
+      preLoaderRoute: typeof ApiLessonGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -599,6 +619,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfilSekolahRoute: ProfilSekolahRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiLessonGeneratorRoute: ApiLessonGeneratorRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicSetupAdminRoute: ApiPublicSetupAdminRoute,
 }
