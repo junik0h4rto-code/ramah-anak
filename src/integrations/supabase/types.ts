@@ -626,6 +626,38 @@ export type Database = {
           },
         ]
       }
+      permintaan_generator: {
+        Row: {
+          created_at: string
+          id: string
+          pesan: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pesan?: string | null
+          status?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pesan?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "permintaan_generator_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pohon_siswa: {
         Row: {
           air: number
@@ -689,6 +721,50 @@ export type Database = {
         }
         Relationships: []
       }
+      rancangan_pembelajaran: {
+        Row: {
+          created_at: string
+          hasil: Json | null
+          id: string
+          input: Json
+          judul: string
+          status: string
+          updated_at: string
+          user_id: string
+          versi: number
+        }
+        Insert: {
+          created_at?: string
+          hasil?: Json | null
+          id?: string
+          input?: Json
+          judul: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          versi?: number
+        }
+        Update: {
+          created_at?: string
+          hasil?: Json | null
+          id?: string
+          input?: Json
+          judul?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          versi?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rancangan_pembelajaran_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       refleksi_modul: {
         Row: {
           created_at: string
@@ -751,6 +827,27 @@ export type Database = {
           id?: string
           koin_bersih?: number
           user_id?: string
+        }
+        Relationships: []
+      }
+      status_ai_generator: {
+        Row: {
+          id: boolean
+          pesan: string
+          status: number
+          updated_at: string
+        }
+        Insert: {
+          id?: boolean
+          pesan: string
+          status: number
+          updated_at?: string
+        }
+        Update: {
+          id?: boolean
+          pesan?: string
+          status?: number
+          updated_at?: string
         }
         Relationships: []
       }
@@ -921,6 +1018,7 @@ export type Database = {
           nama_guru: string
         }[]
       }
+      reservasi_generator: { Args: never; Returns: string }
       riwayat_checkin_7hari: {
         Args: { _user_id: string }
         Returns: {
