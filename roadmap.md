@@ -21,5 +21,5 @@
 - [x] Contoh hadiah toko dimunculkan lagi; super admin bisa menambah/mengubah/menghapus hadiah
 
 ## Berikutnya
-- [ ] Generator Pembelajaran Mendalam pada Input Materi guru: AI, draf privat, editor, cetak/ekspor, dan pengujian.
+- [x] Generator Pembelajaran Mendalam pada Input Materi guru: AI terstruktur, draf privat, editor delapan bagian, buat ulang bagian, penerapan materi siswa, cetak/PDF browser dan DOCX. Diuji dengan akun sendiri: generasi, edit/simpan/buka, buat ulang bagian, Stop, ekspor, serta penolakan pemalsuan pemilik.
 

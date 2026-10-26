@@ -19,6 +19,8 @@ export const Route = createFileRoute("/pengumuman")({
         property: "og:description",
         content: "Informasi penting untuk siswa dan wali murid SMPN 26 BANDUNG.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: async ({ context }) => {

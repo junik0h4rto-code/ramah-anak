@@ -25,6 +25,8 @@ export const Route = createFileRoute("/_authenticated/profil")({
       { name: "description", content: "Dashboard profil siswa: saldo poin, lencana, modul selesai, riwayat penukaran hadiah, dan leaderboard." },
       { property: "og:title", content: "Profil Siswa — SMPN 26 BANDUNG" },
       { property: "og:description", content: "Pantau progres belajar, koin, lencana, dan peringkatmu." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: () => (
