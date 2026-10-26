@@ -19,6 +19,8 @@ export const Route = createFileRoute("/berita")({
         property: "og:description",
         content: "Prestasi, kegiatan, dan kabar fasilitas terbaru SMPN 26 BANDUNG.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: async ({ context }) => {

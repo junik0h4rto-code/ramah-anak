@@ -28,6 +28,8 @@ export const Route = createFileRoute("/_authenticated/belajar/game")({
         property: "og:description",
         content: "Kuis trivia dan Roda Inspirasi Kebaikan berhadiah Poin Siswa.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: PusatGame,

@@ -29,6 +29,8 @@ export const Route = createFileRoute("/kalender")({
         content:
           "Agenda akademik, ekstrakurikuler, lomba, dan libur sekolah dalam satu halaman.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   loader: async ({ context }) => {

@@ -36,6 +36,8 @@ export const Route = createFileRoute("/_authenticated/belajar/pohon")({
         property: "og:description",
         content: "Perilaku terpuji menyiram pohonmu. Panen buahnya jadi Poin Siswa.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: HalamanPohon,

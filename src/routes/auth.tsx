@@ -28,6 +28,8 @@ export const Route = createFileRoute("/auth")({
         property: "og:description",
         content: "Login berbasis peran: akun siswa, guru, dan admin SMPN 26 BANDUNG.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: HalamanAuth,
