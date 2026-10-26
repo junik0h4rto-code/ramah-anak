@@ -42,6 +42,7 @@ import { listAkun, updateAkun, deleteAkun } from "@/lib/akun.functions";
 import { TabAkun } from "@/components/tab-akun";
 import { TabTesFormatif } from "@/components/tab-tes-formatif";
 import { TabRefleksi } from "@/components/tab-refleksi";
+import { LessonGenerator } from "@/components/lesson-generator";
 import {
   listBeritaEducator,
   createBerita,
@@ -556,6 +557,11 @@ function TabMateri() {
           Modul yang disimpan langsung tampil di katalog Ruang Belajar siswa.
         </p>
       </div>
+
+      <LessonGenerator onApply={(input, text) => {
+        setModulForm((form) => ({ ...form, judul: input.topik, mapel: input.mapel, kelas: input.kelas, kategori: form.kategori || (input.model === "PjBL" ? "Proyek" : "Pembelajaran"), konten: text }));
+        toast.success("Materi dan LKPD siswa dimasukkan ke form. Periksa lalu publikasikan seperti biasa.");
+      }} />
 
       <section className="rounded-3xl border border-border bg-card p-6 shadow-card">
         <h2 className="mb-4 font-display text-xl font-extrabold">
