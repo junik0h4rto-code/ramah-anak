@@ -559,7 +559,8 @@ function TabMateri() {
       </div>
 
       <LessonGenerator onApply={(input, text) => {
-        setModulForm((form) => ({ ...form, judul: input.topik, mapel: input.mapel, kelas: input.kelas, kategori: form.kategori || (input.model === "PjBL" ? "Proyek" : "Pembelajaran"), konten: text }));
+        const kelas = ({ "7": "VII", "8": "VIII", "9": "IX" } as Record<string, string>)[input.kelas.trim()] ?? input.kelas;
+        setModulForm((form) => ({ ...form, judul: input.topik, mapel: input.mapel, kelas: KELAS.includes(kelas) ? kelas : form.kelas, kategori: form.kategori || (input.model === "PjBL" ? "Proyek" : "Pembelajaran"), konten: text }));
         toast.success("Materi dan LKPD siswa dimasukkan ke form. Periksa lalu publikasikan seperti biasa.");
       }} />
 
