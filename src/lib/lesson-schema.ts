@@ -9,10 +9,16 @@ export const MODEL_PEMBELAJARAN = {
   Lainnya: [],
 } as const;
 const teks = z.string().trim().max(3000);
+export const ASUMSI_KONDISI_SEKOLAH = {
+  karakteristik: "Asumsi awal SMPN 26 Bandung (belum terverifikasi; wajib ditinjau guru): siswa SMP memiliki kesiapan dan pengetahuan awal yang beragam. Gunakan asesmen diagnostik singkat serta dukungan bertahap sesuai kelas dan topik, tanpa menganggap semua siswa sudah menguasai prasyarat.",
+  sarana: "Asumsi awal SMPN 26 Bandung (belum terverifikasi; wajib ditinjau guru): rancang kegiatan dengan kebutuhan minimal berupa buku, alat tulis, dan bahan sederhana yang aman. Jangan menganggap internet, gawai, proyektor, atau laboratorium tersedia; sediakan alternatif tanpa perangkat dan konfirmasi ketersediaan kepada guru.",
+  konteks: "Asumsi awal SMPN 26 Bandung (belum terverifikasi; wajib ditinjau guru): gunakan contoh kehidupan sehari-hari siswa SMP di lingkungan perkotaan Bandung, seperti kegiatan di rumah, sekolah, kebersihan lingkungan, dan interaksi sosial, disesuaikan dengan topik. Jangan mengklaim kondisi khusus sekolah atau lingkungan siswa sebagai fakta.",
+} as const;
+const kondisiOpsional = (key: keyof typeof ASUMSI_KONDISI_SEKOLAH) => teks.default("").transform((value) => value || ASUMSI_KONDISI_SEKOLAH[key]);
 export const lessonInputSchema = z.object({
   jenjang: z.enum(["SD", "SMP", "SMA/SMK"]), kelas: teks.min(1), fase: teks.min(1), mapel: teks.min(1), topik: teks.min(3),
   cp: teks, tp: teks, menit: z.number().int().min(15).max(480), model: z.enum(["PBL", "PjBL", "Discovery", "Inquiry", "Cooperative", "Lainnya"]),
-  modelLain: teks, karakteristik: teks.min(5), sarana: teks.min(3), konteks: teks.min(5), metode: teks, preferensi: teks,
+  modelLain: teks, karakteristik: kondisiOpsional("karakteristik"), sarana: kondisiOpsional("sarana"), konteks: kondisiOpsional("konteks"), metode: teks, preferensi: teks,
 }).strict().superRefine((v, ctx) => {
   if (v.model === "Lainnya" && v.modelLain.length < 3) ctx.addIssue({ code: "custom", path: ["modelLain"], message: "Isi nama dan sintaks model lain" });
 });
